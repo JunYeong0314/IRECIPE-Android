@@ -1,4 +1,4 @@
-package com.umcproject.iecipe
+package com.umcproject.irecipe
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

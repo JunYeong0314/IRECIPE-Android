@@ -1,4 +1,4 @@
-package com.umcproject.iecipe
+package com.umcproject.irecipe
 
 import org.junit.Test
 
