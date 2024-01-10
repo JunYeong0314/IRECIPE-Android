@@ -1,4 +1,7 @@
-# 아이레시피 - Android
+# Branch Naming
+[commit convention]/[이슈번호]-[간략한 브랜치명]
+ex) 이슈번호가 1번, commit convention이 feat, 브랜치내용이 첫 프로젝트를 설정하는 내용이라면?
+feat/1-initProject
 
 # Commit Convention
 [Feat] : 새로운 기능 추가
