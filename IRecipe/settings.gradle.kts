@@ -15,5 +15,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "EyeRecipe"
+rootProject.name = "IRecipe"
 include(":app")
