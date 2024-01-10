@@ -22,6 +22,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.i
 
         onClickLogin()
 
+        // 로그인에 관한 비동기 처리
         CoroutineScope(Dispatchers.Main).launch{
             viewModel.isLogin.collectLatest { isLogin->
                 isLogin?.let {
@@ -36,13 +37,6 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.i
                 }
             }
         }
-
-        /*if(viewModel.isLogin.value){
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        }*/
-
     }
 
     // 로그인 클릭이벤트
