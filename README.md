@@ -1,4 +1,3 @@
-# IRECIPE-Android
 # 아이레시피 - Android
 
 # Commit Convention
