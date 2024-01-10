@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.umcproject.eyerecipe"
+    namespace = "com.umcproject.irecipe"
     compileSdk = 34
 
     buildFeatures {
