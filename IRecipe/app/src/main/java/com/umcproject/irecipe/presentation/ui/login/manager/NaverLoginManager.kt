@@ -4,11 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.navercorp.nid.NaverIdLoginSDK
 import com.navercorp.nid.oauth.OAuthLoginCallback
-import com.umcproject.eyerecipe.BuildConfig
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.qualifiers.ActivityContext
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
+import com.umcproject.irecipe.BuildConfig
 
 class NaverLoginManager(
     private val context: Context

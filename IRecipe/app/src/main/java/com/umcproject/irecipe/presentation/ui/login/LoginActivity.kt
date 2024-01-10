@@ -3,7 +3,7 @@ package com.umcproject.irecipe.presentation.ui.login
 import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
-import com.umcproject.eyerecipe.databinding.ActivityLoginBinding
+import com.umcproject.irecipe.databinding.ActivityLoginBinding
 import com.umcproject.irecipe.presentation.ui.home.HomeActivity
 import com.umcproject.irecipe.presentation.util.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
