@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">EyeRecipe</string>
+
+    <!-- 로그인 화면 -->
+    <string name="login_kakao">카카오로 시작하기</string>
+    <string name="login_naver">네이버로 시작하기</string>
 </resources>
