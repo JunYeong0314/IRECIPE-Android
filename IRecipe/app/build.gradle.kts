@@ -104,6 +104,9 @@ dependencies {
 
     // naver
     implementation("com.navercorp.nid:oauth:5.6.0") // jdk 11
+
+    // Data store
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
 }
 
 kapt {
