@@ -4,4 +4,11 @@
     <!-- 로그인 화면 -->
     <string name="login_kakao">카카오로 시작하기</string>
     <string name="login_naver">네이버로 시작하기</string>
+
+    <!-- Bottom Bar Title -->
+    <string name="bottom_home">홈</string>
+    <string name="bottom_chat">AI 레시피</string>
+    <string name="bottom_refrigerator">나의 냉장고</string>
+    <string name="bottom_community">커뮤니티</string>
+    <string name="bottom_my_page">마이페이지</string>
 </resources>

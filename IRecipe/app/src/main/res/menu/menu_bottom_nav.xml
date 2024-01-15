@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_frag_home"
+        android:title="@string/bottom_home"
+        android:icon="@drawable/ic_bottom_home"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/nav_frag_chat"
+        android:title="@string/bottom_chat"
+        android:icon="@drawable/ic_bottom_chat"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/nav_frag_refrigerator"
+        android:title="@string/bottom_refrigerator"
+        android:icon="@drawable/ic_bottom_refrigerator"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/nav_frag_community"
+        android:title="@string/bottom_community"
+        android:icon="@drawable/ic_bottom_community"
+        android:enabled="true"/>
+    <item
+        android:id="@+id/nav_frag_mypage"
+        android:title="@string/bottom_my_page"
+        android:icon="@drawable/ic_bottom_mypage"
+        android:enabled="true"/>
+</menu>

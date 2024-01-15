@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.umcproject.irecipe.presentation.ui.home.HomeActivity" />
+        <activity android:name="com.umcproject.irecipe.presentation.util.MainActivity" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
