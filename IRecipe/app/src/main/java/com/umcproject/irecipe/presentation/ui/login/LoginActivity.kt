@@ -6,8 +6,8 @@ import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.databinding.ActivityLoginBinding
 import com.umcproject.irecipe.domain.repository.UserDataRepository
-import com.umcproject.irecipe.presentation.ui.home.HomeActivity
 import com.umcproject.irecipe.presentation.util.BaseActivity
+import com.umcproject.irecipe.presentation.util.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +33,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.i
             viewModel.isLogin.collectLatest { isLogin->
                 isLogin?.let {
                     if(it){
-                        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }else{
