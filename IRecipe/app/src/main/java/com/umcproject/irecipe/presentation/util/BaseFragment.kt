@@ -1,6 +1,7 @@
 package com.umcproject.irecipe.presentation.util
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,9 +23,4 @@ abstract class BaseFragment<VB: ViewBinding>: Fragment() {
     }
 
     abstract fun getFragmentBinding(inflater: LayoutInflater, container: ViewGroup?): VB
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
 }

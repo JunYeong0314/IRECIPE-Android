@@ -1,10 +1,12 @@
 package com.umcproject.irecipe.presentation.ui.signup.step
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,7 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupSecondBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.Util.popFragment
 import com.umcproject.irecipe.presentation.util.Util.showFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,11 +46,13 @@ class SecondStepFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.etNick.setText(viewModel.userInfo.value.nick)
 
         // 기존에 입력한 정보 기입
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.userInfo.collectLatest { userInfo->
                 userInfo.photoUri?.let { binding.ivProfile.setImageURI(it) }
+                nickCheckActive(userInfo.nick)
             }
         }
 
@@ -56,6 +61,7 @@ class SecondStepFragment(
         })
 
         nextStepBtn() // 다음 단계 버튼 이벤트
+        previousBtn() // 이전 단계 버튼 이벤트
         onClickPhoto() // 프로필 사진 설정
         observeNick() // 닉네임 감지
     }
@@ -95,15 +101,23 @@ class SecondStepFragment(
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(name: Editable?) {
                 if(name.isNullOrEmpty()){
-                    binding.ibtnCheckNick.setImageResource(R.drawable.ic_check)
-                    viewModel.setNick(nick = "")
+                    nickCheckActive("")
                 }else{
-                    binding.ibtnCheckNick.setImageResource(R.drawable.ic_check_true)
-                    viewModel.setNick(nick = binding.etNick.text.toString())
+                    nickCheckActive(binding.etNick.text.toString())
                 }
             }
 
         })
+    }
+
+    private fun nickCheckActive(nick: String){
+        if(nick != ""){
+            binding.ibtnCheckNick.setImageResource(R.drawable.ic_check_true)
+            viewModel.setNick(nick = nick)
+        }else{
+            binding.ibtnCheckNick.setImageResource(R.drawable.ic_check)
+            viewModel.setNick(nick = nick)
+        }
     }
 
     private fun nextStepBtn(){
@@ -114,11 +128,17 @@ class SecondStepFragment(
 
     private fun nextStepBtnActive(isActive: Boolean){
         if(isActive){
-            binding.tvNext.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.color_main))
+            binding.tvNext.setBackgroundResource(R.drawable.bg_button_main)
             binding.tvNext.isEnabled = true
         }else{
-            binding.tvNext.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.gray_1))
+            binding.tvNext.setBackgroundResource(R.drawable.bg_button_dark_gray)
             binding.tvNext.isEnabled = false
+        }
+    }
+
+    private fun previousBtn(){
+        binding.tvPrevious.setOnClickListener {
+            popFragment(requireActivity())
         }
     }
 
