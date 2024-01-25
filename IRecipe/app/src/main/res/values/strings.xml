@@ -1,6 +1,38 @@
 <resources>
     <string name="app_name">IRecipe</string>
 
+    <!-- 회원가입 -->
+    <string name="sign_title">회원가입</string>
+    <string name="sign_name">이름</string>
+    <string name="sign_name_hint">성명</string>
+    <string name="sign_gender">성별</string>
+    <string name="sign_man">남자</string>
+    <string name="sign_woman">여자</string>
+    <string name="sign_age">나이</string>
+    <string name="sign_choice">선택</string>
+    <string name="sign_next">다음</string>
+    <string name="sign_image">프로필 사진</string>
+    <string name="sign_nick">닉네임</string>
+    <string name="sign_nick_hint">1~5자/영어 대소문자, 한글, 숫자 조합가능</string>
+    <string name="sign_check">중복확인</string>
+    <string name="sign_allergy">알레르기(선택)</string>
+    <string name="sign_search">검색하기</string>
+    <string name="sign_complete">회원가입 완료</string>
+
+    <!-- 연령대 -->
+    <string name="age_10">10대</string>
+    <string name="age_20">20대</string>
+    <string name="age_30">30대</string>
+    <string name="age_40">40대</string>
+    <string name="age_50">50대</string>
+    <string name="age_60">60대</string>
+    
+    <!-- 프로필 사진 Dialog -->
+    <string name="profile_pickAlbum">앨범에 사진 선택</string>
+    <string name="profile_base">기본이미지로 변경</string>
+    <string name="profile_cancel">취소</string>
+    <string name="profile_title">프로필사진 설정</string>
+
     <!-- 로그인 화면 -->
     <string name="login_kakao">카카오로 시작하기</string>
     <string name="login_naver">네이버로 시작하기</string>

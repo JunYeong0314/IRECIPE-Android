@@ -107,6 +107,9 @@ dependencies {
 
     // Data store
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Circle ImageView
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 }
 
 kapt {

@@ -6,6 +6,7 @@ import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.databinding.ActivityLoginBinding
 import com.umcproject.irecipe.domain.repository.UserDataRepository
+import com.umcproject.irecipe.presentation.ui.signup.SignUpActivity
 import com.umcproject.irecipe.presentation.util.BaseActivity
 import com.umcproject.irecipe.presentation.util.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,11 +30,10 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.i
 
         // 로그인에 관한 비동기 처리
         CoroutineScope(Dispatchers.Main).launch{
-            Log.d("LoginActivity", userDataRepository.getUserData().toString())
             viewModel.isLogin.collectLatest { isLogin->
                 isLogin?.let {
                     if(it){
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
                         startActivity(intent)
                         finish()
                     }else{

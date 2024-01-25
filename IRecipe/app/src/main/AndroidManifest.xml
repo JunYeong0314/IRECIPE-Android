@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.umcproject.irecipe.presentation.util.MainActivity" />
+        <activity android:name=".presentation.ui.signup.SignUpActivity" />
         <activity
             android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">

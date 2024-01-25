@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_age_10"
+        android:title="@string/age_10"/>
+    <item
+        android:id="@+id/menu_age_20"
+        android:title="@string/age_20"/>
+    <item
+        android:id="@+id/menu_age_30"
+        android:title="@string/age_30"/>
+    <item
+        android:id="@+id/menu_age_40"
+        android:title="@string/age_40"/>
+    <item
+        android:id="@+id/menu_age_50"
+        android:title="@string/age_50"/>
+    <item
+        android:id="@+id/menu_age_60"
+        android:title="@string/age_60"/>
+</menu>
