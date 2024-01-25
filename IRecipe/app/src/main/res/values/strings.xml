@@ -11,6 +11,7 @@
     <string name="sign_age">나이</string>
     <string name="sign_choice">선택</string>
     <string name="sign_next">다음</string>
+    <string name="sign_previous">이전</string>
     <string name="sign_image">프로필 사진</string>
     <string name="sign_nick">닉네임</string>
     <string name="sign_nick_hint">1~5자/영어 대소문자, 한글, 숫자 조합가능</string>
