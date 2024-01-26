@@ -8,6 +8,7 @@ import com.umcproject.irecipe.databinding.ActivitySignupBinding
 import com.umcproject.irecipe.presentation.ui.signup.step.FirstStepFragment
 import com.umcproject.irecipe.presentation.util.BaseActivity
 import com.umcproject.irecipe.presentation.util.MainActivity
+import com.umcproject.irecipe.presentation.util.onboarding.OnboardingActivity
 
 class SignUpActivity: BaseActivity<ActivitySignupBinding>({ ActivitySignupBinding.inflate(it) }) {
     private val manager = supportFragmentManager
@@ -17,7 +18,7 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>({ ActivitySignupBindin
 
         viewModel.isLastComplete.observe(this@SignUpActivity, Observer {
             if(it){
-                val intent = Intent(this@SignUpActivity, MainActivity::class.java)
+                val intent = Intent(this@SignUpActivity, OnboardingActivity::class.java)
                 startActivity(intent)
                 finish()
             }

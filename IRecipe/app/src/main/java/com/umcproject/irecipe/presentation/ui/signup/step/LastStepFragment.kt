@@ -36,9 +36,7 @@ class LastStepFragment(
 
     private fun onComplete(){
         binding.tvNext.setOnClickListener {
-            //viewModel.setLastComplete(true)
-            val intent = Intent(activity, OnboardingActivity::class.java)
-            startActivity(intent)
+            viewModel.setLastComplete(true)
         }
     }
 
