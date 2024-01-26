@@ -33,7 +33,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.i
             viewModel.isLogin.collectLatest { isLogin->
                 isLogin?.let {
                     if(it){
-                        val intent = Intent(this@LoginActivity, SignUpActivity::class.java)
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()
                     }else{
