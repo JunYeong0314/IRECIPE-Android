@@ -1,5 +1,6 @@
 package com.umcproject.irecipe.presentation.ui.signup.step
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +9,9 @@ import android.view.ViewGroup
 import com.umcproject.irecipe.databinding.FragmentSignupLastBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util
+import com.umcproject.irecipe.presentation.util.onboarding.OnboardingActivity
 
 class LastStepFragment(
     private val viewModel: SignUpViewModel
@@ -33,7 +36,9 @@ class LastStepFragment(
 
     private fun onComplete(){
         binding.tvNext.setOnClickListener {
-            viewModel.setLastComplete(true)
+            //viewModel.setLastComplete(true)
+            val intent = Intent(activity, OnboardingActivity::class.java)
+            startActivity(intent)
         }
     }
 
