@@ -19,10 +19,7 @@ object Util {
         transaction.addToBackStack(tag).commitAllowingStateLoss()
     }
 
-    fun removeFragment(activity: FragmentActivity, fragment: Fragment){
-        val transaction: FragmentTransaction =
-            activity.supportFragmentManager.beginTransaction()
-                .remove(fragment)
-        transaction.commitAllowingStateLoss()
+    fun popFragment(activity: FragmentActivity){
+        activity.supportFragmentManager.popBackStack()
     }
 }

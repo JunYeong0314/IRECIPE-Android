@@ -78,7 +78,7 @@ class SignUpViewModel: ViewModel() {
     }
 
     private fun checkSecondStep(): Boolean{
-        return _userInfo.value.photoUri != null && _userInfo.value.nick != ""
+        return _userInfo.value.nick != ""
     }
 
 }

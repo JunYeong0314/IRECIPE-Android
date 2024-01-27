@@ -1,8 +1,10 @@
 package com.umcproject.irecipe.presentation.ui.signup.step
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,15 +39,17 @@ class FirstStepFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.etName.setText(viewModel.userInfo.value.name)
 
         // 입력항목 검사 Observe
         viewModel.isFirstComplete.observe(requireActivity(), Observer { complete->
             nextStepBtnActive(complete)
         })
 
-        // 기존에 입력한 정보 기입
+        // 기존에 입력한 정보 검사
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.userInfo.collectLatest {
+                nameCheckActive(name = it.name)
                 genderCheckActive(gender = it.gender)
                 ageCheckActive(age = it.age)
             }
@@ -57,7 +61,7 @@ class FirstStepFragment(
         }
 
         nextStepBtn() // 다음 단계 버튼 이벤트
-        observeName() // 이름 설정
+        observeName() // 이름 작성 observe
         setGender() // 성별 설정
     }
 
@@ -67,11 +71,9 @@ class FirstStepFragment(
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(name: Editable?) {
                 if(name.isNullOrEmpty()){
-                    binding.ibtnCheckName.setImageResource(R.drawable.ic_check)
-                    viewModel.setName(name = "")
+                    nameCheckActive("") // 이름 작성 여부
                 }else{
-                    binding.ibtnCheckName.setImageResource(R.drawable.ic_check_true)
-                    viewModel.setName(name = binding.etName.text.toString())
+                    nameCheckActive(binding.etName.text.toString())
                 }
             }
 
@@ -118,11 +120,21 @@ class FirstStepFragment(
 
     private fun nextStepBtnActive(isActive: Boolean){
         if(isActive){
-            binding.tvNext.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.color_main))
+            binding.tvNext.setBackgroundResource(R.drawable.bg_button_main)
             binding.tvNext.isEnabled = true
         }else{
-            binding.tvNext.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.gray_1))
+            binding.tvNext.setBackgroundResource(R.drawable.bg_button_dark_gray)
             binding.tvNext.isEnabled = false
+        }
+    }
+
+    private fun nameCheckActive(name: String){
+        if(name != ""){
+            binding.ibtnCheckName.setImageResource(R.drawable.ic_check_true)
+            viewModel.setName(name = name)
+        }else{
+            binding.ibtnCheckName.setImageResource(R.drawable.ic_check)
+            viewModel.setName(name = name)
         }
     }
 
