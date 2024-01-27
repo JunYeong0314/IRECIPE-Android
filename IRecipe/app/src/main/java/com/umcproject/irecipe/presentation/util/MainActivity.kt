@@ -1,6 +1,7 @@
 package com.umcproject.irecipe.presentation.util
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ActivityMainBinding
@@ -27,6 +28,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                 }
                 R.id.nav_frag_chat -> {
                     ChatFragment().changeFragment()
+                    binding.btmMain.visibility = View.GONE
                 }
                 R.id.nav_frag_refrigerator -> {
                     RefrigeratorFragment().changeFragment()
