@@ -28,7 +28,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                 }
                 R.id.nav_frag_chat -> {
                     ChatFragment().changeFragment()
-                    binding.btmMain.visibility = View.GONE
+                    binding.btmMain.visibility = View.GONE //바텀바 숨기기
                 }
                 R.id.nav_frag_refrigerator -> {
                     RefrigeratorFragment().changeFragment()

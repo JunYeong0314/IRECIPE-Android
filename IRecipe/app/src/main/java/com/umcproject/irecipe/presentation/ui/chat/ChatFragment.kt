@@ -75,8 +75,8 @@ class ChatFragment: BaseFragment<FragmentChatBotBinding>() {
 
         //뒤로 가기
         binding.ibtnBack.setOnClickListener{
-            (activity as MainActivity).binding.btmMain.visibility = View.VISIBLE
-            (context as MainActivity).supportFragmentManager.beginTransaction()
+            (activity as MainActivity).binding.btmMain.visibility = View.VISIBLE //바텀바 다시 등장
+            (context as MainActivity).supportFragmentManager.beginTransaction() //homeFragment로 이동
                 .replace(R.id.fv_main, HomeFragment())
                 .commitAllowingStateLoss()
         }
