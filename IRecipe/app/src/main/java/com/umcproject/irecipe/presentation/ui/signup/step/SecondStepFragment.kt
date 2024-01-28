@@ -1,25 +1,21 @@
 package com.umcproject.irecipe.presentation.ui.signup.step
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupSecondBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util.popFragment
-import com.umcproject.irecipe.presentation.util.Util.showFragment
+import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -122,7 +118,7 @@ class SecondStepFragment(
 
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
-            showFragment(requireActivity(), LastStepFragment(viewModel = viewModel), LastStepFragment.TAG)
+            showAnimatedFragment(R.id.fv_signUp, requireActivity(), LastStepFragment(viewModel = viewModel), LastStepFragment.TAG)
         }
     }
 

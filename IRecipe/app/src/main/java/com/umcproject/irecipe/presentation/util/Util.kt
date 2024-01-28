@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.umcproject.irecipe.R
 
 object Util {
-    fun showFragment(activity: FragmentActivity, fragment: Fragment, tag: String){
+    fun showAnimatedFragment(id: Int, activity: FragmentActivity, fragment: Fragment, tag: String){
         val transaction: FragmentTransaction =
             activity.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
@@ -15,8 +15,15 @@ object Util {
                     R.anim.horizon_enter_back,
                     R.anim.horizon_exit_front
                 )
-                .replace(R.id.fv_signUp, fragment, tag)
-        transaction.addToBackStack(tag).commitAllowingStateLoss()
+                .replace(id, fragment, tag)
+        transaction.addToBackStack(tag).commit()
+    }
+
+    fun showFragment(id: Int, activity: FragmentActivity, fragment: Fragment, tag: String){
+        val transaction: FragmentTransaction =
+            activity.supportFragmentManager.beginTransaction()
+                .replace(id, fragment, tag)
+        transaction.addToBackStack(tag).commit()
     }
 
     fun popFragment(activity: FragmentActivity){

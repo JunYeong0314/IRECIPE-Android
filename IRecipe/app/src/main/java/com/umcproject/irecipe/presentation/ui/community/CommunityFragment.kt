@@ -6,6 +6,9 @@ import com.umcproject.irecipe.databinding.FragmentCommunityBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
 class CommunityFragment: BaseFragment<FragmentCommunityBinding>() {
+    companion object{
+        const val TAG = "CommunityFragment"
+    }
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

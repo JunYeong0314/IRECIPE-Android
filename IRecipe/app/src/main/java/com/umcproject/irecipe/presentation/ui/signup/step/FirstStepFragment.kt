@@ -16,7 +16,7 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupFirstBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util.showFragment
+import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -157,7 +157,7 @@ class FirstStepFragment(
 
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
-            showFragment(requireActivity(), SecondStepFragment(viewModel), SecondStepFragment.TAG)
+            showAnimatedFragment(R.id.fv_signUp ,requireActivity(), SecondStepFragment(viewModel), SecondStepFragment.TAG)
         }
     }
 

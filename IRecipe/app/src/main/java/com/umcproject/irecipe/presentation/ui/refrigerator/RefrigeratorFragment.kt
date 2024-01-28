@@ -6,6 +6,9 @@ import com.umcproject.irecipe.databinding.FragmentRefrigeratorBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
 class RefrigeratorFragment: BaseFragment<FragmentRefrigeratorBinding>() {
+    companion object{
+        const val TAG = "RefrigeratorFragment"
+    }
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

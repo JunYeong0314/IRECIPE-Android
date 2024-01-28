@@ -10,8 +10,12 @@ import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
+import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
 
 class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
+    companion object{
+        const val TAG = "MainActivity"
+    }
     private val manager = supportFragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,13 +25,14 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
     }
 
     private fun initBottomNav(){
+        binding.btmMain.setOnItemReselectedListener {  }
         binding.btmMain.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.nav_frag_home -> {
                     HomeFragment().changeFragment()
                 }
                 R.id.nav_frag_chat -> {
-                    ChatFragment().changeFragment()
+                    showAnimatedFragment(R.id.fv_main, this, ChatFragment(), ChatFragment.TAG)
                     binding.btmMain.visibility = View.GONE //바텀바 숨기기
                 }
                 R.id.nav_frag_refrigerator -> {

@@ -4,6 +4,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="color_main">#009471</color>
+
+    <color name="red_1">#FF0000</color>
+
+    <color name="yellow_1">#FFFAED</color>
+
     <color name="gray_1">#959BA5</color>
     <color name="gray_2">#F4F4F4</color>
     <color name="gray_3">#D6D6D6</color>

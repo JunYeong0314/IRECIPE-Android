@@ -6,6 +6,9 @@ import com.umcproject.irecipe.databinding.FragmentMypageBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
 class MypageFragment: BaseFragment<FragmentMypageBinding>() {
+    companion object{
+        const val TAG = "MypageFragment"
+    }
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

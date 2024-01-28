@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umcproject.irecipe.R
@@ -16,8 +17,14 @@ import com.umcproject.irecipe.domain.model.Chat
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
+import com.umcproject.irecipe.presentation.util.Util.popFragment
+import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
+import com.umcproject.irecipe.presentation.util.Util.showFragment
 
-class ChatFragment: BaseFragment<FragmentChatBotBinding>() {
+class ChatFragment(): BaseFragment<FragmentChatBotBinding>() {
+    companion object{
+        const val TAG = "ChatFragment"
+    }
 
     lateinit var chatList: MutableList<Chat>
     lateinit var recyclerView: RecyclerView
@@ -75,10 +82,12 @@ class ChatFragment: BaseFragment<FragmentChatBotBinding>() {
 
         //뒤로 가기
         binding.ibtnBack.setOnClickListener{
-            (activity as MainActivity).binding.btmMain.visibility = View.VISIBLE //바텀바 다시 등장
+            /*(activity as MainActivity).binding.btmMain.visibility = View.VISIBLE //바텀바 다시 등장
             (context as MainActivity).supportFragmentManager.beginTransaction() //homeFragment로 이동
                 .replace(R.id.fv_main, HomeFragment())
-                .commitAllowingStateLoss()
+                .commitAllowingStateLoss()*/
+            showBottomBar()
+            popFragment(requireActivity())
         }
     }
 
@@ -93,6 +102,15 @@ class ChatFragment: BaseFragment<FragmentChatBotBinding>() {
     private fun addResponse(response: String) { //채팅 응답
         chatList.removeAt(chatList.size - 1)
         addToChat(response, Chat.SENT_BY_BOT)
+    }
+
+    private fun showBottomBar(){
+        (activity as MainActivity).binding.btmMain.visibility = View.VISIBLE
+    }
+
+    override fun onPause() {
+        super.onPause()
+        showBottomBar()
     }
 
 }
