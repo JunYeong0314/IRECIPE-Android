@@ -1,6 +1,8 @@
 package com.umcproject.irecipe.presentation.util
 
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.umcproject.irecipe.R
@@ -16,6 +18,10 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
     companion object{
         const val TAG = "MainActivity"
     }
+    private val tagList = listOf(
+        HomeFragment.TAG, ChatFragment.TAG, RefrigeratorFragment.TAG,
+        CommunityFragment.TAG, MypageFragment.TAG
+    )
     private val manager = supportFragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,24 +31,33 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
     }
 
     private fun initBottomNav(){
-        binding.btmMain.setOnItemReselectedListener {  }
         binding.btmMain.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.nav_frag_home -> {
-                    HomeFragment().changeFragment()
+                    hideTitle()
+                    HomeFragment().changeFragment(HomeFragment.TAG)
+                    hideFragment(HomeFragment.TAG)
                 }
                 R.id.nav_frag_chat -> {
-                    showAnimatedFragment(R.id.fv_main, this, ChatFragment(), ChatFragment.TAG)
+                    showTitle(getString(R.string.title_chat))
+                    ChatFragment().changeFragment(ChatFragment.TAG)
+                    hideFragment(ChatFragment.TAG)
                     binding.btmMain.visibility = View.GONE //바텀바 숨기기
                 }
                 R.id.nav_frag_refrigerator -> {
-                    RefrigeratorFragment().changeFragment()
+                    showTitle(getString(R.string.title_ref))
+                    RefrigeratorFragment().changeFragment(RefrigeratorFragment.TAG)
+                    hideFragment(RefrigeratorFragment.TAG)
                 }
                 R.id.nav_frag_community -> {
-                    CommunityFragment().changeFragment()
+                    showTitle(getString(R.string.title_community))
+                    CommunityFragment().changeFragment(CommunityFragment.TAG)
+                    hideFragment(CommunityFragment.TAG)
                 }
                 R.id.nav_frag_mypage -> {
-                    MypageFragment().changeFragment()
+                    showTitle(getString(R.string.title_mypage))
+                    MypageFragment().changeFragment(MypageFragment.TAG)
+                    hideFragment(MypageFragment.TAG)
                 }
             }
             return@setOnItemSelectedListener true
@@ -51,10 +66,34 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
 
     private fun initFragment(){
         val transaction = manager.beginTransaction()
-            .add(R.id.fv_main, HomeFragment())
+            .add(R.id.fv_main, HomeFragment(), HomeFragment.TAG)
         transaction.commit()
     }
-    private fun Fragment.changeFragment() {
-        manager.beginTransaction().replace(R.id.fv_main, this).commit()
+    private fun Fragment.changeFragment(tag: String) {
+        val fragment = manager.findFragmentByTag(tag)
+
+        if(fragment != null){
+            manager.beginTransaction().show(fragment).commit()
+        }else{
+            manager.beginTransaction().add(R.id.fv_main, this, tag).commit()
+        }
+    }
+
+    private fun hideFragment(currentTag: String){
+        tagList.forEach { tag->
+            val fragment = manager.findFragmentByTag(tag)
+            if(tag != currentTag && fragment != null){
+                manager.beginTransaction().hide(fragment).commit()
+            }
+        }
+    }
+
+    private fun showTitle(title: String) {
+        binding.flTitle.visibility = View.VISIBLE
+        binding.tvTitle.text = title
+    }
+
+    private fun hideTitle() {
+        binding.flTitle.visibility = View.GONE
     }
 }

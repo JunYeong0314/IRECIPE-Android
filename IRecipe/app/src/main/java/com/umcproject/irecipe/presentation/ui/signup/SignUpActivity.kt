@@ -2,6 +2,9 @@ package com.umcproject.irecipe.presentation.ui.signup
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ActivitySignupBinding
@@ -32,5 +35,6 @@ class SignUpActivity: BaseActivity<ActivitySignupBinding>({ ActivitySignupBindin
             .add(R.id.fv_signUp, FirstStepFragment(viewModel = viewModel))
         transaction.commit()
     }
+
 }
 

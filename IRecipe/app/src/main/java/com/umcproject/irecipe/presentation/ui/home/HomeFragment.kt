@@ -1,6 +1,7 @@
 package com.umcproject.irecipe.presentation.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,10 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
         container: ViewGroup?
     ): FragmentHomeBinding {
         return FragmentHomeBinding.inflate(inflater, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
 }
