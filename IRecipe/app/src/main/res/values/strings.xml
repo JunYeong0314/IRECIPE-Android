@@ -48,4 +48,17 @@
     <!-- 냉장고 UI -->
     <string name="ref_hint">오늘은 이 재료로 음식해보는거 어때요?</string>
     <string name="ref_alarm">두부의 유통기한이 1일 남았어요</string>
+    <string name="ref_title">실온 보관</string>
+    <string name="ref_signUp">음식 넣기</string>
+
+    <!-- Title -->
+    <string name="title_ref">나의 냉장고</string>
+    <string name="title_chat">AI 레시피</string>
+    <string name="title_community">커뮤니티</string>
+    <string name="title_community_write">커뮤니티 글쓰기</string>
+    <string name="title_mypage">마이페이지</string>
+    <string name="title_mypage_recipe">레시피 보관함</string>
+    <string name="title_mypage_alarm">알람설정</string>
+    <string name="title_mypage_info">개인정보</string>
+    <string name="title_mypage_cs">고객센터</string>
 </resources>

@@ -15,7 +15,7 @@ object Util {
                     R.anim.horizon_enter_back,
                     R.anim.horizon_exit_front
                 )
-                .replace(id, fragment, tag)
+                .add(id, fragment, tag)
         transaction.addToBackStack(tag).commit()
     }
 
