@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupSecondBinding
@@ -118,7 +120,7 @@ class SecondStepFragment(
 
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
-            showAnimatedFragment(R.id.fv_signUp, requireActivity(), LastStepFragment(viewModel = viewModel), LastStepFragment.TAG)
+            showAnimatedFragment(R.id.fv_signUp, requireActivity(), LastStepFragment(viewModel), LastStepFragment.TAG)
         }
     }
 
@@ -132,7 +134,7 @@ class SecondStepFragment(
         }
     }
 
-    private fun previousBtn(){
+    private fun previousBtn() {
         binding.tvPrevious.setOnClickListener {
             popFragment(requireActivity())
         }
