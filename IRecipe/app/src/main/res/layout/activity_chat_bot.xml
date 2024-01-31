@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    >
+    <ImageView
+        android:id="@+id/iv_app"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_app_mini"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fl_title"
+        />
+
+    <FrameLayout
+        android:id="@+id/fl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_app">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/ibtn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_back"
+                android:background="@color/transparent"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IRecipe"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/color_main"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fl_title"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chat_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/chat_box"
+        app:layout_constraintTop_toBottomOf="@+id/fl_title"
+        tools:layout_editor_absoluteX="0dp" />
+
+
+    <Button
+        android:id="@+id/btn_chat1"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:visibility="gone"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/bg_button_middle"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="냉장고에 있는 음식으로 레시피 만들기"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/chat_recyclerView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_chat3"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:background="@drawable/bg_button_middle"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="유통기한 낮은 음식으로 레시피 만들기"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/chat_recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_chat1" />
+
+    <Button
+        android:id="@+id/btn_chat2"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/bg_button_middle"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="랜덤으로 레시피 만들기"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/chat_recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_chat1" />
+
+    <Button
+        android:id="@+id/btn_chat4"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_button_middle"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="싫어하는 음식 입력하기"
+        android:textSize="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/chat_recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_chat3"
+        app:layout_constraintTop_toBottomOf="@+id/btn_chat2" />
+
+    <ImageButton
+        android:id="@+id/btn_chat_close"
+        android:visibility="gone"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ic_chat_close"
+        app:layout_constraintBottom_toTopOf="@+id/btn_chat2"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <RelativeLayout
+        android:id="@+id/chat_box"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <EditText
+            android:id="@+id/tv_chat"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="21dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toStartOf="@+id/btn_plus"
+            android:background="@drawable/bg_chat_textbox"
+            android:hint="만들고 싶은 레시피를 AI에게 물어보세요."
+            android:textSize="12dp" />
+
+        <ImageButton
+            android:id="@+id/button2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="21dp"
+            android:background="@drawable/ic_chat_button"
+            android:text="Button" />
+
+
+        <ImageButton
+            android:id="@+id/btn_plus"
+            android:layout_width="58dp"
+            android:layout_height="59dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="5dp"
+            android:layout_toStartOf="@+id/button2"
+            android:background="@drawable/bg_chat_button_show">
+
+        </ImageButton>
+
+    </RelativeLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
