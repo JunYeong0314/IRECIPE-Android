@@ -14,6 +14,7 @@ import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
+import com.umcproject.irecipe.presentation.util.Util.popFragment
 import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
 import com.umcproject.irecipe.presentation.util.onboarding.OnboardingActivity
 
@@ -31,6 +32,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
 
         initBottomNav() // 바텀바 설정
         initFragment() // 초기화면 설정
+        onClickBackBtn() // 이전버튼 로직
     }
 
     private fun initBottomNav(){
@@ -50,17 +52,20 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
 //                    binding.btmMain.visibility = View.GONE //바텀바 숨기기
                 }
                 R.id.nav_frag_refrigerator -> {
-                    showTitle(getString(R.string.title_ref))
-                    RefrigeratorFragment().changeFragment(RefrigeratorFragment.TAG)
+                    showTitle(getString(R.string.title_ref), false)
+                    RefrigeratorFragment(
+                        onClickDetail = { title-> showTitle(title, true) },
+                        onClickBackBtn = { title-> showTitle(title, false) }
+                    ).changeFragment(RefrigeratorFragment.TAG)
                     hideFragment(RefrigeratorFragment.TAG)
                 }
                 R.id.nav_frag_community -> {
-                    showTitle(getString(R.string.title_community))
+                    showTitle(getString(R.string.title_community), false)
                     CommunityFragment().changeFragment(CommunityFragment.TAG)
                     hideFragment(CommunityFragment.TAG)
                 }
                 R.id.nav_frag_mypage -> {
-                    showTitle(getString(R.string.title_mypage))
+                    showTitle(getString(R.string.title_mypage), false)
                     MypageFragment().changeFragment(MypageFragment.TAG)
                     hideFragment(MypageFragment.TAG)
                 }
@@ -93,12 +98,19 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
         }
     }
 
-    private fun showTitle(title: String) {
+    private fun showTitle(title: String, isBackBtn: Boolean) {
+        if(isBackBtn) binding.ibtnBack.visibility = View.VISIBLE
+        else binding.ibtnBack.visibility = View.GONE
+
         binding.flTitle.visibility = View.VISIBLE
         binding.tvTitle.text = title
     }
 
     private fun hideTitle() {
         binding.flTitle.visibility = View.GONE
+    }
+
+    private fun onClickBackBtn(){
+        binding.ibtnBack.setOnClickListener { popFragment(this@MainActivity) }
     }
 }

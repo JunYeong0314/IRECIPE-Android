@@ -14,7 +14,7 @@ val mockList: List<Ingredient> = listOf(
 
 val mockData: List<Refrigerator> = listOf(
     Refrigerator(title = "실온보관", ingredient = mockList),
-    Refrigerator(title = "실온보관", ingredient = mockList),
-    Refrigerator(title = "실온보관", ingredient = mockList),
+    Refrigerator(title = "냉동보관", ingredient = mockList),
+    Refrigerator(title = "냉장보관", ingredient = mockList),
 )
 
