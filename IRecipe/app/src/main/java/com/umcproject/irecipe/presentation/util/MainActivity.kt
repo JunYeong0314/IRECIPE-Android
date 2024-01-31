@@ -1,5 +1,6 @@
 package com.umcproject.irecipe.presentation.util
 
+import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
@@ -7,12 +8,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ActivityMainBinding
+import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import com.umcproject.irecipe.presentation.ui.chat.ChatFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
 import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
+import com.umcproject.irecipe.presentation.util.onboarding.OnboardingActivity
 
 class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
     companion object{
@@ -39,10 +42,12 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                     hideFragment(HomeFragment.TAG)
                 }
                 R.id.nav_frag_chat -> {
-                    showTitle(getString(R.string.title_chat))
-                    ChatFragment().changeFragment(ChatFragment.TAG)
-                    hideFragment(ChatFragment.TAG)
-                    binding.btmMain.visibility = View.GONE //바텀바 숨기기
+                    //showTitle(getString(R.string.title_chat))
+                    val intent = Intent(this, ChatBotActivity::class.java)
+                    startActivity(intent)
+//                    ChatFragment().changeFragment(ChatFragment.TAG)
+//                    hideFragment(ChatFragment.TAG)
+//                    binding.btmMain.visibility = View.GONE //바텀바 숨기기
                 }
                 R.id.nav_frag_refrigerator -> {
                     showTitle(getString(R.string.title_ref))
