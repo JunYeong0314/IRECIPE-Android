@@ -3,6 +3,7 @@ package com.umcproject.irecipe.presentation.ui.chat
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -46,6 +47,14 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
             editText.text.clear()
         }
 
+        binding.btnPlus.setOnClickListener {
+            binding.btnChat1.visibility = View.VISIBLE
+            binding.btnChat2.visibility = View.VISIBLE
+            binding.btnChat3.visibility = View.VISIBLE
+            binding.btnChat4.visibility = View.VISIBLE
+            binding.btnChatClose.visibility = View.VISIBLE
+        }
+
         //예시버튼으로 질문하기
         binding.btnChat1.setOnClickListener {
             val question = binding.btnChat1.text.toString()
@@ -68,6 +77,14 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
         binding.ibtnBack.setOnClickListener{
             finish()
         }
+
+       binding.btnChatClose.setOnClickListener{
+           binding.btnChat1.visibility = View.GONE
+           binding.btnChat2.visibility = View.GONE
+           binding.btnChat3.visibility = View.GONE
+           binding.btnChat4.visibility = View.GONE
+           binding.btnChatClose.visibility = View.GONE
+       }
 
     }
 
