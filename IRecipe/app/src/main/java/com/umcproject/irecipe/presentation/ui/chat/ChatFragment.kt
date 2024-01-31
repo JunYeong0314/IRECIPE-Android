@@ -40,55 +40,55 @@ class ChatFragment(): BaseFragment<FragmentChatBotBinding>() {
     {
         super.onViewCreated(view, savedInstanceState)
 
-        chatList = ArrayList()
-        recyclerView = binding.chatRecyclerView
-
-        val sendBtn = binding.button2
-        val editText = binding.tvChat
-
-        // setup recycler view
-        chatAdapter = ChatAdapter(chatList)
-        recyclerView.adapter = chatAdapter
-
-        val llm = LinearLayoutManager(requireContext())
-        llm.stackFromEnd = true
-        recyclerView.layoutManager = llm
-
-        //질문할 내용 입력
-        sendBtn.setOnClickListener {
-            val question = editText.text.toString().trim()
-            addToChat(question, Chat.SENT_BY_ME)
-            // editText 내용 삭제
-            editText.text.clear()
-        }
-
-        //예시버튼으로 질문하기
-        binding.btnChat1.setOnClickListener {
-            val question = binding.btnChat1.text.toString()
-            addToChat(question, Chat.SENT_BY_ME)
-        }
-        binding.btnChat2.setOnClickListener {
-            val question = binding.btnChat2.text.toString()
-            addToChat(question, Chat.SENT_BY_ME)
-        }
-        binding.btnChat3.setOnClickListener {
-            val question = binding.btnChat3.text.toString()
-            addToChat(question, Chat.SENT_BY_ME)
-        }
-        binding.btnChat4.setOnClickListener {
-            val question = binding.btnChat4.text.toString()
-            addToChat(question, Chat.SENT_BY_ME)
-        }
+//        chatList = ArrayList()
+//        recyclerView = binding.chatRecyclerView
+//
+//        val sendBtn = binding.button2
+//        val editText = binding.tvChat
+//
+//        // setup recycler view
+//        chatAdapter = ChatAdapter(chatList)
+//        recyclerView.adapter = chatAdapter
+//
+//        val llm = LinearLayoutManager(requireContext())
+//        llm.stackFromEnd = true
+//        recyclerView.layoutManager = llm
+//
+//        //질문할 내용 입력
+//        sendBtn.setOnClickListener {
+//            val question = editText.text.toString().trim()
+//            addToChat(question, Chat.SENT_BY_ME)
+//            // editText 내용 삭제
+//            editText.text.clear()
+//        }
+//
+//        //예시버튼으로 질문하기
+//        binding.btnChat1.setOnClickListener {
+//            val question = binding.btnChat1.text.toString()
+//            addToChat(question, Chat.SENT_BY_ME)
+//        }
+//        binding.btnChat2.setOnClickListener {
+//            val question = binding.btnChat2.text.toString()
+//            addToChat(question, Chat.SENT_BY_ME)
+//        }
+//        binding.btnChat3.setOnClickListener {
+//            val question = binding.btnChat3.text.toString()
+//            addToChat(question, Chat.SENT_BY_ME)
+//        }
+//        binding.btnChat4.setOnClickListener {
+//            val question = binding.btnChat4.text.toString()
+//            addToChat(question, Chat.SENT_BY_ME)
+//        }
 
         //뒤로 가기
-        binding.ibtnBack.setOnClickListener{
-            /*(activity as MainActivity).binding.btmMain.visibility = View.VISIBLE //바텀바 다시 등장
-            (context as MainActivity).supportFragmentManager.beginTransaction() //homeFragment로 이동
-                .replace(R.id.fv_main, HomeFragment())
-                .commitAllowingStateLoss()*/
-            showBottomBar()
-            popFragment(requireActivity())
-        }
+//        binding.ibtnBack.setOnClickListener{
+//            /*(activity as MainActivity).binding.btmMain.visibility = View.VISIBLE //바텀바 다시 등장
+//            (context as MainActivity).supportFragmentManager.beginTransaction() //homeFragment로 이동
+//                .replace(R.id.fv_main, HomeFragment())
+//                .commitAllowingStateLoss()*/
+//            showBottomBar()
+//            popFragment(requireActivity())
+//        }
     }
 
     private fun addToChat(message: String, sentBy: String) { //채팅 쓰는 쪽

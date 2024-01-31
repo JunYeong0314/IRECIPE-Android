@@ -27,7 +27,7 @@
     <string name="age_40">40대</string>
     <string name="age_50">50대</string>
     <string name="age_60">60대</string>
-    
+
     <!-- 프로필 사진 Dialog -->
     <string name="profile_pickAlbum">앨범에 사진 선택</string>
     <string name="profile_base">기본이미지로 변경</string>
@@ -50,6 +50,9 @@
     <string name="ref_alarm">두부의 유통기한이 1일 남았어요</string>
     <string name="ref_title">실온 보관</string>
     <string name="ref_signUp">음식 넣기</string>
+  
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!-- Title -->
     <string name="title_ref">나의 냉장고</string>

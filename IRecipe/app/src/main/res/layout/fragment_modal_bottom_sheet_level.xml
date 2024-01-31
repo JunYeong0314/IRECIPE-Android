@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout2"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/yellow_1"
+    tools:context=".presentation.ui.community.ModalBottomSheetLevelFragment">
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="난이도"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="17dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_level_high"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:text="상"
+        app:layout_constraintTop_toBottomOf="@id/level"
+        app:layout_constraintStart_toStartOf="@id/level"
+        android:textSize="13sp"
+        android:layout_marginTop="17dp"
+        android:textColor="@color/btn_community_post_select_color"
+        android:background="@drawable/btn_community_post_select"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_level_middle"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:text="중"
+        app:layout_constraintTop_toBottomOf="@id/level"
+        app:layout_constraintStart_toEndOf="@id/btn_level_high"
+        android:textSize="13sp"
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/btn_community_post_select_color"
+        android:background="@drawable/btn_community_post_select"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_level_low"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_weight="1"
+        android:text="하"
+        app:layout_constraintTop_toBottomOf="@id/level"
+        app:layout_constraintStart_toEndOf="@id/btn_level_middle"
+        android:textSize="13sp"
+        android:layout_marginTop="17dp"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/btn_community_post_select_color"
+        android:background="@drawable/btn_community_post_select"/>
+
+
+    <Button
+        android:id="@+id/btn_select_level"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="선택완료"
+        app:layout_constraintTop_toBottomOf="@id/btn_level_high"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:backgroundTint="@color/color_main"
+        android:textColor="@color/white"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

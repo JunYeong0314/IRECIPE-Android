@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.ui.community.MakePostFragment">
+
+    <TextView
+        android:id="@+id/tv_make_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="커뮤니티 글쓰기"
+        android:textColor="@color/color_main"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="315dp" />
+    <ImageButton
+        android:id="@+id/btn_prev_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_arrow_prev"
+        android:background="@color/white"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_make_post"
+        android:layout_marginStart="18dp"/>
+    <View
+        android:id="@+id/line1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_1"
+        app:layout_constraintTop_toBottomOf="@id/btn_prev_page"
+        android:layout_marginTop="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_btns"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line1"
+        android:layout_marginTop="13dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_food_type"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/btn_arrow_down"
+            android:paddingRight="10dp"
+            android:paddingStart="10dp"
+            android:text="요리 종류"
+            android:drawablePadding="8dp"
+            android:layout_marginStart="10dp"
+            android:textSize="13sp"
+            android:textColor="@color/btn_community_post_select_color"
+            android:background="@drawable/btn_community_post_select" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_marginStart="10dp"
+            android:id="@+id/btn_level"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:drawableRight="@drawable/btn_arrow_down"
+            android:paddingRight="10dp"
+            android:drawablePadding="8dp"
+            android:paddingStart="10dp"
+            android:text="난이도"
+            android:textSize="13sp"
+            android:textColor="@color/btn_community_post_select_color"
+            android:background="@drawable/btn_community_post_select" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_1"
+        app:layout_constraintTop_toBottomOf="@id/ll_btns"
+        android:layout_marginTop="15dp"/>
+
+    <EditText
+        android:id="@+id/tv_title"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:hint="제목"
+        android:maxLength="20"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textColor="@color/gray_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        android:layout_marginTop="9dp"
+        android:layout_marginStart="20dp"
+        android:background="@null"/>
+
+
+    <TextView
+        android:id="@+id/tv_title_cnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0/20"
+        android:textSize="10sp"
+        android:textColor="@color/gray_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line2"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="20dp"/>
+    <View
+        android:id="@+id/line3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        android:layout_marginTop="9dp"/>
+
+    <EditText
+        android:id="@+id/tv_subtitle"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:hint="소제목"
+        android:textSize="13sp"
+        android:maxLength="50"
+        android:textColor="@color/gray_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        android:layout_marginTop="9dp"
+        android:layout_marginStart="20dp"
+        android:background="@null"/>
+    <TextView
+        android:id="@+id/tv_subtitle_cnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0/50"
+        android:textSize="10sp"
+        android:textColor="@color/gray_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line3"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="20dp"/>
+    <View
+        android:id="@+id/line4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_1"
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle"
+        android:layout_marginTop="9dp"/>
+
+    <EditText
+        android:id="@+id/tv_text"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:hint="내용을 입력하세요"
+        android:textSize="10sp"
+        android:background="@null"
+        android:textColor="@color/gray_1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/line4"
+        android:layout_marginTop="11dp"
+        android:layout_marginStart="20dp"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideInset"
+        android:scrollbarSize="10dp"
+        android:gravity="top|start"/>
+
+
+    <View
+        android:id="@+id/line5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_1"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_add_img"/>
+
+    <ImageButton
+        android:id="@+id/btn_add_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/btn_img"
+        android:background="@null"
+        android:layout_marginStart="18dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/btn_font"
+        app:layout_constraintStart_toStartOf="parent"/>
+    <TextView
+        android:id="@+id/btn_font"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A"
+        android:background="@null"
+        android:textSize="18sp"
+        android:layout_marginStart="6dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@id/line6"
+        app:layout_constraintStart_toEndOf="@id/btn_add_img"/>
+
+    <View
+        android:id="@+id/line6"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_1"
+        android:layout_marginBottom="15dp"
+        app:layout_constraintBottom_toTopOf="@id/btn_save"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="임시저장"
+        android:textSize="13sp"
+        android:textColor="@color/gray_1"
+        android:background="@drawable/btn_radrectangle"
+        android:layout_marginEnd="9dp"
+        app:layout_constraintEnd_toStartOf="@id/btn_post"
+        app:layout_constraintBottom_toBottomOf="@id/btn_post"/>
+    <Button
+        android:id="@+id/btn_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="저장"
+        android:textSize="13sp"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_radrectangle_green"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="110dp"
+        android:layout_marginEnd="20dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
