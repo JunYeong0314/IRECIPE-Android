@@ -51,20 +51,35 @@
     <string name="ref_title">실온 보관</string>
     <string name="ref_signUp">음식 넣기</string>
 
-    <!--    커뮤니티 UI-->
+    <!-- 커뮤니티 UI -->
     <string name="com_hint">오늘의 레시피를 검색해 보세요</string>
     <string name="com_level">난이도</string>
     <string name="com_foodType">요리 종류</string>
     <string name="com_foodType2">카테고리</string>
     <string name="com_makePost">글쓰기</string>
     <string name="com_name">글쓴이</string>
-    <string name="com_foodType">1일 전</string>
-    <string name="com_foodType">제목</string>
-    <string name="com_foodType">소제목</string>
-    <string name="com_foodType">0</string>
-    <string name="com_foodType">내용을 입력하세요</string>
-    <string name="com_foodType">임시 저장</string>
-    <string name="com_foodType">저장</string>
+    <string name="com_time">1일 전</string>
+    <string name="com_title">제목</string>
+    <string name="com_subtitle">소제목</string>
+    <string name="com_count">0</string>
+    <string name="com_cntLimit">0/20</string>
+    <string name="com_cntLimit2">0/50</string>
+    <string name="com_postHint">내용을 입력하세요</string>
+    <string name="com_saveDraft">임시 저장</string>
+    <string name="com_save">저장</string>
+    <string name="com_font">A</string>
+    <!-- modal UI -->
+    <string name="modal_korean">한식</string>
+    <string name="modal_chinese">중식</string>
+    <string name="modal_japanese">일식</string>
+    <string name="modal_western">양식</string>
+    <string name="modal_unusual">이색음식</string>
+    <string name="modal_simple">간편요리</string>
+    <string name="modal_high">고급요리</string>
+    <string name="level_high">상</string>
+    <string name="level_middle">중</string>
+    <string name="level_low">하</string>
+    <string name="modal_complete">선택 완료</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

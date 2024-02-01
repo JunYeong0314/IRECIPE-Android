@@ -55,8 +55,8 @@ class MakePostFragment(
             modal.show(childFragmentManager, ModalBottomSheetLevel.TAG)
         }
 
-        wordsLimit(binding.tvTitle, binding.tvTitleCnt, 20)
-        wordsLimit(binding.tvSubtitle, binding.tvSubtitleCnt, 50)
+        wordsLimit(binding.etTitle, binding.tvTitleCnt, 20)
+        wordsLimit(binding.etSubtitle, binding.tvSubtitleCnt, 50)
     }
     override fun onDestroy() {
         super.onDestroy()
