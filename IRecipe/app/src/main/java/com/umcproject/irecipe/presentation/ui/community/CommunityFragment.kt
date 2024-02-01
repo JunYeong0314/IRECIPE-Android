@@ -9,7 +9,10 @@ import com.umcproject.irecipe.databinding.FragmentCommunityBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 
-class CommunityFragment: BaseFragment<FragmentCommunityBinding>() {
+class CommunityFragment(
+    private val onClickDetail: (String) -> Unit,
+    private val onClickBackBtn: (String) -> Unit
+): BaseFragment<FragmentCommunityBinding>() {
     companion object{
         const val TAG = "CommunityFragment"
     }
@@ -24,9 +27,10 @@ class CommunityFragment: BaseFragment<FragmentCommunityBinding>() {
 
         binding.btnMakePost.setOnClickListener {
             (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.fv_main, MakePostFragment())
+                .replace(R.id.fv_main, MakePostFragment(onClickBackBtn))
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
+            onClickDetail("커뮤니티 글쓰기")
         }
 
 

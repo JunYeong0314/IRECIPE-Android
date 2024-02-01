@@ -5,6 +5,6 @@ data class Post(
     var title: String = "",
     var subtitle: String = "",
     var text: String = "",
-    var writer: String = "",
+    var name: String = "",
     var image: Int = 0
 )

@@ -15,7 +15,9 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentMakePostBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
-class MakePostFragment : BaseFragment<FragmentMakePostBinding>() {
+class MakePostFragment(
+    private val onCLickBackBtn: (String) -> Unit
+) : BaseFragment<FragmentMakePostBinding>() {
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -26,9 +28,9 @@ class MakePostFragment : BaseFragment<FragmentMakePostBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.btnPrevPage.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-        }
+//        binding.btnPrevPage.setOnClickListener {
+//            requireActivity().supportFragmentManager.popBackStack()
+//        }
 
         binding.btnPost.setOnClickListener {
             requireActivity().supportFragmentManager
@@ -55,6 +57,10 @@ class MakePostFragment : BaseFragment<FragmentMakePostBinding>() {
 
         wordsLimit(binding.tvTitle, binding.tvTitleCnt, 20)
         wordsLimit(binding.tvSubtitle, binding.tvSubtitleCnt, 50)
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        onCLickBackBtn("커뮤니티")
     }
     private fun wordsLimit(editText: EditText, cntView : TextView, limit: Int) {
         editText.addTextChangedListener(object : TextWatcher { // 글자수 제한

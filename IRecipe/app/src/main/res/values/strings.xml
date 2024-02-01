@@ -50,7 +50,22 @@
     <string name="ref_alarm">두부의 유통기한이 1일 남았어요</string>
     <string name="ref_title">실온 보관</string>
     <string name="ref_signUp">음식 넣기</string>
-  
+
+    <!--    커뮤니티 UI-->
+    <string name="com_hint">오늘의 레시피를 검색해 보세요</string>
+    <string name="com_level">난이도</string>
+    <string name="com_foodType">요리 종류</string>
+    <string name="com_foodType2">카테고리</string>
+    <string name="com_makePost">글쓰기</string>
+    <string name="com_name">글쓴이</string>
+    <string name="com_foodType">1일 전</string>
+    <string name="com_foodType">제목</string>
+    <string name="com_foodType">소제목</string>
+    <string name="com_foodType">0</string>
+    <string name="com_foodType">내용을 입력하세요</string>
+    <string name="com_foodType">임시 저장</string>
+    <string name="com_foodType">저장</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
