@@ -48,10 +48,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
         }
 
         binding.btnPlus.setOnClickListener {
-            binding.btnChat1.visibility = View.VISIBLE
-            binding.btnChat2.visibility = View.VISIBLE
-            binding.btnChat3.visibility = View.VISIBLE
-            binding.btnChat4.visibility = View.VISIBLE
+            binding.frameChat.visibility = View.VISIBLE
             binding.btnChatClose.visibility = View.VISIBLE
         }
 
@@ -79,10 +76,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
         }
 
        binding.btnChatClose.setOnClickListener{
-           binding.btnChat1.visibility = View.GONE
-           binding.btnChat2.visibility = View.GONE
-           binding.btnChat3.visibility = View.GONE
-           binding.btnChat4.visibility = View.GONE
+           binding.frameChat.visibility = View.GONE
            binding.btnChatClose.visibility = View.GONE
        }
 
