@@ -44,7 +44,13 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>() {
 
         }
         binding.mypageAlarm.setOnClickListener{//알림설정
+            (context as MainActivity).binding.ibtnBack.visibility = View.VISIBLE
+            (context as MainActivity).binding.btmMain.visibility = View.GONE
 
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fv_main, MypageAlarmFragment())
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
         }
 
         binding.mypagePersonal.setOnClickListener{//개인정보

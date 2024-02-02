@@ -71,7 +71,7 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:text="전송하기"
+        android:text="전송 하기"
         android:background="@drawable/bg_button_rounded"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
