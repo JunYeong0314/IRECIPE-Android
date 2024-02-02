@@ -11,6 +11,7 @@ import com.umcproject.irecipe.databinding.ActivityMainBinding
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import com.umcproject.irecipe.presentation.ui.chat.ChatFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
+import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
@@ -61,7 +62,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                 }
                 R.id.nav_frag_community -> {
                     showTitle(getString(R.string.title_community), false)
-                    CommunityFragment().changeFragment(CommunityFragment.TAG)
+                    CommentFragment().changeFragment(CommentFragment.TAG)
                     hideFragment(CommunityFragment.TAG)
                 }
                 R.id.nav_frag_mypage -> {

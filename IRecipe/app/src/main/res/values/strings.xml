@@ -64,4 +64,9 @@
     <string name="title_mypage_alarm">알람설정</string>
     <string name="title_mypage_info">개인정보</string>
     <string name="title_mypage_cs">고객센터</string>
+    
+    <!-- Comment -->
+    <string name="comment_title_review">후기</string>
+    <string name="comment_title_QA">Q&amp;A</string>
+    <string name="qa_writer">(작성자)</string>
 </resources>
