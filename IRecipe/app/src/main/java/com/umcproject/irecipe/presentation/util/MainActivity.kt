@@ -62,7 +62,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                 }
                 R.id.nav_frag_community -> {
                     showTitle(getString(R.string.title_community), false)
-                    CommentFragment().changeFragment(CommentFragment.TAG)
+                    CommunityFragment().changeFragment(CommunityFragment.TAG)
                     hideFragment(CommunityFragment.TAG)
                 }
                 R.id.nav_frag_mypage -> {
