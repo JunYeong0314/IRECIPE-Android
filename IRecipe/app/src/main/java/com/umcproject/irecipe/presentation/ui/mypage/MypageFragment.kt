@@ -54,7 +54,13 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>() {
         }
 
         binding.mypagePersonal.setOnClickListener{//개인정보
+            (context as MainActivity).binding.ibtnBack.visibility = View.VISIBLE
+            (context as MainActivity).binding.btmMain.visibility = View.GONE
 
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fv_main, MypagePersonalFragment())
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
         }
 
         binding.mypageCenter.setOnClickListener{//고객센터
