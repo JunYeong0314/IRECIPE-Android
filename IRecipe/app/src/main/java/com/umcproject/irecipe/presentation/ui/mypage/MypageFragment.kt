@@ -2,6 +2,7 @@ package com.umcproject.irecipe.presentation.ui.mypage
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -14,9 +15,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentMypageBinding
+import com.umcproject.irecipe.domain.model.Refrigerator
+import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
+import com.umcproject.irecipe.presentation.ui.community.MakePostFragment
+import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorDetailFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.MainActivity
+import com.umcproject.irecipe.presentation.util.Util
 
-class MypageFragment: BaseFragment<FragmentMypageBinding>() {
+class MypageFragment(): BaseFragment<FragmentMypageBinding>() {
     companion object{
         const val TAG = "MypageFragment"
     }
@@ -31,7 +38,32 @@ class MypageFragment: BaseFragment<FragmentMypageBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
+        changeTop()
 
+        binding.mypageReceipe.setOnClickListener{//레시피
+
+        }
+        binding.mypageAlarm.setOnClickListener{//알림설정
+
+        }
+
+        binding.mypagePersonal.setOnClickListener{//개인정보
+
+        }
+
+        binding.mypageCenter.setOnClickListener{//고객센터
+            (context as MainActivity).binding.ibtnBack.visibility = View.VISIBLE
+            (context as MainActivity).binding.btmMain.visibility = View.GONE
+
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fv_main, MypageCenterFragment())
+                .addToBackStack(null)
+                .commitAllowingStateLoss()
+        }
+
+        binding.mypageLogout.setOnClickListener{//로그아웃
+
+        }
 
         //알림창 커스텀
         val layoutInflater = LayoutInflater.from(context)
@@ -41,10 +73,10 @@ class MypageFragment: BaseFragment<FragmentMypageBinding>() {
             .setView(view)
             .create()
 
-        val textTitle = view?.findViewById<TextView>(R.id.tv_main_alert)
-        val textSubtitle =  view?.findViewById<TextView>(R.id.tv_alert)
-        val buttonConfirm = view?.findViewById<Button>(R.id.btn_withdraw)!!
-        val buttonClose =  view?.findViewById<Button>(R.id.btn_cancel)!!
+        val textTitle = view.findViewById<TextView>(R.id.tv_main_alert)
+        val textSubtitle =  view.findViewById<TextView>(R.id.tv_alert)
+        val buttonConfirm = view.findViewById<Button>(R.id.btn_withdraw)
+        val buttonClose =  view.findViewById<Button>(R.id.btn_cancel)
 
         textTitle?.text = "정말 탈퇴하시겠어요?"
         textSubtitle?.text = "탈퇴 버튼 선택 시, 계정은\n" + "삭제되어 복구되지 않습니다."
@@ -64,4 +96,12 @@ class MypageFragment: BaseFragment<FragmentMypageBinding>() {
         }
     }
 
+    private fun changeTop(){
+        //화면 이름 변경
+        (context as MainActivity).binding.tvTitle.text = "마이페이지"
+        //뒤로가는 버튼 지우기
+        (context as MainActivity).binding.ibtnBack.visibility = View.GONE
+        //바텀바 등장
+        (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
+    }
 }
