@@ -10,7 +10,7 @@ import com.umcproject.irecipe.databinding.FragmentPostBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
 
-class PostFragment : BaseFragment<FragmentPostBinding>() {
+class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<FragmentPostBinding>() {
 
 
     override fun getFragmentBinding(
@@ -18,6 +18,16 @@ class PostFragment : BaseFragment<FragmentPostBinding>() {
         container: ViewGroup?
     ): FragmentPostBinding {
         return FragmentPostBinding.inflate(inflater, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        onCLickBackBtn("커뮤니티")
     }
 
 }
