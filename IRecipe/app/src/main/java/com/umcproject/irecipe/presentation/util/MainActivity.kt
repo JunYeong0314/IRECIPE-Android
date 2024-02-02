@@ -11,6 +11,7 @@ import com.umcproject.irecipe.databinding.ActivityMainBinding
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import com.umcproject.irecipe.presentation.ui.chat.ChatFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
+import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
