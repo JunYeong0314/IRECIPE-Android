@@ -24,7 +24,9 @@ import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util
 
-class MypageFragment(): BaseFragment<FragmentMypageBinding>() {
+class MypageFragment( private val onClickDetail: (String) -> Unit,
+                      private val onClickBackBtn: (String) -> Unit
+    ): BaseFragment<FragmentMypageBinding>() {
     companion object{
         const val TAG = "MypageFragment"
     }
@@ -45,36 +47,36 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>() {
 
         }
         binding.mypageAlarm.setOnClickListener{//알림설정
-            changeBottm()
-
             Util.showFragment(
                 R.id.fv_main,
                 requireActivity(),
-                MypageAlarmFragment(),
+                MypageAlarmFragment(onClickBackBtn),
                 MypageAlarmFragment.TAG
             )
+            onClickDetail("알림 설정")
+            changeBottm()
         }
 
         binding.mypagePersonal.setOnClickListener{//개인정보
-            changeBottm()
-
             Util.showFragment(
                 R.id.fv_main,
                 requireActivity(),
-                MypagePersonalFragment(),
+                MypagePersonalFragment(onClickBackBtn),
                 MypagePersonalFragment.TAG
             )
+            onClickDetail("개인정보")
+            changeBottm()
         }
 
         binding.mypageCenter.setOnClickListener{//고객센터
-            changeBottm()
-
             Util.showFragment(
                 R.id.fv_main,
                 requireActivity(),
-                MypageCenterFragment(),
+                MypageCenterFragment(onClickBackBtn),
                 MypageCenterFragment.TAG
             )
+            onClickDetail("고객센터")
+            changeBottm()
         }
 
         binding.mypageLogout.setOnClickListener{//로그아웃
@@ -113,7 +115,6 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>() {
     }
 
     private fun changeBottm(){
-        (context as MainActivity).binding.ibtnBack.visibility = View.VISIBLE
         (context as MainActivity).binding.btmMain.visibility = View.GONE
     }
     private fun changeTop(){

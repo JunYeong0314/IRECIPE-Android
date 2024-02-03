@@ -12,7 +12,9 @@ import com.umcproject.irecipe.databinding.FragmentSignupFirstBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 
-class MypagePersonalFragment : BaseFragment<FragmentSignupFirstBinding>() {
+class MypagePersonalFragment(
+    private val onCLickBackBtn: (String) -> Unit
+) : BaseFragment<FragmentSignupFirstBinding>() {
     companion object{
         const val TAG = "MypagePersonalFragment"
     }
@@ -43,7 +45,11 @@ class MypagePersonalFragment : BaseFragment<FragmentSignupFirstBinding>() {
            change()
         }
     }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        onCLickBackBtn("마이페이지")
+        (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
+    }
     private fun changeMargin(layout: View) {
         val layoutParams = layout.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.marginStart = 50

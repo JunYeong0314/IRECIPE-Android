@@ -13,7 +13,9 @@ import com.umcproject.irecipe.databinding.FragmentMypageCenterBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 
-class MypageCenterFragment(): BaseFragment<FragmentMypageCenterBinding>() {
+class MypageCenterFragment(
+    private val onCLickBackBtn: (String) -> Unit
+): BaseFragment<FragmentMypageCenterBinding>() {
 
     companion object{
         const val TAG = "MypageCenterFragment"
@@ -31,6 +33,12 @@ class MypageCenterFragment(): BaseFragment<FragmentMypageCenterBinding>() {
         //화면 이름 변경
         (context as MainActivity).binding.tvTitle.text = "고객센터"
         wordsLimit(binding.tvCenterTitle, binding.tvCenterTitleCnt, 20)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        onCLickBackBtn("마이페이지")
+        (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
     }
 
     private fun wordsLimit(editText: EditText, cntView : TextView, limit: Int) {
