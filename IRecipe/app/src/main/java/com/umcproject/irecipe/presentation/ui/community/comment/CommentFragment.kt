@@ -11,6 +11,7 @@ import com.umcproject.irecipe.presentation.ui.community.comment.qa.QAFragment
 import com.umcproject.irecipe.presentation.ui.community.comment.review.ReviewFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util.showFragment
+import com.umcproject.irecipe.presentation.util.Util.showNoStackFragment
 
 class CommentFragment: BaseFragment<FragmentCommentBinding>() {
     companion object{
@@ -31,7 +32,7 @@ class CommentFragment: BaseFragment<FragmentCommentBinding>() {
     }
 
     private fun initView(){
-        showFragment(R.id.fv_comment, requireActivity(), ReviewFragment(), ReviewFragment.TAG)
+        showNoStackFragment(R.id.fv_comment, requireActivity(), ReviewFragment(), ReviewFragment.TAG)
     }
 
     private fun onTabClick(){
@@ -39,10 +40,10 @@ class CommentFragment: BaseFragment<FragmentCommentBinding>() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0 -> {
-                        showFragment(R.id.fv_comment, requireActivity(), ReviewFragment(), ReviewFragment.TAG)
+                        showNoStackFragment(R.id.fv_comment, requireActivity(), ReviewFragment(), ReviewFragment.TAG)
                     }
                     1 -> {
-                        showFragment(R.id.fv_comment, requireActivity(), QAFragment(), QAFragment.TAG)
+                        showNoStackFragment(R.id.fv_comment, requireActivity(), QAFragment(), QAFragment.TAG)
                     }
                 }
             }
