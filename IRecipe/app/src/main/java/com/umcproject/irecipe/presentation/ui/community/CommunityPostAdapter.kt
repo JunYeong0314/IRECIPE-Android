@@ -17,6 +17,10 @@ class CommunityPostAdapter(private val postList: ArrayList<Post>):RecyclerView.A
     fun setMyItemClickListener(itemClickListener: MyItemClickListener){
         mItemClickListener = itemClickListener
     }
+    fun addItem(post: Post) {
+        postList.add(post)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CommunityPostAdapter.ViewHolder {
         val binding: ItemPostBinding = ItemPostBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)

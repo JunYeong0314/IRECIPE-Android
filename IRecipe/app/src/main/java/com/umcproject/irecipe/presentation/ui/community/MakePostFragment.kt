@@ -11,8 +11,11 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentMakePostBinding
+import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
 class MakePostFragment(
@@ -28,14 +31,26 @@ class MakePostFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        binding.btnPrevPage.setOnClickListener {
-//            requireActivity().supportFragmentManager.popBackStack()
-//        }
-
         binding.btnPost.setOnClickListener {
-            requireActivity().supportFragmentManager
-                .beginTransaction().remove(this).commit()
-            requireActivity().supportFragmentManager.popBackStack()
+            val title = binding.etTitle.text.toString()
+            val subtitle = binding.etSubtitle.text.toString()
+            val text = binding.etText.text.toString()
+
+            if (title.isEmpty() || subtitle.isEmpty() || text.isEmpty()) {
+                Snackbar.make(view, "모든 값을 입력해주세요", Snackbar.LENGTH_SHORT).show()
+            } else {
+                val post = Post(title, subtitle, text)
+
+                val gson = Gson()
+                val postJson = gson.toJson(post)
+                val bundle = Bundle().apply { putString("post",postJson) }
+                requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+                requireActivity().supportFragmentManager.popBackStack()
+
+                requireActivity().supportFragmentManager.findFragmentByTag("CommunityFragment")?.arguments = bundle
+
+            }
+
         }
 
         binding.btnFoodType.setOnClickListener {

@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.Adapter
+import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommunityBinding
 import com.umcproject.irecipe.domain.model.Post
@@ -17,6 +19,7 @@ class CommunityFragment(
 ): BaseFragment<FragmentCommunityBinding>() {
 
     private var postDatas = ArrayList<Post>()
+
     companion object{
         const val TAG = "CommunityFragment"
     }
@@ -29,16 +32,11 @@ class CommunityFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postDatas.apply {
-            add(Post("삼계탕 만들기","잘 먹겠습니다 반갑습니다 안녕하세요 부제목 50자 이하","텍스트 더더더 길고"))
-            add(Post("젬고제목","부제목!!","본문~~!!"))
-        }
-
         binding.btnMakePost.setOnClickListener {
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.fv_main, MakePostFragment(onClickBackBtn))
                 .addToBackStack(null)
-                .commitAllowingStateLoss()
+                .commit()
             onClickDetail("커뮤니티 글쓰기")
         }
 
@@ -48,12 +46,42 @@ class CommunityFragment(
 
         postAdapter.setMyItemClickListener(object: CommunityPostAdapter.MyItemClickListener{
             override fun onItemClick(post: Post) {
+                val bundle = Bundle()
+                val gson = Gson()
+                val postJson = gson.toJson(post)
+                bundle.putString("post",postJson)
+
+                val postFragment = PostFragment(onClickBackBtn)
+                postFragment.arguments = bundle
+
                 (context as MainActivity).supportFragmentManager.beginTransaction()
-                    .replace(R.id.fv_main, PostFragment(onClickBackBtn))
+                    .replace(R.id.fv_main,postFragment)
                     .addToBackStack(null)
-                    .commitAllowingStateLoss()
+                    .commit()
+
                 onClickDetail("커뮤니티")
             }
         })
+
+        val postJson = arguments?.getString("post")
+        postJson?.let {
+            val gson = Gson()
+            val post: Post = gson.fromJson(postJson, Post::class.java)
+            if (!isPostContained(post)) {
+//                postAdapter.addItem(post)
+                postDatas.add(0,post)
+                postAdapter.notifyItemInserted(0)
+            }
+        }
+
     }
+    private fun isPostContained(post: Post): Boolean {
+        for (item in postDatas) {
+            if (item.title == post.title && item.subtitle == post.subtitle && item.text == post.text) {
+                return true
+            }
+        }
+        return false
+    }
+
 }

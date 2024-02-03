@@ -132,7 +132,7 @@
                     android:scaleType="fitCenter"/>
             </androidx.cardview.widget.CardView>
             <TextView
-                android:id="@+id/et_text"
+                android:id="@+id/tv_text"
                 android:layout_width="370dp"
                 android:layout_height="wrap_content"
                 android:text="@string/com_text"
