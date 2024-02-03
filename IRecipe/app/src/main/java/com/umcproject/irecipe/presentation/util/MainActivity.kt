@@ -68,7 +68,10 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                 R.id.nav_frag_mypage -> {
                     id = R.id.nav_frag_mypage
                     showTitle(getString(R.string.title_mypage), false)
-                    MypageFragment().changeFragment(MypageFragment.TAG)
+                    MypageFragment(
+                        onClickDetail = { title-> showTitle(title, true) },
+                        onClickBackBtn = { title-> showTitle(title, false) }
+                    ).changeFragment(MypageFragment.TAG)
                     hideFragment(MypageFragment.TAG)
                 }
             }
