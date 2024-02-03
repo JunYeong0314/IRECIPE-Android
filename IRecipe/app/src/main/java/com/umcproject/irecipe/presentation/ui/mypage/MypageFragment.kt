@@ -18,6 +18,7 @@ import com.umcproject.irecipe.databinding.FragmentMypageBinding
 import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import com.umcproject.irecipe.presentation.ui.community.MakePostFragment
+import com.umcproject.irecipe.presentation.ui.community.comment.review.ReviewFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorDetailFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
@@ -44,33 +45,36 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>() {
 
         }
         binding.mypageAlarm.setOnClickListener{//알림설정
-            (context as MainActivity).binding.ibtnBack.visibility = View.VISIBLE
-            (context as MainActivity).binding.btmMain.visibility = View.GONE
+            changeBottm()
 
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.fv_main, MypageAlarmFragment())
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+            Util.showFragment(
+                R.id.fv_main,
+                requireActivity(),
+                MypageAlarmFragment(),
+                MypageAlarmFragment.TAG
+            )
         }
 
         binding.mypagePersonal.setOnClickListener{//개인정보
-            (context as MainActivity).binding.ibtnBack.visibility = View.VISIBLE
-            (context as MainActivity).binding.btmMain.visibility = View.GONE
+            changeBottm()
 
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.fv_main, MypagePersonalFragment())
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+            Util.showFragment(
+                R.id.fv_main,
+                requireActivity(),
+                MypagePersonalFragment(),
+                MypagePersonalFragment.TAG
+            )
         }
 
         binding.mypageCenter.setOnClickListener{//고객센터
-            (context as MainActivity).binding.ibtnBack.visibility = View.VISIBLE
-            (context as MainActivity).binding.btmMain.visibility = View.GONE
+            changeBottm()
 
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.fv_main, MypageCenterFragment())
-                .addToBackStack(null)
-                .commitAllowingStateLoss()
+            Util.showFragment(
+                R.id.fv_main,
+                requireActivity(),
+                MypageCenterFragment(),
+                MypageCenterFragment.TAG
+            )
         }
 
         binding.mypageLogout.setOnClickListener{//로그아웃
@@ -108,6 +112,10 @@ class MypageFragment(): BaseFragment<FragmentMypageBinding>() {
         }
     }
 
+    private fun changeBottm(){
+        (context as MainActivity).binding.ibtnBack.visibility = View.VISIBLE
+        (context as MainActivity).binding.btmMain.visibility = View.GONE
+    }
     private fun changeTop(){
         //화면 이름 변경
         (context as MainActivity).binding.tvTitle.text = "마이페이지"
