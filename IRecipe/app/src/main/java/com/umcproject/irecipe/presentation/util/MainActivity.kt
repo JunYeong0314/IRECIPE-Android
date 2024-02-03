@@ -17,11 +17,13 @@ import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
 import com.umcproject.irecipe.presentation.util.Util.popFragment
 import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
+import com.umcproject.irecipe.presentation.util.Util.showFragment
 import com.umcproject.irecipe.presentation.util.onboarding.OnboardingActivity
 
 class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
     companion object{
         const val TAG = "MainActivity"
+        var id = R.id.nav_frag_home // 채팅 Activity 이동 후 태그 기록
     }
     private val tagList = listOf(
         HomeFragment.TAG, ChatFragment.TAG, RefrigeratorFragment.TAG,
@@ -32,7 +34,6 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
         super.onCreate(savedInstanceState)
 
         initBottomNav() // 바텀바 설정
-        initFragment() // 초기화면 설정
         onClickBackBtn() // 이전버튼 로직
     }
 
@@ -40,19 +41,17 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
         binding.btmMain.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.nav_frag_home -> {
+                    id = R.id.nav_frag_home
                     hideTitle()
                     HomeFragment().changeFragment(HomeFragment.TAG)
                     hideFragment(HomeFragment.TAG)
                 }
                 R.id.nav_frag_chat -> {
-                    //showTitle(getString(R.string.title_chat))
                     val intent = Intent(this, ChatBotActivity::class.java)
                     startActivity(intent)
-//                    ChatFragment().changeFragment(ChatFragment.TAG)
-//                    hideFragment(ChatFragment.TAG)
-//                    binding.btmMain.visibility = View.GONE //바텀바 숨기기
                 }
                 R.id.nav_frag_refrigerator -> {
+                    id = R.id.nav_frag_refrigerator
                     showTitle(getString(R.string.title_ref), false)
                     RefrigeratorFragment(
                         onClickDetail = { title-> showTitle(title, true) },
@@ -61,11 +60,13 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                     hideFragment(RefrigeratorFragment.TAG)
                 }
                 R.id.nav_frag_community -> {
+                    id = R.id.nav_frag_community
                     showTitle(getString(R.string.title_community), false)
                     CommunityFragment().changeFragment(CommunityFragment.TAG)
                     hideFragment(CommunityFragment.TAG)
                 }
                 R.id.nav_frag_mypage -> {
+                    id = R.id.nav_frag_mypage
                     showTitle(getString(R.string.title_mypage), false)
                     MypageFragment().changeFragment(MypageFragment.TAG)
                     hideFragment(MypageFragment.TAG)
@@ -74,20 +75,11 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
             return@setOnItemSelectedListener true
         }
     }
-
-    private fun initFragment(){
-        val transaction = manager.beginTransaction()
-            .add(R.id.fv_main, HomeFragment(), HomeFragment.TAG)
-        transaction.commit()
-    }
     private fun Fragment.changeFragment(tag: String) {
         val fragment = manager.findFragmentByTag(tag)
 
-        if(fragment != null){
-            manager.beginTransaction().show(fragment).commit()
-        }else{
-            manager.beginTransaction().add(R.id.fv_main, this, tag).commit()
-        }
+        if(fragment != null) manager.beginTransaction().show(fragment).commit()
+        else manager.beginTransaction().add(R.id.fv_main, this, tag).commit()
     }
 
     private fun hideFragment(currentTag: String){
@@ -113,5 +105,11 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
 
     private fun onClickBackBtn(){
         binding.ibtnBack.setOnClickListener { popFragment(this@MainActivity) }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.btmMain.selectedItemId = id // 채팅 이전화면 활성화
     }
 }
