@@ -22,8 +22,15 @@ object Util {
     fun showFragment(id: Int, activity: FragmentActivity, fragment: Fragment, tag: String){
         val transaction: FragmentTransaction =
             activity.supportFragmentManager.beginTransaction()
-                .replace(id, fragment, tag)
+                .add(id, fragment, tag)
         transaction.addToBackStack(tag).commit()
+    }
+
+    fun showNoStackFragment(id: Int, activity: FragmentActivity, fragment: Fragment, tag: String){
+        val transaction: FragmentTransaction =
+            activity.supportFragmentManager.beginTransaction()
+                .add(id, fragment, tag)
+        transaction.commit()
     }
 
     fun popFragment(activity: FragmentActivity){

@@ -1,8 +1,10 @@
 package com.umcproject.irecipe.presentation.ui.chat
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +16,14 @@ import com.umcproject.irecipe.presentation.util.BaseActivity
 
 class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBinding.inflate(it)}) {
 
+    private val tag = getTag()
     companion object{
         const val TAG = "ChatBotActivity"
     }
 
-    lateinit var chatList: MutableList<Chat>
-    lateinit var recyclerView: RecyclerView
-    lateinit var chatAdapter: ChatAdapter
+    private lateinit var chatList: MutableList<Chat>
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var chatAdapter: ChatAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +85,11 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
 
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        tag?.let {  }
+    }
+
     private fun addToChat(message: String, sentBy: String) { //채팅 쓰는 쪽
         Handler(Looper.getMainLooper()).post {
             chatList.add(Chat(message, sentBy))
@@ -93,6 +101,11 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
     private fun addResponse(response: String) { //채팅 응답
         chatList.removeAt(chatList.size - 1)
         addToChat(response, Chat.SENT_BY_BOT)
+    }
+
+    private fun getTag(): String?{
+        val intent = Intent()
+        return intent.getStringExtra("tag")
     }
 
 }
