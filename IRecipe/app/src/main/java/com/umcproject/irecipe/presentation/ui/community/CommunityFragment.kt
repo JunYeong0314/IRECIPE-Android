@@ -54,8 +54,6 @@ class CommunityFragment(
                     .commitAllowingStateLoss()
                 onClickDetail("커뮤니티")
             }
-
-
         })
     }
 }

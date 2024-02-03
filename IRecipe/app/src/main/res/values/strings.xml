@@ -68,6 +68,8 @@
     <string name="com_saveDraft">임시 저장</string>
     <string name="com_save">저장</string>
     <string name="com_font">A</string>
+    <string name="com_follow">팔로우</string>
+    <string name="com_text">본문</string>
     <!-- modal UI -->
     <string name="modal_korean">한식</string>
     <string name="modal_chinese">중식</string>
