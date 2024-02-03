@@ -5,6 +5,7 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.marginStart
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupFirstBinding
@@ -28,33 +29,44 @@ class MypagePersonalFragment : BaseFragment<FragmentSignupFirstBinding>() {
         (context as MainActivity).binding.tvTitle.text = "개인정보"
 
         if((context as MainActivity).binding.tvTitle.text.toString() == "개인정보"){
-           changeMargin()
+            changeMargin(binding.layoutName)
+            changeMargin(binding.layoutNick)
+            changeMargin(binding.layoutGender)
+            changeMargin(binding.layoutAge)
+            changeMargin(binding.layoutAllergy)
+
+            changeTextView(binding.tvName, 16f)
+            changeTextView(binding.tvNick, 16f)
+            changeTextView(binding.tvGender, 16f)
+            changeTextView(binding.tvAge, 16f)
+            changeTextView(binding.tvAllergy, 16f)
+           change()
         }
     }
 
-    fun changeMargin(){
+    private fun changeMargin(layout: View) {
+        val layoutParams = layout.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.marginStart = 50
+        layoutParams.marginEnd = 50
+        layout.layoutParams = layoutParams
+    }
+
+    private fun changeTextView(textView: TextView, textSizeInSp: Float) {
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeInSp)
+    }
+
+    fun change(){
         val param = binding.signupLayout.layoutParams as ViewGroup.MarginLayoutParams
         param.topMargin = 30
         binding.signupLayout.layoutParams = param
 
-        binding.signupLayout.layoutParams = (binding.signupLayout.layoutParams as ViewGroup.MarginLayoutParams).apply {
-            marginStart = 50
-        }
-        binding.signupLayout.layoutParams = (binding.signupLayout.layoutParams as ViewGroup.MarginLayoutParams).apply {
-            marginEnd = 50
-        }
-        binding.mypageNick.visibility = View.VISIBLE
-        binding.mypageAllergy.visibility = View.VISIBLE
+        binding.layoutNick.visibility = View.VISIBLE
+        binding.layoutAllergy.visibility = View.VISIBLE
 
-        binding.tvName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-        binding.tvNick.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-        binding.tvGender.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-        binding.tvAge.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
-        binding.tvAllergy.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f)
 
         binding.tvNext.text = "수정하기"
         val params = binding.tvNext.layoutParams as ViewGroup.MarginLayoutParams
-        params.topMargin = 275
+        params.topMargin = 235
         binding.tvNext.layoutParams = params
     }
 }
