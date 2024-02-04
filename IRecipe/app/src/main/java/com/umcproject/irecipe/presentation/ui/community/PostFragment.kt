@@ -17,6 +17,10 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<
     private val gson:Gson = Gson()
     private lateinit var post: Post
 
+    companion object{
+        const val TAG = "PostFragment"
+    }
+
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -27,6 +31,15 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getData()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        onCLickBackBtn("커뮤니티")
+    }
+
+    private fun getData() {
         val postJson = arguments?.getString("post")
         if (postJson != null) {
             post = gson.fromJson(postJson, Post::class.java)
@@ -34,13 +47,6 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<
         } else {
             Toast.makeText(context, "데이터를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
         }
-
-//        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        onCLickBackBtn("커뮤니티")
     }
     private fun initView(post:Post) {
         binding.tvTitle.text = post.title

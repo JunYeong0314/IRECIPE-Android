@@ -21,6 +21,10 @@ import com.umcproject.irecipe.presentation.util.BaseFragment
 class MakePostFragment(
     private val onCLickBackBtn: (String) -> Unit
 ) : BaseFragment<FragmentMakePostBinding>() {
+
+    companion object{
+        const val TAG = "MakePostFragment"
+    }
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
