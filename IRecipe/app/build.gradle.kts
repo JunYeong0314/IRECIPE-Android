@@ -116,6 +116,9 @@ dependencies {
 
     //indicator
     implementation ("me.relex:circleindicator:2.1.6")
+
+    // splash
+    implementation ("androidx.core:core-splashscreen:1.1.0-alpha02")
 }
 
 kapt {
