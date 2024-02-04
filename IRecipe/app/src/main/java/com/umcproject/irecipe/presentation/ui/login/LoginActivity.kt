@@ -3,6 +3,7 @@ package com.umcproject.irecipe.presentation.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.databinding.ActivityLoginBinding
 import com.umcproject.irecipe.domain.repository.UserDataRepository
@@ -23,6 +24,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.i
     lateinit var userDataRepository: UserDataRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen() // splash 적용
         super.onCreate(savedInstanceState)
         val viewModel = LoginViewModel(this@LoginActivity, userDataRepository)
 
