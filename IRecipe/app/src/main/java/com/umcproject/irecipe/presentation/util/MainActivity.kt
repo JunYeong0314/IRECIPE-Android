@@ -62,7 +62,10 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                 R.id.nav_frag_community -> {
                     id = R.id.nav_frag_community
                     showTitle(getString(R.string.title_community), false)
-                    CommunityFragment().changeFragment(CommunityFragment.TAG)
+                    CommunityFragment(
+                        onClickDetail = { title-> showTitle(title, true) }, // 상세페이지 들어갔을때
+                        onClickBackBtn = { title-> showTitle(title, false) } // 상세페이지 나왔을 때
+                    ).changeFragment(CommunityFragment.TAG)
                     hideFragment(CommunityFragment.TAG)
                 }
                 R.id.nav_frag_mypage -> {
