@@ -38,7 +38,11 @@ class CommunityFragment(
 
     private fun initView() {
         binding.btnMakePost.setOnClickListener {// 글쓰기 상세페이지로 이동
-            showFragment(R.id.fv_main,requireActivity(),MakePostFragment(onClickBackBtn),MakePostFragment.TAG)
+//            showFragment(R.id.fv_main,requireActivity(),MakePostFragment(onClickBackBtn),MakePostFragment.TAG)
+            (context as MainActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.fv_main, MakePostFragment(onClickBackBtn))
+                .addToBackStack(null)
+                .commit()
             onClickDetail("커뮤니티 글쓰기")
         }
 

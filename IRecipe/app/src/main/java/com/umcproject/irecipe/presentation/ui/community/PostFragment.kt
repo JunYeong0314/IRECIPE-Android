@@ -10,7 +10,10 @@ import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentPostBinding
 import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
+import com.umcproject.irecipe.presentation.util.Util.showFragment
 
 
 class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<FragmentPostBinding>() {
@@ -51,6 +54,9 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<
     private fun initView(post:Post) {
         binding.tvTitle.text = post.title
         binding.tvText.text = post.text
+        binding.llBtns.setOnClickListener {
+            showAnimatedFragment(R.id.fv_main,requireActivity(),CommentFragment(),CommentFragment.TAG)
+        }
     }
 }
 
