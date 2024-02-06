@@ -1,10 +1,8 @@
 package com.umcproject.irecipe.presentation.ui.signup.step
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +14,9 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupFirstBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
+import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -157,7 +154,7 @@ class FirstStepFragment(
 
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
-            showAnimatedFragment(R.id.fv_signUp ,requireActivity(), SecondStepFragment(viewModel), SecondStepFragment.TAG)
+            showHorizontalFragment(R.id.fv_signUp ,requireActivity(), SecondStepFragment(viewModel), SecondStepFragment.TAG)
         }
     }
 

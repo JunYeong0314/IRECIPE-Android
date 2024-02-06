@@ -1,4 +1,4 @@
-package com.umcproject.irecipe.presentation.ui.refrigerator
+package com.umcproject.irecipe.presentation.ui.refrigerator.detail
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -26,10 +26,6 @@ class RefrigeratorDetailAdapter(
     inner class ViewHolder(val binding: ItemIngredientBinding): RecyclerView.ViewHolder(binding.root){
         fun setName(name: String){
             binding.tvName.text = name
-        }
-
-        fun setPhoto(uri: Uri){
-            //TODO(setter URI)
         }
     }
 

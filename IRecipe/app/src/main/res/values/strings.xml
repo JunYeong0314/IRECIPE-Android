@@ -49,7 +49,34 @@
     <string name="ref_hint">오늘은 이 재료로 음식해보는거 어때요?</string>
     <string name="ref_alarm">두부의 유통기한이 1일 남았어요</string>
     <string name="ref_title">실온 보관</string>
-    <string name="ref_signUp">음식 넣기</string>
+    <string name="ref_food_signUp">음식 추가</string>
+    <string name="ref_add_name">제품명</string>
+    <string name="ref_hint_add_name">제품명을 입력해주세요</string>
+    <string name="ref_add_expiration">유통 기한</string>
+    <string name="ref_hint_add_expiration">날짜 선택</string>
+    <string name="ref_add_type">음식종류</string>
+    <string name="ref_hint_add_type">음식종류 선택</string>
+    <string name="ref_add_save">보관 방법</string>
+    <string name="ref_hint_add_save">보관방법 선택</string>
+    <string name="ref_add_memo">메모</string>
+    <string name="ref_hint_add_memo">최대 20자 작성가능</string>
+    <string name="ref_add_complete">음식 저장</string>
+    <string name="ref_date_format">%d/%d/%d</string>
+
+    <!--음식 종류-->
+    <string name="food_type_meet">육류</string>
+    <string name="food_type_vegetable">육류</string>
+    <string name="food_type_fruit">과일</string>
+    <string name="food_type_seafood">해산물</string>
+    <string name="food_type_drink">음료</string>
+    <string name="food_type_dairy">유제품</string>
+    <string name="food_type_condiment">조미료</string>
+    <string name="food_type_processed">가공식품</string>
+    
+    <!--음식 보관-->
+    <string name="food_save_normal">실온 보관</string>
+    <string name="food_save_cold">냉장 보관</string>
+    <string name="food_save_frozen">냉동 보관</string>
 
     <!-- 커뮤니티 UI -->
     <string name="com_hint">오늘의 레시피를 검색해 보세요</string>
@@ -71,6 +98,7 @@
     <string name="com_follow">팔로우</string>
     <string name="com_text">본문</string>
     <string name="com_addImg">이미지 업로드</string>
+
     <!-- modal UI -->
     <string name="modal_korean">한식</string>
     <string name="modal_chinese">중식</string>

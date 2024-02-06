@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.umcproject.irecipe.R
 
 object Util {
-    fun showAnimatedFragment(id: Int, activity: FragmentActivity, fragment: Fragment, tag: String){
+    fun showHorizontalFragment(id: Int, activity: FragmentActivity, fragment: Fragment, tag: String){
         val transaction: FragmentTransaction =
             activity.supportFragmentManager.beginTransaction()
                 .setCustomAnimations(
@@ -14,6 +14,19 @@ object Util {
                     R.anim.hotizon_exit_back,
                     R.anim.horizon_enter_back,
                     R.anim.horizon_exit_front
+                )
+                .add(id, fragment, tag)
+        transaction.addToBackStack(tag).commit()
+    }
+
+    fun showVerticalFragment(id: Int, activity: FragmentActivity, fragment: Fragment, tag: String){
+        val transaction: FragmentTransaction =
+            activity.supportFragmentManager.beginTransaction()
+                .setCustomAnimations(
+                    R.anim.vertical_enter_front,
+                    R.anim.vertical_exit_back,
+                    R.anim.none,
+                    R.anim.vertical_exit_front
                 )
                 .add(id, fragment, tag)
         transaction.addToBackStack(tag).commit()

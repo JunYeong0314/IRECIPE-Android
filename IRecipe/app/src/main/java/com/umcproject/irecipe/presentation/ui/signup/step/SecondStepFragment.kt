@@ -9,15 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupSecondBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util.popFragment
-import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
+import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -120,7 +118,7 @@ class SecondStepFragment(
 
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
-            showAnimatedFragment(R.id.fv_signUp, requireActivity(), LastStepFragment(viewModel), LastStepFragment.TAG)
+            showHorizontalFragment(R.id.fv_signUp, requireActivity(), LastStepFragment(viewModel), LastStepFragment.TAG)
         }
     }
 
