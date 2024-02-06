@@ -24,8 +24,18 @@ class ModalBottomSheetDeleteFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        initView()
     }
+
+    private fun initView() {
+        binding.btnCancel.setOnClickListener {
+            dismiss()
+        }
+        binding.btnDelete.setOnClickListener {
+
+        }
+    }
+
     companion object {
         const val TAG = "BasicBottomModalSheet"
     }

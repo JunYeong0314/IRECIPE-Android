@@ -5,7 +5,8 @@
     android:id="@+id/frameLayout2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/yellow_1"
+    android:paddingTop="20dp"
+    android:background="@drawable/modal_bottom_sheet"
     tools:context=".presentation.ui.community.ModalBottomSheetLevelFragment">
 
     <TextView
@@ -61,7 +62,7 @@
         android:background="@drawable/btn_community_post_select"/>
 
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_select_level"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -70,6 +71,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/btn_radrectangle_green"
+        android:backgroundTint="@color/color_main"
         android:textColor="@color/white"
         android:layout_marginTop="40dp"
         android:layout_marginStart="20dp"

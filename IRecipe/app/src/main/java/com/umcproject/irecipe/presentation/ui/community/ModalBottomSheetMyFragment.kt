@@ -23,7 +23,16 @@ class ModalBottomSheetMyFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentModalBottomSheetMyBinding.inflate(inflater,container,false)
+        initView()
         return binding.root
+    }
+
+    private fun initView() {
+        binding.llPostDelete.setOnClickListener {
+            val modal = ModalBottomSheetDeleteFragment()
+            modal.show(childFragmentManager, ModalBottomSheetDeleteFragment.TAG)
+        }
+//        binding.llPostModify.setOnClickListener {  } 피그마 구현 후 | 바로 편집하기인지?
     }
 
     companion object {

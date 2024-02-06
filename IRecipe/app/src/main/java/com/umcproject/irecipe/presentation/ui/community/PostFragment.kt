@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentPostBinding
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
+import com.umcproject.irecipe.presentation.ui.community.makePost.ModalBottomSheetFoodType
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
 import com.umcproject.irecipe.presentation.util.Util.showFragment
@@ -56,6 +58,10 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<
         binding.tvText.text = post.text
         binding.llBtns.setOnClickListener {
             showAnimatedFragment(R.id.fv_main,requireActivity(),CommentFragment(),CommentFragment.TAG)
+        }
+        binding.btnPostMy.setOnClickListener {
+            val modal = ModalBottomSheetMyFragment()
+            modal.show(childFragmentManager, ModalBottomSheetMyFragment.TAG)
         }
     }
 }

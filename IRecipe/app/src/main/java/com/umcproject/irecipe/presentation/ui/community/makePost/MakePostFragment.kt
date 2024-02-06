@@ -58,7 +58,7 @@ class MakePostFragment(
         binding.btnFoodType.setOnClickListener {
             it.isSelected = true
             val modal = ModalBottomSheetFoodType()
-            modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+//            modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
             modal.show(childFragmentManager, ModalBottomSheetFoodType.TAG)
             modal.dialog?.setOnDismissListener {
                 binding.btnFoodType.isSelected = false
@@ -68,7 +68,6 @@ class MakePostFragment(
         binding.btnLevel.setOnClickListener {
             it.isSelected = true
             val modal = ModalBottomSheetLevel()
-            modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
             modal.show(childFragmentManager, ModalBottomSheetLevel.TAG)
         }
 
