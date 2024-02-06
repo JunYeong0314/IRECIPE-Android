@@ -1,4 +1,4 @@
-package com.umcproject.irecipe.presentation.ui.community
+package com.umcproject.irecipe.presentation.ui.community.makePost
 
 import android.os.Bundle
 import android.view.LayoutInflater

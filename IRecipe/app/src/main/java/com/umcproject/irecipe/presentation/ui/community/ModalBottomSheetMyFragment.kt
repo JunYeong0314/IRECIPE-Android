@@ -1,0 +1,32 @@
+package com.umcproject.irecipe.presentation.ui.community
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.umcproject.irecipe.R
+import com.umcproject.irecipe.databinding.FragmentModalBottomSheetMyBinding
+
+
+class ModalBottomSheetMyFragment : BottomSheetDialogFragment() {
+    private lateinit var binding: FragmentModalBottomSheetMyBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentModalBottomSheetMyBinding.inflate(inflater,container,false)
+        return binding.root
+    }
+
+    companion object {
+        const val TAG = "BasicBottomModalSheet"
+    }
+}

@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommunityBinding
 import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.presentation.ui.community.makePost.MakePostFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
-import com.umcproject.irecipe.presentation.util.Util.showFragment
 
 class CommunityFragment(
     private val onClickDetail: (String) -> Unit,

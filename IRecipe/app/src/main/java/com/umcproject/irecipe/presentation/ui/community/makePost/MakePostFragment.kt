@@ -1,16 +1,14 @@
-package com.umcproject.irecipe.presentation.ui.community
+package com.umcproject.irecipe.presentation.ui.community.makePost
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.umcproject.irecipe.R
