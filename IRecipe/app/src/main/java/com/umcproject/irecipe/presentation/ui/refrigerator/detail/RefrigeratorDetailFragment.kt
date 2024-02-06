@@ -1,7 +1,6 @@
-package com.umcproject.irecipe.presentation.ui.refrigerator
+package com.umcproject.irecipe.presentation.ui.refrigerator.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentRefrigeratorDetailBinding
 import com.umcproject.irecipe.domain.model.Ingredient
-import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
 class RefrigeratorDetailFragment(

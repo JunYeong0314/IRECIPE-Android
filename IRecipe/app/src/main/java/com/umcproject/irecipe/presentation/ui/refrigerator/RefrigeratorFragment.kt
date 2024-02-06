@@ -1,18 +1,19 @@
 package com.umcproject.irecipe.presentation.ui.refrigerator
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentRefrigeratorBinding
-import com.umcproject.irecipe.domain.model.Ingredient
 import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.domain.model.mockData
+import com.umcproject.irecipe.presentation.ui.refrigerator.add.RefrigeratorAddFragment
+import com.umcproject.irecipe.presentation.ui.refrigerator.detail.RefrigeratorDetailFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
+import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
+import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 class RefrigeratorFragment(
     private val onClickDetail: (String) -> Unit,
@@ -31,7 +32,8 @@ class RefrigeratorFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView()
+        initView() // 초기화면 설정
+        goAddFoodPage() // 음식추가 버튼 이벤트
     }
 
     private fun initView() {
@@ -42,6 +44,13 @@ class RefrigeratorFragment(
 
     private fun goDetailPage(ref: Refrigerator){
         onClickDetail(ref.title)
-        showAnimatedFragment(R.id.fv_main, requireActivity(), RefrigeratorDetailFragment(ref.ingredient, onClickBackBtn), RefrigeratorDetailFragment.TAG)
+        showHorizontalFragment(R.id.fv_main, requireActivity(), RefrigeratorDetailFragment(ref.ingredient, onClickBackBtn), RefrigeratorDetailFragment.TAG)
+    }
+
+    private fun goAddFoodPage(){
+        binding.llFoodAdd.setOnClickListener {
+            onClickDetail(getString(R.string.ref_food_signUp))
+            showVerticalFragment(R.id.fv_main, requireActivity(), RefrigeratorAddFragment(), RefrigeratorAddFragment.TAG)
+        }
     }
 }

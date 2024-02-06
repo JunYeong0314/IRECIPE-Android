@@ -68,15 +68,34 @@
         app:layout_constraintTop_toBottomOf="@id/ll_alarm"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <Button
-        android:id="@+id/btn_signUp"
+    <LinearLayout
+        android:id="@+id/ll_food_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ref_signUp"
-        android:textStyle="bold"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:background="@drawable/bg_button_rounded_hard"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp"
+        android:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_ref_add"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ref_food_signUp"
+            android:textStyle="bold"
+            android:layout_marginEnd="5dp"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

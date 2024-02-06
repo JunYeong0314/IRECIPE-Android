@@ -1,16 +1,12 @@
 package com.umcproject.irecipe.presentation.ui.refrigerator
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ItemTitleBinding
 import com.umcproject.irecipe.domain.model.Ingredient
 import com.umcproject.irecipe.domain.model.Refrigerator
-import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
 
 class RefrigeratorTitleAdapter(
     private val refList: List<Refrigerator>,
