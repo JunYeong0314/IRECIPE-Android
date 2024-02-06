@@ -49,7 +49,7 @@ class ModalBottomSheetFoodType : BottomSheetDialogFragment() {
         }
     }
     companion object {
-        const val TAG = "BasicBottomModalSheet"
+        const val TAG = "BasicBottomModalSheetType"
     }
 
 }

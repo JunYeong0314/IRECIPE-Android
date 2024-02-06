@@ -19,7 +19,7 @@ class CommunityFragment(
 ): BaseFragment<FragmentCommunityBinding>() {
 
     private var postDatas = ArrayList<Post>()
-    private lateinit var postAdapter: CommunityPostAdapter
+    lateinit var postAdapter: CommunityPostAdapter
 
     companion object{
         const val TAG = "CommunityFragment"
@@ -38,7 +38,7 @@ class CommunityFragment(
 
     private fun initView() {
         binding.btnMakePost.setOnClickListener {// 글쓰기 상세페이지로 이동
-//            showFragment(R.id.fv_main,requireActivity(),MakePostFragment(onClickBackBtn),MakePostFragment.TAG)
+//            showNoStackFragment(R.id.fv_main,requireActivity(),MakePostFragment(onClickBackBtn),MakePostFragment.TAG)
             (context as MainActivity).supportFragmentManager.beginTransaction()
                 .replace(R.id.fv_main, MakePostFragment(onClickBackBtn))
                 .addToBackStack(null)
@@ -57,13 +57,15 @@ class CommunityFragment(
 
     private fun adapterClick(postAdapter: CommunityPostAdapter) {
         postAdapter.setMyItemClickListener(object : CommunityPostAdapter.MyItemClickListener {
-            override fun onItemClick(post: Post) {
+            override fun onItemClick(post: Post, position:Int) {
                 val bundle = Bundle()
                 val gson = Gson()
                 val postJson = gson.toJson(post)
                 bundle.putString("post", postJson)
 
-                val postFragment = PostFragment(onClickBackBtn)
+                val postFragment = PostFragment(onClickBackBtn, position,
+                    CommunityFragment(onClickDetail,onClickBackBtn)
+                )
                 postFragment.arguments = bundle
 
                 (context as MainActivity).supportFragmentManager.beginTransaction()
@@ -73,6 +75,10 @@ class CommunityFragment(
                 //showFragment(R.id.fv_main,requireActivity(),PostFragment(onClickBackBtn),PostFragment.TAG)
                 onClickDetail("커뮤니티")
             }
+
+//            override fun onItemDelete(position: Int) {
+//                postAdapter.removeItem(position)
+//            }
         })
     }
     private fun getPost(postAdapter: CommunityPostAdapter) { // 글쓰기 -> 데이터 얻어오기
@@ -95,6 +101,10 @@ class CommunityFragment(
             }
         }
         return false
+    }
+
+    fun deletePost(index: Int) { // 수정 필요
+        postAdapter.removeItem(index)
     }
 
 }

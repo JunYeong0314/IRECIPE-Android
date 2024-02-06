@@ -53,6 +53,6 @@ class ModalBottomSheetLevel : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val TAG = "BasicBottomModalSheet"
+        const val TAG = "BasicBottomModalSheetLevel"
     }
 }

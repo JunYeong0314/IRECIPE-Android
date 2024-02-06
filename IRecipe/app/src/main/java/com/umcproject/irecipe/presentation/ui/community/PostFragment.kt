@@ -18,7 +18,7 @@ import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
 import com.umcproject.irecipe.presentation.util.Util.showFragment
 
 
-class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<FragmentPostBinding>() {
+class PostFragment(private val onCLickBackBtn: (String) -> Unit,private val index: Int,private val communityFragment: CommunityFragment) : BaseFragment<FragmentPostBinding>() {
     private val gson:Gson = Gson()
     private lateinit var post: Post
 
@@ -63,6 +63,15 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit) : BaseFragment<
             val modal = ModalBottomSheetMyFragment()
             modal.show(childFragmentManager, ModalBottomSheetMyFragment.TAG)
         }
+
+    }
+
+    fun deletePost() {
+        // 서버 연결 후 다시
+//        parentFragment as? CommunityFragment)?.adapter
+//        communityFragment.deletePost(index)
+        requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
+        requireActivity().supportFragmentManager.popBackStack()
     }
 }
 

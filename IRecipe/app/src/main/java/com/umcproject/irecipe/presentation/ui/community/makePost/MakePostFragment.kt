@@ -33,6 +33,14 @@ class MakePostFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initView(view)
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        onCLickBackBtn("커뮤니티")
+    }
+
+    private fun initView(view: View) {
         binding.btnPost.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val subtitle = binding.etSubtitle.text.toString()
@@ -45,20 +53,19 @@ class MakePostFragment(
 
                 val gson = Gson()
                 val postJson = gson.toJson(post)
-                val bundle = Bundle().apply { putString("post",postJson) }
+                val bundle = Bundle().apply { putString("post", postJson) }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
                 requireActivity().supportFragmentManager.popBackStack()
 
-                requireActivity().supportFragmentManager.findFragmentByTag("CommunityFragment")?.arguments = bundle
-
+                requireActivity().supportFragmentManager.findFragmentByTag("CommunityFragment")?.arguments =
+                    bundle
             }
-
         }
 
         binding.btnFoodType.setOnClickListener {
             it.isSelected = true
             val modal = ModalBottomSheetFoodType()
-//            modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+    //            modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
             modal.show(childFragmentManager, ModalBottomSheetFoodType.TAG)
             modal.dialog?.setOnDismissListener {
                 binding.btnFoodType.isSelected = false
@@ -74,10 +81,7 @@ class MakePostFragment(
         wordsLimit(binding.etTitle, binding.tvTitleCnt, 20)
         wordsLimit(binding.etSubtitle, binding.tvSubtitleCnt, 50)
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        onCLickBackBtn("커뮤니티")
-    }
+
     private fun wordsLimit(editText: EditText, cntView : TextView, limit: Int) {
         editText.addTextChangedListener(object : TextWatcher { // 글자수 제한
             var maxText = ""
