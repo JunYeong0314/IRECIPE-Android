@@ -20,6 +20,7 @@ class CommunityFragment(
 ): BaseFragment<FragmentCommunityBinding>() {
 
     private var postDatas = ArrayList<Post>()
+    private lateinit var postAdapter: CommunityPostAdapter
 
     companion object{
         const val TAG = "CommunityFragment"
@@ -46,7 +47,7 @@ class CommunityFragment(
             onClickDetail("커뮤니티 글쓰기")
         }
 
-        val postAdapter = CommunityPostAdapter(postDatas)
+        postAdapter = CommunityPostAdapter(postDatas)
         binding.rvPost.adapter = postAdapter
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -54,6 +55,7 @@ class CommunityFragment(
         getPost(postAdapter)
 
     }
+
     private fun adapterClick(postAdapter: CommunityPostAdapter) {
         postAdapter.setMyItemClickListener(object : CommunityPostAdapter.MyItemClickListener {
             override fun onItemClick(post: Post) {
