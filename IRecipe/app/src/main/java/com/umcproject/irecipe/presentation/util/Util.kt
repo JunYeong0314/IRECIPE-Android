@@ -1,5 +1,10 @@
 package com.umcproject.irecipe.presentation.util
 
+import android.app.Activity
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentTransaction
@@ -48,5 +53,12 @@ object Util {
 
     fun popFragment(activity: FragmentActivity){
         activity.supportFragmentManager.popBackStack()
+    }
+
+    fun touchHideKeyboard(activity: Activity){
+        if(activity.currentFocus != null){
+            val inputManager = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(activity.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
     }
 }
