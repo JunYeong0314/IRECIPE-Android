@@ -47,7 +47,7 @@ class ChatFragment(
         val editText = binding.tvChat
 
         // setup recycler view
-        chatAdapter = ChatAdapter(chatList)
+        //chatAdapter = ChatAdapter(chatList)
         recyclerView.adapter = chatAdapter
 
         val llm = LinearLayoutManager(requireContext())

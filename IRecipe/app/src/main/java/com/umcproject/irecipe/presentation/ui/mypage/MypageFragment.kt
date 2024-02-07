@@ -12,6 +12,8 @@ import com.umcproject.irecipe.databinding.FragmentMypageBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util
+import com.umcproject.irecipe.presentation.util.Util.showFragment
+import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 
 class MypageFragment( private val onClickDetail: (String) -> Unit,
                       private val onClickBackBtn: (String) -> Unit
@@ -32,46 +34,63 @@ class MypageFragment( private val onClickDetail: (String) -> Unit,
         super.onViewCreated(view, savedInstanceState)
         changeTop()
 
+        onClickRecipe() // 레시피보관함
+        onClickAlarm() // 알림설정
+        onClickMyInfo() // 개인정보
+        onClickCS() // 고객센터
+        onClickLogOut() // 로그아웃
+        onClickDelete() // 회원탈퇴
+    }
+
+    private fun changeBottom(){
+        (context as MainActivity).binding.btmMain.visibility = View.GONE
+    }
+    private fun changeTop(){
+        //화면 이름 변경
+        (context as MainActivity).binding.tvTitle.text = "마이페이지"
+        //뒤로가는 버튼 지우기
+        (context as MainActivity).binding.ibtnBack.visibility = View.GONE
+        //바텀바 등장
+        (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
+    }
+
+    private fun onClickRecipe(){
         binding.mypageReceipe.setOnClickListener{//레시피
 
         }
+    }
+
+    private fun onClickAlarm(){
         binding.mypageAlarm.setOnClickListener{//알림설정
-            Util.showFragment(
-                R.id.fv_main,
-                requireActivity(),
-                MypageAlarmFragment(onClickBackBtn),
-                MypageAlarmFragment.TAG
-            )
+            showHorizontalFragment(R.id.fv_main, requireActivity(), MypageAlarmFragment(onClickBackBtn), MypageAlarmFragment.TAG)
             onClickDetail("알림 설정")
-            changeBottm()
+            changeBottom()
         }
+    }
 
+    private fun onClickMyInfo(){
         binding.mypagePersonal.setOnClickListener{//개인정보
-            Util.showFragment(
-                R.id.fv_main,
-                requireActivity(),
-                MypagePersonalFragment(onClickBackBtn),
-                MypagePersonalFragment.TAG
-            )
+            showHorizontalFragment(R.id.fv_main, requireActivity(), MypagePersonalFragment(onClickBackBtn), MypagePersonalFragment.TAG)
             onClickDetail("개인정보")
-            changeBottm()
+            changeBottom()
         }
+    }
 
+    private fun onClickCS(){
         binding.mypageCenter.setOnClickListener{//고객센터
-            Util.showFragment(
-                R.id.fv_main,
-                requireActivity(),
-                MypageCenterFragment(onClickBackBtn),
-                MypageCenterFragment.TAG
-            )
+            showHorizontalFragment(R.id.fv_main, requireActivity(), MypageCenterFragment(onClickBackBtn), MypageCenterFragment.TAG)
             onClickDetail("고객센터")
-            changeBottm()
+            changeBottom()
         }
+    }
 
+    private fun onClickLogOut(){
         binding.mypageLogout.setOnClickListener{//로그아웃
 
         }
+    }
 
+    private fun onClickDelete(){
         //알림창 커스텀
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.mypage_withdraw, null)
@@ -103,15 +122,4 @@ class MypageFragment( private val onClickDetail: (String) -> Unit,
         }
     }
 
-    private fun changeBottm(){
-        (context as MainActivity).binding.btmMain.visibility = View.GONE
-    }
-    private fun changeTop(){
-        //화면 이름 변경
-        (context as MainActivity).binding.tvTitle.text = "마이페이지"
-        //뒤로가는 버튼 지우기
-        (context as MainActivity).binding.ibtnBack.visibility = View.GONE
-        //바텀바 등장
-        (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
-    }
 }

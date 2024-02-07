@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentRefrigeratorAddBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.Util
 import com.umcproject.irecipe.presentation.util.Util.popFragment
 
 class RefrigeratorAddFragment: BaseFragment<FragmentRefrigeratorAddBinding>() {
@@ -30,6 +31,8 @@ class RefrigeratorAddFragment: BaseFragment<FragmentRefrigeratorAddBinding>() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.root.setOnClickListener { Util.touchHideKeyboard(requireActivity()) }
 
         // 완료버튼 observe
         viewModel.isComplete.observe(requireActivity(), Observer {
