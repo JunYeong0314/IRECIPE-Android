@@ -19,11 +19,12 @@ import javax.inject.Inject
 class UserDataRepositoryIml @Inject constructor(
     private val context: Context
 ): UserDataRepository {
-    val Context.dataStore by preferencesDataStore(name = "user_data")
+    private val Context.dataStore by preferencesDataStore(name = "user_data")
     private val _userData = MutableStateFlow(User())
 
     companion object{
         private val NUM_KEY = stringPreferencesKey("num")
+        private val TOKEN_KEY = stringPreferencesKey("token")
     }
 
     override suspend fun getUserData(): User {
@@ -47,16 +48,21 @@ class UserDataRepositoryIml @Inject constructor(
                     _userData.value.num = value
                     NUM_KEY
                 }
+                "token" -> {
+                    _userData.value.num = value
+                    TOKEN_KEY
+                }
                 else -> throw IllegalStateException("Unknown key: $key")
             }
             preferences[preferKey] = value
         }
     }
 
-    fun mapperToUserData(preferences: Preferences): User{
+    private fun mapperToUserData(preferences: Preferences): User{
         val num = preferences[NUM_KEY] ?: ""
+        val token = preferences[TOKEN_KEY] ?: ""
 
-        return User(num)
+        return User(num, token)
     }
 
 }

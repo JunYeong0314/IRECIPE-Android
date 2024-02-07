@@ -14,8 +14,10 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupSecondBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.Util
 import com.umcproject.irecipe.presentation.util.Util.popFragment
 import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
+import com.umcproject.irecipe.presentation.util.Util.touchHideKeyboard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -43,6 +45,8 @@ class SecondStepFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.etNick.setText(viewModel.userInfo.value.nick)
+
+        binding.root.setOnClickListener { touchHideKeyboard(requireActivity()) } // 외부화면 터치시 키패드 내림
 
         // 기존에 입력한 정보 기입
         CoroutineScope(Dispatchers.Main).launch {
@@ -119,6 +123,7 @@ class SecondStepFragment(
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
             showHorizontalFragment(R.id.fv_signUp, requireActivity(), LastStepFragment(viewModel), LastStepFragment.TAG)
+            touchHideKeyboard(requireActivity())
         }
     }
 
@@ -135,6 +140,7 @@ class SecondStepFragment(
     private fun previousBtn() {
         binding.tvPrevious.setOnClickListener {
             popFragment(requireActivity())
+            touchHideKeyboard(requireActivity())
         }
     }
 

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.umcproject.irecipe.databinding.FragmentSignupLastBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
+import com.umcproject.irecipe.presentation.ui.signup.step.dialog.AllergyChoiceDialog
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util
@@ -32,6 +33,7 @@ class LastStepFragment(
 
         onComplete() // 완료버튼 이벤트
         previousBtn() // 이전버튼 이벤트
+        onClickAllergy() // 알러지 선택 이벤트
     }
 
     private fun onComplete(){
@@ -43,6 +45,13 @@ class LastStepFragment(
     private fun previousBtn(){
         binding.tvPrevious.setOnClickListener {
             Util.popFragment(requireActivity())
+        }
+    }
+
+    private fun onClickAllergy(){
+        binding.tvChoice.setOnClickListener {
+            val dialog = AllergyChoiceDialog(onClickAllergyList = { viewModel.setAllergy(it) })
+            dialog.show(parentFragmentManager, "AllergyDialog")
         }
     }
 }

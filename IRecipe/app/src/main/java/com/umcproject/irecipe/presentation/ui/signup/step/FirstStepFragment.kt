@@ -15,6 +15,7 @@ import com.umcproject.irecipe.databinding.FragmentSignupFirstBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
+import com.umcproject.irecipe.presentation.util.Util.touchHideKeyboard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -38,6 +39,8 @@ class FirstStepFragment(
         super.onViewCreated(view, savedInstanceState)
         binding.etName.setText(viewModel.userInfo.value.name)
 
+        binding.root.setOnClickListener { touchHideKeyboard(requireActivity()) } // 외부화면 터치시 키패드 내림
+
         // 입력항목 검사 Observe
         viewModel.isFirstComplete.observe(requireActivity(), Observer { complete->
             nextStepBtnActive(complete)
@@ -52,11 +55,11 @@ class FirstStepFragment(
             }
         }
 
+        viewModel.setInit() // 초기 설정
         // 나이 설정
         binding.clAge.setOnClickListener{
             setAge(it)
         }
-
         nextStepBtn() // 다음 단계 버튼 이벤트
         observeName() // 이름 작성 observe
         setGender() // 성별 설정
@@ -155,6 +158,7 @@ class FirstStepFragment(
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
             showHorizontalFragment(R.id.fv_signUp ,requireActivity(), SecondStepFragment(viewModel), SecondStepFragment.TAG)
+            touchHideKeyboard(requireActivity())
         }
     }
 
