@@ -4,7 +4,11 @@ import androidx.room.Insert
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.umcproject.irecipe.BuildConfig
-import com.umcproject.irecipe.domain.service.login.SignUpService
+import com.umcproject.irecipe.data.remote.AppInterceptor
+import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
+import com.umcproject.irecipe.data.remote.service.login.LoginService
+import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
+import com.umcproject.irecipe.data.remote.service.login.SignUpService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,8 +36,9 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun getOkHttpClient(): OkHttpClient{
+    fun getOkHttpClient(interceptor: AppInterceptor): OkHttpClient{
         return OkHttpClient.Builder()
+            .addInterceptor(interceptor)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
             })
@@ -45,14 +50,14 @@ class ApiModule {
 
     @Singleton
     @Provides
-    fun getInstance(okHttpClient: OkHttpClient): Retrofit {
+    fun getInstance(okHttpClient: OkHttpClient, interceptor: AppInterceptor): Retrofit {
         val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
             .build()
 
         return Retrofit.Builder().client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
-            .client(getOkHttpClient())
+            .client(getOkHttpClient(interceptor))
             .baseUrl(BASE_URL)
             .build()
     }
@@ -61,5 +66,23 @@ class ApiModule {
     @Singleton
     fun provideSignUpService(retrofit: Retrofit): SignUpService {
         return retrofit.create(SignUpService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNickDuplicationService(retrofit: Retrofit): NickDuplicationService {
+        return retrofit.create(NickDuplicationService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCheckMemberService(retrofit: Retrofit): CheckMemberService {
+        return retrofit.create(CheckMemberService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoginService(retrofit: Retrofit): LoginService {
+        return retrofit.create(LoginService::class.java)
     }
 }

@@ -50,7 +50,7 @@ class FirstStepFragment(
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.userInfo.collectLatest {
                 nameCheckActive(name = it.name)
-                genderCheckActive(gender = it.gender)
+                genderCheckActive(genderCode = it.genderCode)
                 ageCheckActive(age = it.age)
             }
         }
@@ -83,10 +83,10 @@ class FirstStepFragment(
     private fun setGender(){
         with(binding){
             rbtnMan.setOnClickListener {
-                genderCheckActive(gender = getString(R.string.sign_man))
+                genderCheckActive(genderCode = 1)
             }
             rbtnWoman.setOnClickListener {
-                genderCheckActive(gender = getString(R.string.sign_woman))
+                genderCheckActive(genderCode = 2)
             }
         }
     }
@@ -138,10 +138,10 @@ class FirstStepFragment(
         }
     }
 
-    private fun genderCheckActive(gender: String){
-        if(gender != ""){
+    private fun genderCheckActive(genderCode: Int){
+        if(genderCode != -1){
             binding.ibtnCheckGender.setImageResource(R.drawable.ic_check_true)
-            viewModel.setGender(gender = gender)
+            viewModel.setGender(genderCode = genderCode)
         }
     }
 

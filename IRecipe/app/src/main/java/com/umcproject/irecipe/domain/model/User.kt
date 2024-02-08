@@ -1,12 +1,14 @@
 package com.umcproject.irecipe.domain.model
 
 import android.net.Uri
+import java.io.File
 
 data class User(
     var num: String = "",
-    var token: String = "",
+    var accessToken: String = "",
+    var refreshToken: String = "",
     var name: String = "",
-    var gender: String = "",
+    var genderCode: Int = -1,
     var age: String = "",
     var photoUri: Uri? = null,
     var nick: String = "",

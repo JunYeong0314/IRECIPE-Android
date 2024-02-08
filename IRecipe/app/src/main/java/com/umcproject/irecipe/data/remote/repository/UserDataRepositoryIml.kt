@@ -24,7 +24,8 @@ class UserDataRepositoryIml @Inject constructor(
 
     companion object{
         private val NUM_KEY = stringPreferencesKey("num")
-        private val TOKEN_KEY = stringPreferencesKey("token")
+        private val ACCESS_KEY = stringPreferencesKey("access")
+        private val REFRESH_KEY = stringPreferencesKey("refresh")
     }
 
     override suspend fun getUserData(): User {
@@ -48,9 +49,13 @@ class UserDataRepositoryIml @Inject constructor(
                     _userData.value.num = value
                     NUM_KEY
                 }
-                "token" -> {
-                    _userData.value.num = value
-                    TOKEN_KEY
+                "access" -> {
+                    _userData.value.accessToken = value
+                    ACCESS_KEY
+                }
+                "refresh" -> {
+                    _userData.value.refreshToken = value
+                    REFRESH_KEY
                 }
                 else -> throw IllegalStateException("Unknown key: $key")
             }
@@ -60,7 +65,7 @@ class UserDataRepositoryIml @Inject constructor(
 
     private fun mapperToUserData(preferences: Preferences): User{
         val num = preferences[NUM_KEY] ?: ""
-        val token = preferences[TOKEN_KEY] ?: ""
+        val token = preferences[ACCESS_KEY] ?: ""
 
         return User(num, token)
     }

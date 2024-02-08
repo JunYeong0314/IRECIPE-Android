@@ -10,7 +10,8 @@ import androidx.fragment.app.DialogFragment
 import com.umcproject.irecipe.databinding.DialogAllergyBinding
 
 class AllergyChoiceDialog(
-    private val onClickAllergyList: (List<String>) -> Unit
+    private val onClickAllergyList: (List<String>) -> Unit,
+    private val onClickOk: () -> Unit
 ): DialogFragment() {
     private val allergyList = mutableListOf<String>()
     private val binding: DialogAllergyBinding by lazy {
@@ -34,6 +35,7 @@ class AllergyChoiceDialog(
         binding.tvCancel.setOnClickListener { dismiss() } // 취소버튼 이벤트
         binding.tvOk.setOnClickListener { // 확인버튼 이벤트
             onClickAllergyList(allergyList)
+            onClickOk()
             dismiss()
         }
     }
