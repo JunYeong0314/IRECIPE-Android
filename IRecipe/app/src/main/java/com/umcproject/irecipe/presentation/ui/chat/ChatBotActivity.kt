@@ -8,15 +8,23 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umcproject.irecipe.R
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
 import com.umcproject.irecipe.databinding.ActivityChatBotBinding
 import com.umcproject.irecipe.domain.model.Chat
 import com.umcproject.irecipe.presentation.util.BaseActivity
-import com.umcproject.irecipe.presentation.util.Util.touchHideKeyboard
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBinding.inflate(it)}) {
     private lateinit var chatList: MutableList<Chat>
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
+    @Inject
+    lateinit var aiChatRefriService: AiChatRefriService
 
     companion object{
         const val TAG = "ChatBotActivity"
@@ -56,7 +64,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
     }
 
     private fun addResponse(response: String) { //채팅 응답
-        chatList.removeAt(chatList.size - 1)
+        //chatList.removeAt(chatList.size - 1)
         addToChat(response, Chat.SENT_BY_BOT)
     }
 
@@ -64,12 +72,18 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
         binding.btnChat1.setOnClickListener {
             val question = binding.btnChat1.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
+            //냉장고 답변
+            CoroutineScope(Dispatchers.Main).launch{
+                val response = aiChatRefriService.aiChatRefriService()
+                Log.d(TAG, response.body()?.result?.gptResponse.toString())
+                addResponse(response.body()?.result?.gptResponse.toString())
+            }
         }
         binding.btnChat2.setOnClickListener {
             val question = binding.btnChat2.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
         }
-        binding.btnChat3.setOnClickListener {
+        binding.btnChat3.setOnClickListener {//유통기한
             val question = binding.btnChat3.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
         }
