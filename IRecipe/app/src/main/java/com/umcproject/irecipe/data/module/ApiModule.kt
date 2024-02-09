@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.umcproject.irecipe.BuildConfig
 import com.umcproject.irecipe.data.remote.AppInterceptor
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
@@ -17,6 +18,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -84,10 +86,15 @@ class ApiModule {
         return retrofit.create(LoginService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideAiChatRefriService(retrofit: Retrofit):AiChatRefriService{
+        return retrofit.create(AiChatRefriService::class.java)
+    }
 
     @Provides
     @Singleton
-    fun  provideAiChatRefriService(retrofit: Retrofit):AiChatRefriService{
-        return retrofit.create(AiChatRefriService::class.java)
+    fun provideAiChatExpiryService(retrofit: Retrofit):AiChatExpiryService{
+        return retrofit.create(AiChatExpiryService::class.java)
     }
 }
