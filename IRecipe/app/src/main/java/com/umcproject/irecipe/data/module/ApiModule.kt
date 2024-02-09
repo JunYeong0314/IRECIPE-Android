@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.umcproject.irecipe.BuildConfig
 import com.umcproject.irecipe.data.remote.AppInterceptor
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatDislikeService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
@@ -103,5 +104,11 @@ class ApiModule {
     @Singleton
     fun provideAiChatRandomService(retrofit: Retrofit):AiChatRandomService{
         return retrofit.create(AiChatRandomService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAiChatDislikeService(retrofit: Retrofit):AiChatDislikeService{
+        return retrofit.create(AiChatDislikeService::class.java)
     }
 }

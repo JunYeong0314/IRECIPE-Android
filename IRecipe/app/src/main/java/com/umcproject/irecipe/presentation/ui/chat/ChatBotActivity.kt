@@ -9,6 +9,8 @@ import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umcproject.irecipe.R
+import com.umcproject.irecipe.data.remote.request.AiChatDislikeRequest
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatDislikeService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
@@ -27,12 +29,17 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
     private lateinit var chatList: MutableList<Chat>
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
+    var lastClickedButton: Button? = null
+
+
     @Inject
     lateinit var aiChatRefriService: AiChatRefriService
     @Inject
     lateinit var aiChatExpiryService: AiChatExpiryService
     @Inject
     lateinit var aiChatRandomService: AiChatRandomService
+    @Inject
+    lateinit var aiChatDislikeService: AiChatDislikeService
 
     companion object{
         const val TAG = "ChatBotActivity"
@@ -99,25 +106,30 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
             addResponse(response.body()?.result?.gptResponse.toString())
         }
     }
+
     private fun onClickQuestion(){
         binding.btnChat1.setOnClickListener {
             val question = binding.btnChat1.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
+            lastClickedButton = binding.btnChat1
             resultRefri()  //냉장고 답변
         }
         binding.btnChat2.setOnClickListener {
             val question = binding.btnChat2.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
+            lastClickedButton = binding.btnChat2
             resultRandom() //랜덤 답변
         }
         binding.btnChat3.setOnClickListener {
             val question = binding.btnChat3.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
+            lastClickedButton = binding.btnChat3
             resultExpiry() //유통기한 답변
         }
         binding.btnChat4.setOnClickListener {
             val question = binding.btnChat4.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
+            lastClickedButton = binding.btnChat4
         }
     }
 
@@ -126,6 +138,17 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
             val question = binding.tvChat.text.toString().trim()
             addToChat(question, Chat.SENT_BY_ME)
             // editText 내용 삭제
+            if (lastClickedButton == binding.btnChat4) {
+                CoroutineScope(Dispatchers.IO).launch{
+                    val response = aiChatDislikeService.aiChatDislike(
+                        AiChatDislikeRequest(question)
+                    )
+                    Log.d(TAG, question)
+                    Log.d(TAG, response.body()?.result.toString())
+                    addResponse(response.body()?.result.toString())
+                }
+            }
+            lastClickedButton = null
             binding.tvChat.text.clear()
         }
     }
