@@ -77,7 +77,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
     }
 
     private fun resultRefri(){
-        CoroutineScope(Dispatchers.Main).launch{
+        CoroutineScope(Dispatchers.IO).launch{
             val response = aiChatRefriService.aiChatRefriService()
             Log.d(TAG, response.body()?.result?.gptResponse.toString())
             addResponse(response.body()?.result?.gptResponse.toString())
@@ -85,7 +85,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
     }
 
     private fun resultRandom(){
-        CoroutineScope(Dispatchers.Main).launch{
+        CoroutineScope(Dispatchers.IO).launch{
             val response = aiChatRandomService.aiChatRandom()
             Log.d(TAG, response.body()?.result?.gptResponse.toString())
             addResponse(response.body()?.result?.gptResponse.toString())
@@ -93,7 +93,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
     }
 
     private fun resultExpiry(){
-        CoroutineScope(Dispatchers.Main).launch{
+        CoroutineScope(Dispatchers.IO).launch{
             val response = aiChatExpiryService.aiChatExpiryService()
             Log.d(TAG, response.body()?.result?.gptResponse.toString())
             addResponse(response.body()?.result?.gptResponse.toString())

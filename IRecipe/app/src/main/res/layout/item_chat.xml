@@ -6,7 +6,7 @@
 
     <LinearLayout
         android:id="@+id/view_right_chat"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_chat_sendbox"
         android:padding="8dp"
