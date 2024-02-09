@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
 import com.umcproject.irecipe.databinding.ActivityChatBotBinding
 import com.umcproject.irecipe.domain.model.Chat
@@ -28,6 +29,8 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
     lateinit var aiChatRefriService: AiChatRefriService
     @Inject
     lateinit var aiChatExpiryService: AiChatExpiryService
+    @Inject
+    lateinit var aiChatRandomService: AiChatRandomService
 
     companion object{
         const val TAG = "ChatBotActivity"
