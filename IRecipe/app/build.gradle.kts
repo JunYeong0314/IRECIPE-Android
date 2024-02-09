@@ -22,6 +22,7 @@ android {
         buildConfigField("String", "NAVER_CLIENT_ID", getApiKey("NAVER_CLIENT_ID"))
         buildConfigField("String", "NAVER_CLIENT_KEY", getApiKey("NAVER_CLIENT_KEY"))
         buildConfigField("String", "KAKAO_NATIVE_KEY", getApiKey("KAKAO_NATIVE_KEY"))
+        buildConfigField("String", "BASE_URL", getApiKey("BASE_URL"))
         manifestPlaceholders["KAKAO_NATIVE_KEY"] =
             getApiKey("KAKAO_NATIVE_KEY_MF")
     }

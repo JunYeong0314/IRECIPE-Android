@@ -5,7 +5,12 @@ import android.util.Log
 import com.kakao.sdk.common.KakaoSdk
 import com.kakao.sdk.common.util.Utility
 import com.umcproject.irecipe.BuildConfig
+import com.umcproject.irecipe.domain.repository.UserDataRepository
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltAndroidApp
 class ApplicationClass: Application() {
@@ -13,7 +18,5 @@ class ApplicationClass: Application() {
         super.onCreate()
 
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
-        val keyHash = Utility.getKeyHash(this)
-        Log.d("해시키", keyHash)
     }
 }

@@ -19,6 +19,20 @@
     <string name="sign_allergy">알레르기(선택)</string>
     <string name="sign_search">검색하기</string>
     <string name="sign_complete">회원가입 완료</string>
+    <string name="sign_nick_complete">사용가능한 닉네임입니다.</string>
+    <string name="sign_nick_overlap">이미 존재하는 닉네임입니다.</string>
+    
+    <!-- 알레르기 목록 -->
+    <string name="allergy_title">알레르기 선택</string>
+    <string name="allergy_nan">난류</string>
+    <string name="allergy_milk">우유</string>
+    <string name="allergy_peanut">땅콩</string>
+    <string name="allergy_nuts">견과류</string>
+    <string name="allergy_flour">밀</string>
+    <string name="allergy_sesame">참깨</string>
+    <string name="allergy_bean">콩(대두)</string>
+    <string name="allergy_fruit">과일 및 채소</string>
+    <string name="allergy_sea">해산물 및 조개류</string>
 
     <!-- 연령대 -->
     <string name="age_10">10대</string>
@@ -130,4 +144,8 @@
     <string name="comment_title_review">후기</string>
     <string name="comment_title_QA">Q&amp;A</string>
     <string name="qa_writer">(작성자)</string>
+
+    <!-- Common -->
+    <string name="common_ok">확인</string>
+    <string name="common_cancel">취소</string>
 </resources>
