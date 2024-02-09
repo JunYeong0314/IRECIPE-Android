@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umcproject.irecipe.R
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import retrofit2.http.GET
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -74,29 +76,44 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
         addToChat(response, Chat.SENT_BY_BOT)
     }
 
+    private fun resultRefri(){
+        CoroutineScope(Dispatchers.Main).launch{
+            val response = aiChatRefriService.aiChatRefriService()
+            Log.d(TAG, response.body()?.result?.gptResponse.toString())
+            addResponse(response.body()?.result?.gptResponse.toString())
+        }
+    }
+
+    private fun resultRandom(){
+        CoroutineScope(Dispatchers.Main).launch{
+            val response = aiChatRandomService.aiChatRandom()
+            Log.d(TAG, response.body()?.result?.gptResponse.toString())
+            addResponse(response.body()?.result?.gptResponse.toString())
+        }
+    }
+
+    private fun resultExpiry(){
+        CoroutineScope(Dispatchers.Main).launch{
+            val response = aiChatExpiryService.aiChatExpiryService()
+            Log.d(TAG, response.body()?.result?.gptResponse.toString())
+            addResponse(response.body()?.result?.gptResponse.toString())
+        }
+    }
     private fun onClickQuestion(){
         binding.btnChat1.setOnClickListener {
             val question = binding.btnChat1.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
-            //냉장고 답변
-            CoroutineScope(Dispatchers.Main).launch{
-                val response = aiChatRefriService.aiChatRefriService()
-                Log.d(TAG, response.body()?.result?.gptResponse.toString())
-                addResponse(response.body()?.result?.gptResponse.toString())
-            }
+            resultRefri()  //냉장고 답변
         }
         binding.btnChat2.setOnClickListener {
             val question = binding.btnChat2.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
+            resultRandom() //랜덤 답변
         }
-        binding.btnChat3.setOnClickListener {//유통기한
+        binding.btnChat3.setOnClickListener {
             val question = binding.btnChat3.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
-            CoroutineScope(Dispatchers.Main).launch{
-                val response = aiChatExpiryService.aiChatExpiryService()
-                Log.d(TAG, response.body()?.result?.gptResponse.toString())
-                addResponse(response.body()?.result?.gptResponse.toString())
-            }
+            resultExpiry() //유통기한 답변
         }
         binding.btnChat4.setOnClickListener {
             val question = binding.btnChat4.text.toString()
