@@ -1,4 +1,4 @@
-package com.umcproject.irecipe.presentation.ui.community
+package com.umcproject.irecipe.presentation.ui.community.makePost
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -53,6 +53,6 @@ class ModalBottomSheetLevel : BottomSheetDialogFragment() {
     }
 
     companion object {
-        const val TAG = "BasicBottomModalSheet"
+        const val TAG = "BasicBottomModalSheetLevel"
     }
 }
