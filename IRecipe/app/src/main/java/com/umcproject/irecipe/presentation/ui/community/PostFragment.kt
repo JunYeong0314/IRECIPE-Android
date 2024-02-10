@@ -14,8 +14,8 @@ import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
 import com.umcproject.irecipe.presentation.ui.community.makePost.ModalBottomSheetFoodType
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
 import com.umcproject.irecipe.presentation.util.Util.showFragment
+import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 
 class PostFragment(private val onCLickBackBtn: (String) -> Unit,private val index: Int,private val communityFragment: CommunityFragment) : BaseFragment<FragmentPostBinding>() {
@@ -57,7 +57,7 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit,private val inde
         binding.tvTitle.text = post.title
         binding.tvText.text = post.text
         binding.llBtns.setOnClickListener {
-            showAnimatedFragment(R.id.fv_main,requireActivity(),CommentFragment(),CommentFragment.TAG)
+            showVerticalFragment(R.id.fv_main,requireActivity(),CommentFragment(),CommentFragment.TAG)
         }
         binding.btnPostMy.setOnClickListener {
             val modal = ModalBottomSheetMyFragment()
