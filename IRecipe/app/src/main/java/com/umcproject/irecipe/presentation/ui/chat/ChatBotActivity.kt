@@ -1,61 +1,66 @@
 package com.umcproject.irecipe.presentation.ui.chat
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ActivityChatBotBinding
-import com.umcproject.irecipe.databinding.ActivityMainBinding
 import com.umcproject.irecipe.domain.model.Chat
 import com.umcproject.irecipe.presentation.util.BaseActivity
+import com.umcproject.irecipe.presentation.util.Util.touchHideKeyboard
 
 class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBinding.inflate(it)}) {
-
-    private val tag = getTag()
-    companion object{
-        const val TAG = "ChatBotActivity"
-    }
-
     private lateinit var chatList: MutableList<Chat>
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
+
+    companion object{
+        const val TAG = "ChatBotActivity"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         chatList = ArrayList()
+        initView() // 어뎁터 설정
+        onClickSendMessage()//질문할 내용 입력
+        onClickOftenQuestion() // 자주하는 질문 클릭 이벤트
+        onClickQuestion() // 예시버튼으로 질문하기
+
+        //뒤로가기
+        binding.ibtnBack.setOnClickListener{ finish() }
+    }
+
+    private fun initView(){
         recyclerView = binding.chatRecyclerView
 
-        val sendBtn = binding.button2
-        val editText = binding.tvChat
-
         // setup recycler view
-        chatAdapter = ChatAdapter(chatList)
+        chatAdapter = ChatAdapter(chatList, this)
         recyclerView.adapter = chatAdapter
 
         val llm = LinearLayoutManager(this)
         llm.stackFromEnd = true
         recyclerView.layoutManager = llm
+    }
 
-        //질문할 내용 입력
-        sendBtn.setOnClickListener {
-            val question = editText.text.toString().trim()
-            addToChat(question, Chat.SENT_BY_ME)
-            // editText 내용 삭제
-            editText.text.clear()
+    private fun addToChat(message: String, sentBy: String) { //채팅 쓰는 쪽
+        Handler(Looper.getMainLooper()).post {
+            chatList.add(Chat(message, sentBy))
+            chatAdapter.notifyDataSetChanged()
+            recyclerView.smoothScrollToPosition(chatAdapter.itemCount)
         }
+    }
 
-        binding.btnPlus.setOnClickListener {
-            binding.frameChat.visibility = View.VISIBLE
-            binding.btnChatClose.visibility = View.VISIBLE
-        }
+    private fun addResponse(response: String) { //채팅 응답
+        chatList.removeAt(chatList.size - 1)
+        addToChat(response, Chat.SENT_BY_BOT)
+    }
 
-        //예시버튼으로 질문하기
+    private fun onClickQuestion(){
         binding.btnChat1.setOnClickListener {
             val question = binding.btnChat1.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
@@ -72,40 +77,44 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
             val question = binding.btnChat4.text.toString()
             addToChat(question, Chat.SENT_BY_ME)
         }
-
-        //뒤로가기
-        binding.ibtnBack.setOnClickListener{
-            finish()
-        }
-
-       binding.btnChatClose.setOnClickListener{
-           binding.frameChat.visibility = View.GONE
-           binding.btnChatClose.visibility = View.GONE
-       }
-
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        tag?.let {  }
-    }
-
-    private fun addToChat(message: String, sentBy: String) { //채팅 쓰는 쪽
-        Handler(Looper.getMainLooper()).post {
-            chatList.add(Chat(message, sentBy))
-            chatAdapter.notifyDataSetChanged()
-            recyclerView.smoothScrollToPosition(chatAdapter.itemCount)
+    private fun onClickSendMessage(){
+        binding.button2.setOnClickListener {
+            val question = binding.tvChat.text.toString().trim()
+            addToChat(question, Chat.SENT_BY_ME)
+            // editText 내용 삭제
+            binding.tvChat.text.clear()
         }
     }
 
-    private fun addResponse(response: String) { //채팅 응답
-        chatList.removeAt(chatList.size - 1)
-        addToChat(response, Chat.SENT_BY_BOT)
+    private fun onClickOftenQuestion(){
+        var chatState = ChatState.HIDDEN
+
+        binding.btnPlus.setOnClickListener {
+            when(chatState) {
+                ChatState.HIDDEN -> {
+                    binding.frameChat.visibility = View.VISIBLE
+                    binding.btnPlus.setBackgroundResource(R.drawable.ic_minus_round)
+                    chatState = ChatState.SHOWING
+                }
+                ChatState.SHOWING -> {
+                    binding.frameChat.visibility = View.GONE
+                    binding.btnPlus.setBackgroundResource(R.drawable.bg_chat_button_show)
+                    chatState = ChatState.HIDDEN
+                }
+            }
+        }
+
+        binding.btnChatClose.setOnClickListener {
+            binding.frameChat.visibility = View.GONE
+            binding.btnPlus.setBackgroundResource(R.drawable.bg_chat_button_show)
+            chatState = ChatState.HIDDEN
+        }
     }
 
-    private fun getTag(): String?{
-        val intent = Intent()
-        return intent.getStringExtra("tag")
+    enum class ChatState {
+        SHOWING, HIDDEN
     }
 
 }

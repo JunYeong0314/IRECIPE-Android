@@ -1,10 +1,8 @@
 package com.umcproject.irecipe.presentation.ui.signup.step
 
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +14,10 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupFirstBinding
 import com.umcproject.irecipe.presentation.ui.signup.SignUpViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
+import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
+import com.umcproject.irecipe.presentation.util.Util.touchHideKeyboard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -41,6 +39,8 @@ class FirstStepFragment(
         super.onViewCreated(view, savedInstanceState)
         binding.etName.setText(viewModel.userInfo.value.name)
 
+        binding.root.setOnClickListener { touchHideKeyboard(requireActivity()) } // 외부화면 터치시 키패드 내림
+
         // 입력항목 검사 Observe
         viewModel.isFirstComplete.observe(requireActivity(), Observer { complete->
             nextStepBtnActive(complete)
@@ -50,16 +50,16 @@ class FirstStepFragment(
         CoroutineScope(Dispatchers.Main).launch {
             viewModel.userInfo.collectLatest {
                 nameCheckActive(name = it.name)
-                genderCheckActive(gender = it.gender)
+                genderCheckActive(genderCode = it.genderCode)
                 ageCheckActive(age = it.age)
             }
         }
 
+        viewModel.setInit() // 초기 설정
         // 나이 설정
         binding.clAge.setOnClickListener{
             setAge(it)
         }
-
         nextStepBtn() // 다음 단계 버튼 이벤트
         observeName() // 이름 작성 observe
         setGender() // 성별 설정
@@ -83,10 +83,10 @@ class FirstStepFragment(
     private fun setGender(){
         with(binding){
             rbtnMan.setOnClickListener {
-                genderCheckActive(gender = getString(R.string.sign_man))
+                genderCheckActive(genderCode = 1)
             }
             rbtnWoman.setOnClickListener {
-                genderCheckActive(gender = getString(R.string.sign_woman))
+                genderCheckActive(genderCode = 2)
             }
         }
     }
@@ -138,10 +138,10 @@ class FirstStepFragment(
         }
     }
 
-    private fun genderCheckActive(gender: String){
-        if(gender != ""){
+    private fun genderCheckActive(genderCode: Int){
+        if(genderCode != -1){
             binding.ibtnCheckGender.setImageResource(R.drawable.ic_check_true)
-            viewModel.setGender(gender = gender)
+            viewModel.setGender(genderCode = genderCode)
         }
     }
 
@@ -157,7 +157,8 @@ class FirstStepFragment(
 
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
-            showAnimatedFragment(R.id.fv_signUp ,requireActivity(), SecondStepFragment(viewModel), SecondStepFragment.TAG)
+            showHorizontalFragment(R.id.fv_signUp ,requireActivity(), SecondStepFragment(viewModel), SecondStepFragment.TAG)
+            touchHideKeyboard(requireActivity())
         }
     }
 

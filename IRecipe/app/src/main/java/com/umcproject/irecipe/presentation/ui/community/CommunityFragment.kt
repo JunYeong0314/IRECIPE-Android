@@ -12,6 +12,8 @@ import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.ui.community.makePost.MakePostFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
+import com.umcproject.irecipe.presentation.util.Util.showFragment
+import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 class CommunityFragment(
     private val onClickDetail: (String) -> Unit,
@@ -38,11 +40,7 @@ class CommunityFragment(
 
     private fun initView() {
         binding.btnMakePost.setOnClickListener {// 글쓰기 상세페이지로 이동
-//            showNoStackFragment(R.id.fv_main,requireActivity(),MakePostFragment(onClickBackBtn),MakePostFragment.TAG)
-            (context as MainActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.fv_main, MakePostFragment(onClickBackBtn))
-                .addToBackStack(null)
-                .commit()
+            showVerticalFragment(R.id.fv_main,requireActivity(),MakePostFragment(onClickBackBtn),MakePostFragment.TAG)
             onClickDetail("커뮤니티 글쓰기")
         }
 

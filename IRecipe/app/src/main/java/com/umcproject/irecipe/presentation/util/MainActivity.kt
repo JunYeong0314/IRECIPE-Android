@@ -1,9 +1,7 @@
 package com.umcproject.irecipe.presentation.util
 
 import android.content.Intent
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.umcproject.irecipe.R
@@ -11,14 +9,10 @@ import com.umcproject.irecipe.databinding.ActivityMainBinding
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import com.umcproject.irecipe.presentation.ui.chat.ChatFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
-import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
 import com.umcproject.irecipe.presentation.util.Util.popFragment
-import com.umcproject.irecipe.presentation.util.Util.showAnimatedFragment
-import com.umcproject.irecipe.presentation.util.Util.showFragment
-import com.umcproject.irecipe.presentation.util.onboarding.OnboardingActivity
 
 class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
     companion object{

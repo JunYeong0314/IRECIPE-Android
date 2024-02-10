@@ -12,7 +12,9 @@ import com.umcproject.irecipe.presentation.ui.signup.step.FirstStepFragment
 import com.umcproject.irecipe.presentation.util.BaseActivity
 import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.onboarding.OnboardingActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpActivity: BaseActivity<ActivitySignupBinding>({ ActivitySignupBinding.inflate(it) }) {
     private val manager = supportFragmentManager
     private val viewModel: SignUpViewModel by viewModels()
