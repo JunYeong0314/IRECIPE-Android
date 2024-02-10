@@ -5,11 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommunityBinding
 import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.presentation.ui.community.makePost.MakePostFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util.showFragment
@@ -21,6 +21,7 @@ class CommunityFragment(
 ): BaseFragment<FragmentCommunityBinding>() {
 
     private var postDatas = ArrayList<Post>()
+    lateinit var postAdapter: CommunityPostAdapter
 
     companion object{
         const val TAG = "CommunityFragment"
@@ -43,7 +44,7 @@ class CommunityFragment(
             onClickDetail("커뮤니티 글쓰기")
         }
 
-        val postAdapter = CommunityPostAdapter(postDatas)
+        postAdapter = CommunityPostAdapter(postDatas)
         binding.rvPost.adapter = postAdapter
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
@@ -51,15 +52,18 @@ class CommunityFragment(
         getPost(postAdapter)
 
     }
+
     private fun adapterClick(postAdapter: CommunityPostAdapter) {
         postAdapter.setMyItemClickListener(object : CommunityPostAdapter.MyItemClickListener {
-            override fun onItemClick(post: Post) {
+            override fun onItemClick(post: Post, position:Int) {
                 val bundle = Bundle()
                 val gson = Gson()
                 val postJson = gson.toJson(post)
                 bundle.putString("post", postJson)
 
-                val postFragment = PostFragment(onClickBackBtn)
+                val postFragment = PostFragment(onClickBackBtn, position,
+                    CommunityFragment(onClickDetail,onClickBackBtn)
+                )
                 postFragment.arguments = bundle
 
                 (context as MainActivity).supportFragmentManager.beginTransaction()
@@ -69,6 +73,10 @@ class CommunityFragment(
                 //showFragment(R.id.fv_main,requireActivity(),PostFragment(onClickBackBtn),PostFragment.TAG)
                 onClickDetail("커뮤니티")
             }
+
+//            override fun onItemDelete(position: Int) {
+//                postAdapter.removeItem(position)
+//            }
         })
     }
     private fun getPost(postAdapter: CommunityPostAdapter) { // 글쓰기 -> 데이터 얻어오기
@@ -91,6 +99,10 @@ class CommunityFragment(
             }
         }
         return false
+    }
+
+    fun deletePost(index: Int) { // 수정 필요
+        postAdapter.removeItem(index)
     }
 
 }

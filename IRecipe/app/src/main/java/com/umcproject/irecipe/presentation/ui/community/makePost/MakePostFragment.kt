@@ -1,16 +1,14 @@
-package com.umcproject.irecipe.presentation.ui.community
+package com.umcproject.irecipe.presentation.ui.community.makePost
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.umcproject.irecipe.R
@@ -35,6 +33,14 @@ class MakePostFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initView(view)
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        onCLickBackBtn("커뮤니티")
+    }
+
+    private fun initView(view: View) {
         binding.btnPost.setOnClickListener {
             val title = binding.etTitle.text.toString()
             val subtitle = binding.etSubtitle.text.toString()
@@ -47,20 +53,19 @@ class MakePostFragment(
 
                 val gson = Gson()
                 val postJson = gson.toJson(post)
-                val bundle = Bundle().apply { putString("post",postJson) }
+                val bundle = Bundle().apply { putString("post", postJson) }
                 requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
                 requireActivity().supportFragmentManager.popBackStack()
 
-                requireActivity().supportFragmentManager.findFragmentByTag("CommunityFragment")?.arguments = bundle
-
+                requireActivity().supportFragmentManager.findFragmentByTag("CommunityFragment")?.arguments =
+                    bundle
             }
-
         }
 
         binding.btnFoodType.setOnClickListener {
             it.isSelected = true
             val modal = ModalBottomSheetFoodType()
-            modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
+    //            modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
             modal.show(childFragmentManager, ModalBottomSheetFoodType.TAG)
             modal.dialog?.setOnDismissListener {
                 binding.btnFoodType.isSelected = false
@@ -70,17 +75,13 @@ class MakePostFragment(
         binding.btnLevel.setOnClickListener {
             it.isSelected = true
             val modal = ModalBottomSheetLevel()
-            modal.setStyle(DialogFragment.STYLE_NORMAL, R.style.RoundCornerBottomSheetDialogTheme)
             modal.show(childFragmentManager, ModalBottomSheetLevel.TAG)
         }
 
         wordsLimit(binding.etTitle, binding.tvTitleCnt, 20)
         wordsLimit(binding.etSubtitle, binding.tvSubtitleCnt, 50)
     }
-    override fun onDestroy() {
-        super.onDestroy()
-        onCLickBackBtn("커뮤니티")
-    }
+
     private fun wordsLimit(editText: EditText, cntView : TextView, limit: Int) {
         editText.addTextChangedListener(object : TextWatcher { // 글자수 제한
             var maxText = ""
