@@ -63,18 +63,16 @@
                 app:layout_constraintTop_toTopOf="@id/iv_img_profile"
                 app:layout_constraintBottom_toBottomOf="@id/iv_img_profile"
                 android:layout_marginStart="12dp"/>
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_follow"
-                android:layout_width="70dp"
-                android:layout_height="30dp"
-                android:text="@string/com_follow"
-                android:textSize="12sp"
-                android:textColor="@color/gray_1"
-                android:background="@drawable/btn_radius"
+            <ImageView
+                android:id="@+id/btn_post_my"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/btn_post_my"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/iv_img_profile"
                 app:layout_constraintBottom_toBottomOf="@id/iv_img_profile"
-                android:layout_marginEnd="20dp"/>
+                android:visibility="visible"
+                android:layout_marginEnd="10dp"/>
             <View
                 android:id="@+id/line2"
                 android:layout_width="match_parent"

@@ -1,12 +1,10 @@
-package com.umcproject.irecipe.presentation.ui.community
+package com.umcproject.irecipe.presentation.ui.community.makePost
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentModalBottomSheetFoodTypeBinding
 
 class ModalBottomSheetFoodType : BottomSheetDialogFragment() {
@@ -51,7 +49,7 @@ class ModalBottomSheetFoodType : BottomSheetDialogFragment() {
         }
     }
     companion object {
-        const val TAG = "BasicBottomModalSheet"
+        const val TAG = "BasicBottomModalSheetType"
     }
 
 }

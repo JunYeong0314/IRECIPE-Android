@@ -10,12 +10,17 @@ import java.util.ArrayList
 class CommunityPostAdapter(private val postList: ArrayList<Post>):RecyclerView.Adapter<CommunityPostAdapter.ViewHolder>() {
 
     interface MyItemClickListener{
-        fun onItemClick(post: Post)
+        fun onItemClick(post: Post,position: Int)
+//        fun onItemDelete(position: Int)
     }
 
     private lateinit var mItemClickListener: MyItemClickListener
     fun setMyItemClickListener(itemClickListener: MyItemClickListener){
         mItemClickListener = itemClickListener
+    }
+    fun removeItem(position: Int) {
+        postList.removeAt(position)
+        notifyDataSetChanged()
     }
     fun addItem(post: Post) {
         postList.add(post)
@@ -29,7 +34,7 @@ class CommunityPostAdapter(private val postList: ArrayList<Post>):RecyclerView.A
 
     override fun onBindViewHolder(holder: CommunityPostAdapter.ViewHolder, position: Int) {
         holder.bind(postList[position])
-        holder.itemView.setOnClickListener {  mItemClickListener.onItemClick(postList[position]) }
+        holder.itemView.setOnClickListener {  mItemClickListener.onItemClick(postList[position],position) }
     }
 
     override fun getItemCount(): Int = postList.size

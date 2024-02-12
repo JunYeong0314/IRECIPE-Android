@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.umcproject.irecipe.data.remote.request.SignUpRequest
 import com.umcproject.irecipe.domain.model.User
 import com.umcproject.irecipe.domain.repository.UserDataRepository
 import com.umcproject.irecipe.data.remote.request.login.SignUpRequest
