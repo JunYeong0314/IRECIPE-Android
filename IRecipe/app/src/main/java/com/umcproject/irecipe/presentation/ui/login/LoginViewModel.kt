@@ -9,7 +9,7 @@ import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
-import com.umcproject.irecipe.data.remote.request.LoginRequest
+import com.umcproject.irecipe.data.remote.request.login.LoginRequest
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
 import com.umcproject.irecipe.domain.repository.UserDataRepository
