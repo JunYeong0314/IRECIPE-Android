@@ -13,7 +13,9 @@ import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
 import com.umcproject.irecipe.presentation.util.Util.popFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
     companion object{
         const val TAG = "MainActivity"
