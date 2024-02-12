@@ -75,7 +75,6 @@
     <string name="ref_add_memo">메모</string>
     <string name="ref_hint_add_memo">최대 20자 작성가능</string>
     <string name="ref_add_complete">음식 저장</string>
-    <string name="ref_date_format">%d-%d-%d</string>
     <string name="ref_empty">앗! 등록된 음식이 없어요</string>
 
     <!--음식 종류-->

@@ -94,6 +94,7 @@ class ApiModule {
     @Singleton
     fun provideGetIngredient(retrofit: Retrofit): GetRefrigeratorService {
         return retrofit.create(GetRefrigeratorService::class.java)
+    }
 
     @Provides
     @Singleton
@@ -105,6 +106,7 @@ class ApiModule {
     @Singleton
     fun provideSetIngredient(retrofit: Retrofit): SetRefrigeratorService {
         return retrofit.create(SetRefrigeratorService::class.java)
+    }
 
     @Provides
     @Singleton
@@ -116,6 +118,7 @@ class ApiModule {
     @Singleton
     fun provideGetTypeIngredient(retrofit: Retrofit): GetTypeIngredientService {
         return retrofit.create(GetTypeIngredientService::class.java)
+    }
 
     @Provides
     @Singleton

@@ -28,6 +28,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -100,7 +102,14 @@ class RefrigeratorProcessFragment(
             val day = calendar.get(Calendar.DAY_OF_MONTH)
 
             val datePickerDialog = DatePickerDialog(requireContext(), { _, selectYear, selectMonth, selectDay ->
-                val formattedDate = getString(R.string.ref_date_format, selectYear, selectMonth + 1, selectDay)
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(Calendar.YEAR, selectYear)
+                selectedDate.set(Calendar.MONTH, selectMonth)
+                selectedDate.set(Calendar.DAY_OF_MONTH, selectDay)
+
+                val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val formattedDate = dateFormat.format(selectedDate.time)
+
                 binding.tvExpiration.text = formattedDate
                 viewModel.setExpiration(formattedDate)
             }, year, month, day)
