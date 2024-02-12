@@ -3,29 +3,22 @@ package com.umcproject.irecipe.presentation.ui.chat
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.widget.Button
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.umcproject.irecipe.R
-import com.umcproject.irecipe.data.remote.request.AiChatDislikeRequest
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatDislikeService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatRandomService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatDislikeService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatExpiryService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
 import com.umcproject.irecipe.databinding.ActivityChatBotBinding
 import com.umcproject.irecipe.domain.model.Chat
 import com.umcproject.irecipe.presentation.util.BaseActivity
 import com.umcproject.irecipe.presentation.util.Util
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import retrofit2.http.GET
 import javax.inject.Inject
 
 @AndroidEntryPoint

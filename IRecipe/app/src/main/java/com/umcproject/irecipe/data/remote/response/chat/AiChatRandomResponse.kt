@@ -1,8 +1,8 @@
-package com.umcproject.irecipe.data.remote.response
+package com.umcproject.irecipe.data.remote.response.chat
 
 import com.squareup.moshi.Json
 
-data class AiChatRefriResponse(
+data class AiChatRandomResponse(
     @field:Json(name="code")
     val code: String,
     @field:Json(name="isSuccess")
@@ -10,9 +10,9 @@ data class AiChatRefriResponse(
     @field:Json(name="message")
     val message: String,
     @field:Json(name="result")
-    val result: RefriResult?
+    val result: RandomResult
 )
-data class RefriResult(
+data class RandomResult(
     @field:Json(name="gptResponse")
     val gptResponse: String
 )

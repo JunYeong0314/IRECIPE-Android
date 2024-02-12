@@ -2,22 +2,16 @@ package com.umcproject.irecipe.presentation.ui.chat
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.view.View
-import android.widget.Button
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.umcproject.irecipe.R
-import com.umcproject.irecipe.data.remote.request.AiChatDislikeRequest
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatDislikeService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatRandomService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
-import com.umcproject.irecipe.domain.model.Chat
+import com.umcproject.irecipe.data.remote.request.chat.AiChatDislikeRequest
+import com.umcproject.irecipe.data.remote.service.chat.AiChatDislikeService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatExpiryService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
