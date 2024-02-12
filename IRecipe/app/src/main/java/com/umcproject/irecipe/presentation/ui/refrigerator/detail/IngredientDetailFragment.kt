@@ -10,8 +10,7 @@ import com.umcproject.irecipe.domain.model.Ingredient
 import com.umcproject.irecipe.presentation.ui.refrigerator.Type
 import com.umcproject.irecipe.presentation.ui.refrigerator.process.RefrigeratorProcessFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util
-import com.umcproject.irecipe.presentation.util.Util.mapperToEngIngredientCategory
+import com.umcproject.irecipe.presentation.util.Util.getEngResourceId
 import com.umcproject.irecipe.presentation.util.Util.mapperToKorIngredientCategory
 import com.umcproject.irecipe.presentation.util.Util.mapperToKorIngredientType
 import com.umcproject.irecipe.presentation.util.Util.popFragment
@@ -51,5 +50,8 @@ class IngredientDetailFragment(
         binding.tvCategory.text = mapperToKorIngredientCategory(ingredient.category)
         binding.tvExpiration.text = ingredient.expiration
         binding.tvMemo.text = ingredient.memo
+
+        val photo = getEngResourceId(ingredient.category)
+        photo?.let { binding.civImage.setImageResource(it) }
     }
 }

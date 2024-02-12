@@ -113,4 +113,19 @@ object Util {
             else -> "Error"
         }
     }
+
+    fun getEngResourceId(category: String): Int?{
+        return when (category) {
+            "MEAT" -> R.drawable.ic_meat
+            "VEGETABLE" -> R.drawable.ic_vecetable
+            "FRUIT" -> R.drawable.ic_fruit
+            "FISH" -> R.drawable.ic_fish
+            "CRUSTACEAN" -> R.drawable.ic_crustacean
+            "DRINK" -> R.drawable.ic_drink
+            "DAIRY_PRODUCT" -> R.drawable.ic_dairy
+            "SAUCE" -> R.drawable.ic_sauce
+            "PROCESSED_FOOD" -> R.drawable.ic_processed
+            else -> null
+        }
+    }
 }
