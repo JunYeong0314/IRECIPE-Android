@@ -9,7 +9,11 @@ import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.sql.Ref
 import javax.inject.Inject
@@ -21,35 +25,56 @@ class RefrigeratorViewModel @Inject constructor(
 
     // 냉장고 재료 불러오기
     init {
+        allIngredientFetch()
+    }
+
+    private var normalIngredient: Refrigerator? = null
+    private var coldIngredient: Refrigerator? = null
+    private var frozenIngredient: Refrigerator? = null
+
+    private val _fetchState = MutableLiveData<Int?>(null)
+    val fetchState: LiveData<Int?>
+        get() = _fetchState
+
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?>
+        get() = _errorMessage
+
+    private fun fetchRefrigerator(type: String){
         viewModelScope.launch {
-            refrigeratorRepository.fetchRefrigerator(0).collect{ state->
+            refrigeratorRepository.fetchIngredientType(type).collectLatest{ state->
                 when(state){
                     is State.Loading -> {}
-                    is State.Success -> { _fetchRefrigerator.value = state.data }
-                    is State.ServerError -> { _fetchRefrigerator.value = state.code }
-                    is State.Error -> { _fetchRefrigerator.value = -1 }
+                    is State.Success -> {
+                        when(type){
+                            "AMBIENT" -> normalIngredient = state.data
+                            "REFRIGERATED" -> coldIngredient = state.data
+                            "FROZEN" -> frozenIngredient = state.data
+                        }
+                        _fetchState.value = 200
+                    }
+                    is State.ServerError -> { _fetchState.value = state.code }
+                    is State.Error -> { _errorMessage.value = state.exception.message }
                 }
             }
         }
     }
 
-    private val _fetchRefrigerator = MutableLiveData<Int?>(null)
-    val fetchRefrigerator: LiveData<Int?>
-        get() = _fetchRefrigerator
-
-    fun getNormalIngredient(): Refrigerator{
-        Log.d("TEST", refrigeratorRepository.getNormalIngredient().toString())
-        return refrigeratorRepository.getNormalIngredient()
+    fun getNormalIngredient(): Refrigerator?{
+        return normalIngredient
     }
 
-    fun getColdIngredient(): Refrigerator{
-        Log.d("TEST", refrigeratorRepository.getColdIngredient().toString())
-        return refrigeratorRepository.getColdIngredient()
+    fun getColdIngredient(): Refrigerator?{
+        return coldIngredient
     }
 
-    fun getFrozenIngredient(): Refrigerator{
-        Log.d("TEST", refrigeratorRepository.getFrozenIngredient().toString())
-        return refrigeratorRepository.getFrozenIngredient()
+    fun getFrozenIngredient(): Refrigerator?{
+        return frozenIngredient
     }
 
+    fun allIngredientFetch(){
+        fetchRefrigerator("AMBIENT")
+        fetchRefrigerator("REFRIGERATED")
+        fetchRefrigerator("FROZEN")
+    }
 }

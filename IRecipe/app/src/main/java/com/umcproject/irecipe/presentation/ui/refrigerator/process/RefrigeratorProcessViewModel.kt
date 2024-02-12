@@ -61,7 +61,7 @@ class RefrigeratorProcessViewModel @Inject constructor(
         refrigeratorRepository.setIngredient(ingredient = ingredientInfo.value).collect{ state->
             when(state){
                 is State.Loading -> {}
-                is State.Success -> {emit(State.Success(state.data))}
+                is State.Success -> { emit(State.Success(state.data)) }
                 is State.ServerError -> {emit(State.ServerError(state.code))}
                 is State.Error -> {emit(State.Error(state.exception))}
             }

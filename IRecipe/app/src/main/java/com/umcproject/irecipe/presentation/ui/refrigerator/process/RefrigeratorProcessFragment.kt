@@ -17,6 +17,7 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentRefrigeratorProcessBinding
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Ingredient
+import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
 import com.umcproject.irecipe.presentation.ui.refrigerator.Type
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util
@@ -27,12 +28,14 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RefrigeratorProcessFragment(
     private val onClickBackBtn: (String) -> Unit,
     private val processType: Type,
-    private val ingredient: Ingredient?
+    private val ingredient: Ingredient?,
+    private val workCallBack: () -> Unit
 ): BaseFragment<FragmentRefrigeratorProcessBinding>() {
     private val viewModel: RefrigeratorProcessViewModel by viewModels()
 
@@ -172,8 +175,8 @@ class RefrigeratorProcessFragment(
     private fun onComplete(){
         binding.tvComplete.setOnClickListener {
             when(processType){
-                Type.ADD -> { addAsync()}
-                Type.MODIFY -> {}
+                Type.ADD -> { addAsync() }
+                Type.MODIFY -> { modifyAsync()}
             }
         }
     }
@@ -186,6 +189,7 @@ class RefrigeratorProcessFragment(
                     is State.Loading -> {}
                     is State.Success -> {
                         popFragment(requireActivity())
+                        workCallBack()
                         Snackbar.make(requireView(), getString(R.string.confirm_add_ingredient), Snackbar.LENGTH_SHORT).show()
                     }
                     is State.ServerError -> { Snackbar.make(requireView(), getString(R.string.error_add_ingredient, state.code), Snackbar.LENGTH_SHORT).show() }

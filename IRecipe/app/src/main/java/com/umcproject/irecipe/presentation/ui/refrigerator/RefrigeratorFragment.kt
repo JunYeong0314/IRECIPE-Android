@@ -41,11 +41,17 @@ class RefrigeratorFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.fetchRefrigerator.observe(viewLifecycleOwner) { state ->
-            state?.let { code ->
-                if(code == 200) initView() // 게시글 로드가 될 때 어뎁터 초기화
-                else Snackbar.make(requireView(), getString(R.string.error_refrigerator, code), Snackbar.LENGTH_SHORT).show()
+        // 냉장고 재료 fetch
+        viewModel.fetchState.observe(viewLifecycleOwner) { state ->
+            state?.let {
+                if(state == 200) initView()
+                else Snackbar.make(requireView(), getString(R.string.error_server_refrigerator, state), Snackbar.LENGTH_SHORT).show()
             }
+        }
+
+        // error 감지
+        viewModel.errorMessage.observe(viewLifecycleOwner) {error ->
+            error?.let{ Snackbar.make(requireView(), getString(R.string.error_refrigerator, error), Snackbar.LENGTH_SHORT).show() }
         }
         goAddFoodPage() // 음식추가 버튼 이벤트
     }
@@ -75,7 +81,7 @@ class RefrigeratorFragment(
             showVerticalFragment(
                 R.id.fv_main,
                 requireActivity(),
-                RefrigeratorProcessFragment(onClickBackBtn, Type.ADD, null),
+                RefrigeratorProcessFragment(onClickBackBtn, Type.ADD, null, workCallBack = { viewModel.allIngredientFetch() }),
                 RefrigeratorProcessFragment.TAG)
         }
     }

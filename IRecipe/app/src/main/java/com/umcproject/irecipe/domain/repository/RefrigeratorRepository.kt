@@ -6,9 +6,6 @@ import com.umcproject.irecipe.domain.model.Refrigerator
 import kotlinx.coroutines.flow.Flow
 
 interface RefrigeratorRepository {
-    fun fetchRefrigerator(page: Int): Flow<State<Int>> // 냉장고 재료 불러오기
     fun setIngredient(ingredient: Ingredient): Flow<State<Int>> // 냉장고 재료 넣기
-    fun getNormalIngredient(): Refrigerator // 실온보관 재료 불러오기
-    fun getColdIngredient(): Refrigerator // 냉장보관 재료 불러오기
-    fun getFrozenIngredient(): Refrigerator  // 냉동보관 재료 불러오기
+    fun fetchIngredientType(type: String): Flow<State<Refrigerator>> // type에 따른 재료 불러오기
 }

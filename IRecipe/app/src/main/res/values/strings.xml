@@ -154,9 +154,10 @@
     <string name="common_modify_confirm">수정완료</string>
 
     <!-- Error Message -->
-    <string name="error_refrigerator">[Error: %d] 냉장고를 불러오는데 실패했습니다.</string>
+    <string name="error_server_refrigerator">[Error: %d] 냉장고를 불러오는데 실패했습니다.</string>
+    <string name="error_refrigerator">[Error: %s] 냉장고를 불러오는데 실패했습니다.</string>
     <string name="error_add_ingredient">[Error: %d] 음식을 저장하는데 실패했습니다.</string>
 
     <!-- Confirm Message -->
-    <string name="confirm_add_ingredient">음식을 등록했리어요!</string>
+    <string name="confirm_add_ingredient">음식을 등록했어요!</string>
 </resources>

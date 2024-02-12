@@ -14,7 +14,7 @@ import com.umcproject.irecipe.presentation.util.Util.mapperToTitle
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 class RefrigeratorTitleAdapter(
-    private val refList: List<Refrigerator>,
+    private val refList: List<Refrigerator?>,
     private val onClickDetail: (Refrigerator) -> Unit,
     private val onClickIngredient: (Ingredient) -> Unit
 ): RecyclerView.Adapter<RefrigeratorTitleAdapter.ViewHolder>() {
@@ -30,13 +30,15 @@ class RefrigeratorTitleAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val ref = refList[position]
 
-        holder.setTitle(mapperToTitle(ref.type)) // 보관 방법 title setter 함수
+        ref?.let {
+            holder.setTitle(mapperToTitle(it.type)) // 보관 방법 title setter 함수
 
-        if(ref.ingredient.isEmpty()){
-            holder.setEmptyPage() // empty 데이터일 경우
-        }else{
-            holder.bind(ingredient = ref.ingredient) // 보관방법에 따른 재료 표시
-            holder.binding.ibtnDetail.setOnClickListener { onClickDetail(ref) } // detail page로 이동
+            if(it.ingredient.isEmpty()){
+                holder.setEmptyPage() // empty 데이터일 경우
+            }else{
+                holder.bind(ingredient = it.ingredient) // 보관방법에 따른 재료 표시
+                holder.binding.ibtnDetail.setOnClickListener { onClickDetail(ref) } // detail page로 이동
+            }
         }
     }
 

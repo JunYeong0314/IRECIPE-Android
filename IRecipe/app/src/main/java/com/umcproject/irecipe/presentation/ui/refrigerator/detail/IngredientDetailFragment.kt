@@ -40,7 +40,7 @@ class IngredientDetailFragment(
         binding.btnModify.setOnClickListener {
             showVerticalFragment(
                 R.id.fv_main, requireActivity(),
-                RefrigeratorProcessFragment(onClickBackBtn, Type.MODIFY, ingredient),
+                RefrigeratorProcessFragment(onClickBackBtn, Type.MODIFY, ingredient, workCallBack = {}),
                 RefrigeratorProcessFragment.TAG
             )}
     }

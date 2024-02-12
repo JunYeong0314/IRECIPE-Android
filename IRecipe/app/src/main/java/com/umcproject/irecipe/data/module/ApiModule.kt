@@ -9,6 +9,7 @@ import com.umcproject.irecipe.data.remote.service.login.LoginService
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
 import com.umcproject.irecipe.data.remote.service.login.SignUpService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetRefrigeratorService
+import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import dagger.Module
 import dagger.Provides
@@ -95,5 +96,11 @@ class ApiModule {
     @Singleton
     fun provideSetIngredient(retrofit: Retrofit): SetRefrigeratorService {
         return retrofit.create(SetRefrigeratorService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetTypeIngredient(retrofit: Retrofit): GetTypeIngredientService {
+        return retrofit.create(GetTypeIngredientService::class.java)
     }
 }
