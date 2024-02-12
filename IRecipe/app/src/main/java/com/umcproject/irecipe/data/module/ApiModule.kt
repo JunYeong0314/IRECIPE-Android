@@ -1,10 +1,13 @@
 package com.umcproject.irecipe.data.module
 
-import androidx.room.Insert
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.umcproject.irecipe.BuildConfig
 import com.umcproject.irecipe.data.remote.AppInterceptor
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatDislikeService
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatRandomService
+import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
@@ -13,7 +16,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -84,5 +86,29 @@ class ApiModule {
     @Singleton
     fun provideLoginService(retrofit: Retrofit): LoginService {
         return retrofit.create(LoginService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAiChatRefriService(retrofit: Retrofit):AiChatRefriService{
+        return retrofit.create(AiChatRefriService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAiChatExpiryService(retrofit: Retrofit):AiChatExpiryService{
+        return retrofit.create(AiChatExpiryService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAiChatRandomService(retrofit: Retrofit):AiChatRandomService{
+        return retrofit.create(AiChatRandomService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAiChatDislikeService(retrofit: Retrofit):AiChatDislikeService{
+        return retrofit.create(AiChatDislikeService::class.java)
     }
 }
