@@ -5,6 +5,8 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.umcproject.irecipe.BuildConfig
 import com.umcproject.irecipe.data.remote.AppInterceptor
+import com.umcproject.irecipe.data.remote.service.community.NewPostService
+import com.umcproject.irecipe.data.remote.service.community.NewTempService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
@@ -84,5 +86,17 @@ class ApiModule {
     @Singleton
     fun provideLoginService(retrofit: Retrofit): LoginService {
         return retrofit.create(LoginService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNewPostService(retrofit: Retrofit): NewPostService {
+        return retrofit.create(NewPostService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNewTempService(retrofit: Retrofit): NewTempService {
+        return retrofit.create(NewTempService::class.java)
     }
 }
