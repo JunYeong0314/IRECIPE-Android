@@ -35,12 +35,25 @@ class MypageViewModel @Inject constructor(
     private val _genderResponse = MutableLiveData<String>()
     val genderResponse: LiveData<String> get() = _genderResponse
 
+    private val _ageResponse = MutableLiveData<String>()
+    val ageResponse: LiveData<String> get() = _ageResponse
+
+    private val _allergyResponse = MutableLiveData<List<String>>()
+    val allergyResponse: LiveData<List<String>> get() = _allergyResponse
+
+    private val _isComplete = MutableLiveData(false)
+    val isComplete: LiveData<Boolean> get() = _isComplete
+
+    private val _isSecondComplete = MutableLiveData(false)
+    val isSecondComplete: LiveData<Boolean> get() = _isSecondComplete
+
     fun resultName(){
         viewModelScope.launch{
             val response = checkMemberService.checkMember()
             Log.d(ChatBotActivity.TAG, response.body()?.result?.name.toString())
             _nameResponse.value = response.body()?.result?.name.toString()
         }
+        checkStep()
     }
 
     fun resultNick(){
@@ -49,6 +62,7 @@ class MypageViewModel @Inject constructor(
             Log.d(ChatBotActivity.TAG, response.body()?.result?.nickname.toString())
             _nicknameResponse.value = response.body()?.result?.nickname.toString()
         }
+        checkStep()
     }
 
     fun setNick(nick: String): Flow<State<Int>> = flow {
@@ -79,6 +93,32 @@ class MypageViewModel @Inject constructor(
             Log.d(ChatBotActivity.TAG, response.body()?.result?.gender.toString())
             _genderResponse.value = response.body()?.result?.gender.toString()
         }
+        checkStep()
+    }
+
+    fun resultAge(){
+        viewModelScope.launch {
+            val response = checkMemberService.checkMember()
+            Log.d(ChatBotActivity.TAG, response.body()?.result?.age.toString())
+            _ageResponse.value = response.body()?.result?.age.toString()
+        }
+        checkStep()
+    }
+
+    fun resultAllergy(){
+        viewModelScope.launch {
+            val response = checkMemberService.checkMember()
+            Log.d(ChatBotActivity.TAG, response.body()?.result?.allergyList.toString())
+            _allergyResponse.value = (response.body()?.result?.allergyList ?: emptyList()) as List<String>?
+
+        }
+    }
+
+    private fun checkStep(){
+        _isComplete.value = _nameResponse.value != "" && _genderResponse.value != "" && _ageResponse.value != ""&& _nicknameResponse.value != "" &&  _isSecondComplete.value != false
+    }
+    fun setNickComplete(check: Boolean){
+        _isSecondComplete.value = check
     }
 
 }

@@ -14,13 +14,16 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginStart
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentSignupFirstBinding
 import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.presentation.ui.signup.step.SecondStepFragment
 import com.umcproject.irecipe.presentation.ui.signup.step.dialog.AllergyChoiceDialog
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
+import com.umcproject.irecipe.presentation.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,6 +58,10 @@ class MypagePersonalFragment(
         }
         observeNick()
         onClickAllergy()
+
+        viewModel.isComplete.observe(requireActivity(), Observer { complete->
+            modifyBtnActive(complete)
+        })
 
         if(mainActivity?.binding?.tvTitle?.text.toString() == "개인정보"){
             changeMargin(binding.layoutName)
@@ -152,6 +159,7 @@ class MypagePersonalFragment(
         viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
             binding.etNick.setText(nickname)
             nickCheck(true)
+            viewModel.setNickComplete(true)
         }
         viewModel.resultNick()
 
@@ -163,9 +171,11 @@ class MypagePersonalFragment(
                     binding.ibtnCheckNick.setImageResource(R.drawable.ic_check)
                     binding.tvCheckNick.text = "중복 확인해 주세요"
                     binding.tvCheckNick.setTextColor(ContextCompat.getColor(requireContext(), R.color.red_1))
+                    viewModel.setNickComplete(false)
                     binding.tvCheck.isEnabled = false
                 }else{
                     binding.tvCheck.isEnabled = true
+                    viewModel.setNickComplete(true)
                     onClickCheckNick(nick = binding.etNick.text.toString())
                 }
             }
@@ -272,4 +282,22 @@ class MypagePersonalFragment(
             dialog.show(parentFragmentManager, "AllergyDialog")
         }
     }
+
+    private fun modifyBtnActive(isActive: Boolean){
+        if(isActive){
+            binding.tvNext.setBackgroundResource(R.drawable.bg_button_main)
+            binding.tvNext.isEnabled = true
+        }else{
+            binding.tvNext.setBackgroundResource(R.drawable.bg_button_dark_gray)
+            binding.tvNext.isEnabled = false
+        }
+    }
+
+    private fun nextStepBtn(){
+        binding.tvNext.setOnClickListener {
+            Snackbar.make(requireView(), "수정하였습니다.", Snackbar.LENGTH_SHORT).show()
+            //viewModel. ...수정 서버
+        }
+    }
+
 }
