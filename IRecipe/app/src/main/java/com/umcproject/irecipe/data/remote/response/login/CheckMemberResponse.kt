@@ -8,8 +8,8 @@ data class CheckMemberResponse(
     val code: String?,
     @Json(name = "isSuccess")
     val isSuccess: Boolean?,
-    @Json(name = "memberResponse")
-    val memberResponse: MemberResponse?,
+    @Json(name = "result")
+    val result: MemberResponse?,
     @Json(name = "message")
     val message: String?
 )

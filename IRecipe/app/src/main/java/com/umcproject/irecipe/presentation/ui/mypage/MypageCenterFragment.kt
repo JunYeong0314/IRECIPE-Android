@@ -1,14 +1,17 @@
 package com.umcproject.irecipe.presentation.ui.mypage
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import com.umcproject.irecipe.R
+import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.databinding.FragmentMypageCenterBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
@@ -33,12 +36,29 @@ class MypageCenterFragment(
         //화면 이름 변경
         (context as MainActivity).binding.tvTitle.text = "고객센터"
         wordsLimit(binding.tvCenterTitle, binding.tvCenterTitleCnt, 20)
+        val receivers = arrayOf("wohd7877@naver.com")
+        binding.button3.setOnClickListener {
+            sendEmailToAdmin(this, binding.tvCenterTitle.text.toString(), binding.tvCenterText.text.toString(), receivers)
+            binding.tvCenterTitle.text.clear()
+            binding.tvCenterText.text.clear()
+            Snackbar.make(view, "이메일 전송에 성공하였습니다.", Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         onCLickBackBtn("마이페이지")
         (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
+    }
+
+    fun sendEmailToAdmin(context: MypageCenterFragment, title: String, content:String, receivers: Array<String>) {
+        val email = Intent(Intent.ACTION_SEND)
+        email.putExtra(Intent.EXTRA_SUBJECT, title)
+        email.putExtra(Intent.EXTRA_TEXT, content)
+        email.putExtra(Intent.EXTRA_EMAIL, receivers)
+        Log.d("EmailUtils", "Sending email to: ${receivers.joinToString()}")
+        email.type = "message/rfc822"
+        context.startActivity(email)
     }
 
     private fun wordsLimit(editText: EditText, cntView : TextView, limit: Int) {

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
