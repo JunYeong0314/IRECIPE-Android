@@ -80,16 +80,6 @@
                 android:layout_marginStart="8dp"
                 android:background="@color/transparent"/>
         </LinearLayout>
-        <TextView
-            android:id="@+id/tv_check_nick"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:visibility="gone"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="4dp"
-            android:text="@string/sign_nick_complete"
-            android:textStyle="bold"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -127,13 +117,23 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_check_nick"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:visibility="gone"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="@string/sign_nick_complete"
+            android:textStyle="bold"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_gender"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="27dp"
         android:orientation="vertical"
         >
         <LinearLayout
