@@ -51,6 +51,7 @@ class MypagePersonalFragment(
         //화면 이름 변경
         val mainActivity = activity as? MainActivity
         mainActivity?.binding?.tvTitle?.text = "개인정보"
+        initInfo()//기본 정보 출력
 
         observeName()
         setGender()
@@ -78,6 +79,86 @@ class MypagePersonalFragment(
             changeTextView(binding.tvAllergy, 16f)
             change()
         }
+    }
+
+    private fun initInfo(){
+        //기존 이름 정보 출력
+        viewModel.nameResponse.observe(viewLifecycleOwner) { name ->
+            binding.etName.setText(name)
+            nameCheckActive(name)
+        }
+        viewModel.resultName()
+
+        //닉네임
+        viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
+            binding.etNick.setText(nickname)
+            nickCheck(true)
+            viewModel.setNickComplete(true)
+        }
+        viewModel.resultNick()
+
+        //성별
+        viewModel.genderResponse.observe(viewLifecycleOwner) { gender ->
+            if(gender.toString() == "MALE"){
+                binding.rbtnMan.isChecked = true
+                genderCheckActive(genderCode = 1)
+            }else{
+                binding.rbtnWoman.isChecked = true
+                genderCheckActive(genderCode = 2)
+            }
+        }
+        viewModel.resultGender()
+
+        //나이
+        viewModel.ageResponse.observe(viewLifecycleOwner) { age ->
+            if(age.toString() == "null"){
+                binding.tvChoice.text = getString(R.string.age_20)
+                binding.tvChoice.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                binding.ibtnCheckAge.setImageResource(R.drawable.ic_check_true)
+            }else {
+                when (age.toString()) {
+                    "TEN" -> {
+                        binding.tvChoice.text = getString(R.string.age_20)
+                        changeAgeText()
+                    }
+                    "TWENTY" -> {
+                        binding.tvChoice.text = getString(R.string.age_20)
+                        changeAgeText()
+                    }
+                    "THIRTY" -> {
+                        binding.tvChoice.text = getString(R.string.age_30)
+                        changeAgeText()
+                    }
+                    "FORTY" -> {
+                        binding.tvChoice.text = getString(R.string.age_40)
+                        changeAgeText()
+                    }
+                    "FIFTY" -> {
+                        binding.tvChoice.text = getString(R.string.age_50)
+                        changeAgeText()
+                    }
+                    "SIXTY" -> {
+                        binding.tvChoice.text = getString(R.string.age_60)
+                        changeAgeText()
+                    }
+                    else -> "ERROR"
+                }
+            }
+        }
+        viewModel.resultAge()
+
+        viewModel.allergyResponse.observe(viewLifecycleOwner) { allergy ->
+            var allergyText =""
+            allergy.forEach { allergy-> allergyText += "$allergy " }
+            if(allergy.isEmpty()) binding.tvSearch.text = getString(R.string.sign_choice)
+            else binding.tvSearch.text = allergyText
+        }
+        viewModel.resultAllergy()
+    }
+
+    private fun changeAgeText(){
+        binding.tvChoice.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        binding.ibtnCheckAge.setImageResource(R.drawable.ic_check_true)
     }
     override fun onDestroy() {
         val mainActivity = activity as? MainActivity
@@ -121,13 +202,6 @@ class MypagePersonalFragment(
         }
     }
     private fun observeName(){
-        //기존 이름 정보 출력
-        viewModel.nameResponse.observe(viewLifecycleOwner) { name ->
-            binding.etName.setText(name)
-            nameCheckActive(name)
-        }
-        viewModel.resultName()
-
         binding.etName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -156,13 +230,6 @@ class MypagePersonalFragment(
     }
 
     private fun observeNick(){
-        viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
-            binding.etNick.setText(nickname)
-            nickCheck(true)
-            viewModel.setNickComplete(true)
-        }
-        viewModel.resultNick()
-
         binding.etNick.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -210,18 +277,6 @@ class MypagePersonalFragment(
         }
     }
     private fun setGender(){
-        //기본 정보 출력
-        viewModel.genderResponse.observe(viewLifecycleOwner) { gender ->
-            if(gender.toString() == "MALE"){
-                binding.rbtnMan.isChecked = true
-                genderCheckActive(genderCode = 1)
-            }else{
-                binding.rbtnWoman.isChecked = true
-                genderCheckActive(genderCode = 2)
-            }
-        }
-        viewModel.resultGender()
-
         with(binding){
             rbtnMan.setOnClickListener {
                 genderCheckActive(genderCode = 1)
@@ -240,17 +295,6 @@ class MypagePersonalFragment(
     }
 
     private fun setAge(view: View){
-        //기본 정보 출력
-        viewModel.ageResponse.observe(viewLifecycleOwner) { gender ->
-            Log.d(TAG, gender.toString() +"age")
-            if(gender.toString() == null){
-                binding.tvChoice.text = getString(R.string.age_20)
-                binding.tvChoice.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                binding.ibtnCheckAge.setImageResource(R.drawable.ic_check_true)
-            }
-        }
-        viewModel.resultAge()
-
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.menu_age, popupMenu.menu)
 
