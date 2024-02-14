@@ -16,9 +16,9 @@ import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentMakePostBinding
+import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.State
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -4,15 +4,12 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.umcproject.irecipe.BuildConfig
 import com.umcproject.irecipe.data.remote.AppInterceptor
-<<<<<<< HEAD
 import com.umcproject.irecipe.data.remote.service.community.NewPostService
 import com.umcproject.irecipe.data.remote.service.community.NewTempService
-=======
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatDislikeService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
->>>>>>> e1541f9f4f950ee5d308cb2add475b4d899d1177
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
@@ -97,21 +94,24 @@ class ApiModule {
 
     @Provides
     @Singleton
-<<<<<<< HEAD
     fun provideNewPostService(retrofit: Retrofit): NewPostService {
         return retrofit.create(NewPostService::class.java)
-=======
-    fun provideGetIngredient(retrofit: Retrofit): GetRefrigeratorService {
-        return retrofit.create(GetRefrigeratorService::class.java)
->>>>>>> e1541f9f4f950ee5d308cb2add475b4d899d1177
     }
 
     @Provides
     @Singleton
-<<<<<<< HEAD
+    fun provideGetIngredient(retrofit: Retrofit): GetRefrigeratorService {
+        return retrofit.create(GetRefrigeratorService::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideNewTempService(retrofit: Retrofit): NewTempService {
         return retrofit.create(NewTempService::class.java)
-=======
+    }
+
+    @Provides
+    @Singleton
     fun provideAiChatRefriService(retrofit: Retrofit):AiChatRefriService{
         return retrofit.create(AiChatRefriService::class.java)
     }
@@ -144,6 +144,5 @@ class ApiModule {
     @Singleton
     fun provideAiChatDislikeService(retrofit: Retrofit):AiChatDislikeService{
         return retrofit.create(AiChatDislikeService::class.java)
->>>>>>> e1541f9f4f950ee5d308cb2add475b4d899d1177
     }
 }
