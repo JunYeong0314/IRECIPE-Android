@@ -8,9 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
 import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.domain.model.User
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
@@ -22,6 +26,8 @@ class MypageViewModel @Inject constructor(
     private var checkMemberService: CheckMemberService,
     private val duplicationService: NickDuplicationService,
 ): ViewModel() {
+    private val _userInfo = MutableStateFlow(User())
+    val userInfo: StateFlow<User> get() = _userInfo.asStateFlow()
 
     private val _nameResponse = MutableLiveData<String>()
     val nameResponse: LiveData<String> get() = _nameResponse
@@ -102,7 +108,7 @@ class MypageViewModel @Inject constructor(
             Log.d(ChatBotActivity.TAG, response.body()?.result?.age.toString())
             _ageResponse.value = response.body()?.result?.age.toString()
         }
-        //checkStep()
+        checkStep()
     }
 
     fun resultAllergy(){
@@ -119,5 +125,4 @@ class MypageViewModel @Inject constructor(
     private fun checkStep(){
         _isComplete.value = _nameResponse.value != "" && _genderResponse.value != "" && _nicknameResponse.value != ""
     }
-
 }
