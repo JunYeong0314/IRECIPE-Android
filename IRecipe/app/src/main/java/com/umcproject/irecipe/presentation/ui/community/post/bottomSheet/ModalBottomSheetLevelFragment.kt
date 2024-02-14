@@ -1,4 +1,4 @@
-package com.umcproject.irecipe.presentation.ui.community.makePost
+package com.umcproject.irecipe.presentation.ui.community.post.bottomSheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,14 +7,16 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.umcproject.irecipe.databinding.FragmentModalBottomSheetLevelBinding
 
-class ModalBottomSheetLevel : BottomSheetDialogFragment() {
+class ModalBottomSheetLevelFragment (
+    private val onClickLevel: (String) -> Unit
+): BottomSheetDialogFragment() {
     private lateinit var binding: FragmentModalBottomSheetLevelBinding
     private var selectLevel: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentModalBottomSheetLevelBinding.inflate(inflater,container,false)
         return binding.root
     }
@@ -22,21 +24,16 @@ class ModalBottomSheetLevel : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val btnHigh = binding.btnLevelHigh
-        val btnMiddle = binding.btnLevelMiddle
-        val btnLow = binding.btnLevelLow
-        val buttons = listOf(btnHigh, btnMiddle, btnLow)
 
-        buttons.forEach { it.isSelected = false }
-        btnHigh.isSelected = true
+        binding.btnLevelHigh.isSelected = true
         selectLevel = "상"
 
-        binding.btnSelectLevel.setOnClickListener {
-            (parentFragment as? MakePostFragment)?.updateLevelButtonText(selectLevel)
-            dismiss()
-        }
+        onClickLevels()
+        onClickComplete()
+    }
 
-
+    private fun onClickLevels(){
+        val buttons = listOf(binding.btnLevelHigh, binding.btnLevelMiddle, binding.btnLevelLow)
         buttons.forEachIndexed { index, button ->
             button.setOnClickListener {
                 buttons.forEach { it.isSelected = false }
@@ -49,6 +46,13 @@ class ModalBottomSheetLevel : BottomSheetDialogFragment() {
                     else -> ""
                 }
             }
+        }
+    }
+
+    private fun onClickComplete(){
+        binding.btnComplete.setOnClickListener {
+            onClickLevel(selectLevel)
+            dismiss()
         }
     }
 

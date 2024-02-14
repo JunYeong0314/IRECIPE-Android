@@ -9,10 +9,9 @@ import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommunityBinding
 import com.umcproject.irecipe.domain.model.Post
-import com.umcproject.irecipe.presentation.ui.community.makePost.MakePostFragment
+import com.umcproject.irecipe.presentation.ui.community.post.WritePostFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
-import com.umcproject.irecipe.presentation.util.Util.showFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 class CommunityFragment(
@@ -36,21 +35,23 @@ class CommunityFragment(
         super.onViewCreated(view, savedInstanceState)
 
         initView()
+        onClickPost() // 글쓰기 버튼 이벤트
     }
 
     private fun initView() {
-        binding.btnMakePost.setOnClickListener {// 글쓰기 상세페이지로 이동
-            showVerticalFragment(R.id.fv_main,requireActivity(),MakePostFragment(onClickBackBtn),MakePostFragment.TAG)
-            onClickDetail("커뮤니티 글쓰기")
-        }
-
         postAdapter = CommunityPostAdapter(postDatas)
         binding.rvPost.adapter = postAdapter
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
 
         adapterClick(postAdapter)
-        getPost(postAdapter)
 
+    }
+
+    private fun onClickPost(){
+        binding.btnMakePost.setOnClickListener {
+            showVerticalFragment(R.id.fv_main,requireActivity(),WritePostFragment(onClickBackBtn),WritePostFragment.TAG)
+            onClickDetail("커뮤니티 글쓰기")
+        }
     }
 
     private fun adapterClick(postAdapter: CommunityPostAdapter) {
@@ -78,27 +79,6 @@ class CommunityFragment(
 //                postAdapter.removeItem(position)
 //            }
         })
-    }
-    private fun getPost(postAdapter: CommunityPostAdapter) { // 글쓰기 -> 데이터 얻어오기
-        val postJson = arguments?.getString("post")
-        postJson?.let {
-            val gson = Gson()
-            val post: Post = gson.fromJson(postJson, Post::class.java)
-            if (!isPostContained(post)) {
-                //                postAdapter.addItem(post)
-                postDatas.add(0, post)
-                postAdapter.notifyItemInserted(0)
-            }
-        }
-    }
-
-    private fun isPostContained(post: Post): Boolean {
-        for (item in postDatas) {
-            if (item.title == post.title && item.subtitle == post.subtitle && item.text == post.text) {
-                return true
-            }
-        }
-        return false
     }
 
     fun deletePost(index: Int) { // 수정 필요

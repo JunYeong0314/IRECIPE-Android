@@ -1,20 +1,16 @@
 package com.umcproject.irecipe.presentation.ui.community
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentPostBinding
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
-import com.umcproject.irecipe.presentation.ui.community.makePost.ModalBottomSheetFoodType
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util.showFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 
@@ -55,7 +51,7 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit,private val inde
     }
     private fun initView(post:Post) {
         binding.tvTitle.text = post.title
-        binding.tvText.text = post.text
+        binding.tvText.text = post.content
         binding.llBtns.setOnClickListener {
             showVerticalFragment(R.id.fv_main,requireActivity(),CommentFragment(),CommentFragment.TAG)
         }
@@ -67,9 +63,6 @@ class PostFragment(private val onCLickBackBtn: (String) -> Unit,private val inde
     }
 
     fun deletePost() {
-        // 서버 연결 후 다시
-//        parentFragment as? CommunityFragment)?.adapter
-//        communityFragment.deletePost(index)
         requireActivity().supportFragmentManager.beginTransaction().remove(this).commit()
         requireActivity().supportFragmentManager.popBackStack()
     }

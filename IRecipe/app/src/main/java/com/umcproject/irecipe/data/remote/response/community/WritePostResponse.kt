@@ -1,16 +1,16 @@
-package com.umcproject.irecipe.data.remote.response
+package com.umcproject.irecipe.data.remote.response.community
 
 
 import com.squareup.moshi.Json
 
-data class NewPostResponse(
+data class WritePostResponse(
     @field:Json(name = "code")
     val code: String?,
     @field:Json(name = "isSuccess")
     val isSuccess: Boolean?,
     @field:Json(name = "message")
     val message: String?,
-    @field:Json(name = "newPostResult")
-    val newPostResult: NewPostResult?
+    @field:Json(name = "result")
+    val result: Result?
 )
-class NewPostResult
+class Result

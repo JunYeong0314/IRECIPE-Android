@@ -4,12 +4,11 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.umcproject.irecipe.BuildConfig
 import com.umcproject.irecipe.data.remote.AppInterceptor
-import com.umcproject.irecipe.data.remote.service.community.NewPostService
-import com.umcproject.irecipe.data.remote.service.community.NewTempService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatDislikeService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatExpiryService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatRandomService
-import com.umcproject.irecipe.data.remote.service.aichat.AiChatRefriService
+import com.umcproject.irecipe.data.remote.service.community.WritePostService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatDislikeService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatExpiryService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
@@ -94,8 +93,8 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideNewPostService(retrofit: Retrofit): NewPostService {
-        return retrofit.create(NewPostService::class.java)
+    fun provideNewPostService(retrofit: Retrofit): WritePostService {
+        return retrofit.create(WritePostService::class.java)
     }
 
     @Provides
@@ -106,13 +105,7 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideNewTempService(retrofit: Retrofit): NewTempService {
-        return retrofit.create(NewTempService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideAiChatRefriService(retrofit: Retrofit):AiChatRefriService{
+    fun provideAiChatRefriService(retrofit: Retrofit): AiChatRefriService {
         return retrofit.create(AiChatRefriService::class.java)
     }
 
@@ -124,7 +117,7 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideAiChatExpiryService(retrofit: Retrofit):AiChatExpiryService{
+    fun provideAiChatExpiryService(retrofit: Retrofit): AiChatExpiryService {
         return retrofit.create(AiChatExpiryService::class.java)
     }
 
@@ -136,13 +129,13 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideAiChatRandomService(retrofit: Retrofit):AiChatRandomService{
+    fun provideAiChatRandomService(retrofit: Retrofit): AiChatRandomService {
         return retrofit.create(AiChatRandomService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideAiChatDislikeService(retrofit: Retrofit):AiChatDislikeService{
+    fun provideAiChatDislikeService(retrofit: Retrofit): AiChatDislikeService {
         return retrofit.create(AiChatDislikeService::class.java)
     }
 }

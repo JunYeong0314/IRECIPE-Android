@@ -1,4 +1,4 @@
-package com.umcproject.irecipe.presentation.ui.community.makePost
+package com.umcproject.irecipe.presentation.ui.community.post.bottomSheet
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.umcproject.irecipe.databinding.FragmentModalBottomSheetFoodTypeBinding
 
-class ModalBottomSheetFoodType : BottomSheetDialogFragment() {
+class ModalBottomSheetCategoryFragment(
+    private val onClickCategory: (String) -> Unit
+) : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentModalBottomSheetFoodTypeBinding
-    private var selectType: String = ""
+    private var selectCategory: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -24,18 +26,14 @@ class ModalBottomSheetFoodType : BottomSheetDialogFragment() {
             binding.btnWestern, binding.btnUnusual, binding.btnSimple, binding.btnHigh)
         buttons.forEach { it.isSelected = false }
         binding.btnKorean.isSelected = true
-        selectType = "한식"
-
-        binding.btnSelectFoodType.setOnClickListener {
-            (parentFragment as? MakePostFragment)?.updateTypeButtonText(selectType)
-            dismiss()
-        }
+        selectCategory = "한식"
+        
         buttons.forEachIndexed { index, button ->
             button.setOnClickListener {
                 buttons.forEach { it.isSelected = false }
                 it.isSelected = true
 
-                selectType = when(index) {
+                selectCategory = when(index) {
                     0 -> "한식"
                     1 -> "중식"
                     2 -> "일식"
@@ -47,7 +45,13 @@ class ModalBottomSheetFoodType : BottomSheetDialogFragment() {
                 }
             }
         }
+
+        binding.btnSelectFoodType.setOnClickListener {
+            onClickCategory(selectCategory)
+            dismiss()
+        }
     }
+    
     companion object {
         const val TAG = "BasicBottomModalSheetType"
     }
