@@ -73,7 +73,7 @@ class MakePostFragment(
             if (title.isEmpty() || subtitle.isEmpty() || text.isEmpty() || level=="난이도" || category=="요리 종류") {
                 Snackbar.make(view, "모든 값을 입력해주세요", Snackbar.LENGTH_SHORT).show()
             } else {
-                sendToServerData(title, subtitle, text, level, category, isTemporary = true) // 데이터를 뷰모델로 전달
+                sendToServerData(title, subtitle, text, level, category, isTemporary = false) // 데이터를 뷰모델로 전달
             }
         }
 
@@ -84,7 +84,7 @@ class MakePostFragment(
             val level = binding.btnLevel.text.toString()
             val category = binding.btnFoodType.text.toString()
 
-            sendToServerData(title, subtitle, text, level, category, isTemporary = false)
+            sendToServerData(title, subtitle, text, level, category, isTemporary = true)
         }
 
         binding.btnFoodType.setOnClickListener { // 카테고리 설정
@@ -131,9 +131,9 @@ class MakePostFragment(
             .show()
     }
     private fun sendToServerData(title: String, subtitle: String, text: String, level: String, category: String, isTemporary: Boolean) { // 임시저장 or 등록
-        val sanitizedTitle = if (title.isEmpty()) "" else title
-        val sanitizedSubtitle = if (subtitle.isEmpty()) "" else subtitle
-        val sanitizedText = if (text.isEmpty()) "" else text
+        val sanitizedTitle = if (title.isEmpty()) "." else title
+        val sanitizedSubtitle = if (subtitle.isEmpty()) "." else subtitle
+        val sanitizedText = if (text.isEmpty()) "." else text
 
         viewModel.setTitle(sanitizedTitle)
         viewModel.setSubtitle(sanitizedSubtitle)
@@ -152,13 +152,13 @@ class MakePostFragment(
                     }
 
                     is State.ServerError -> {
-                        val message = if (isTemporary) "저장" else "임시저장"
+                        val message = if (isTemporary) "임시저장" else "저장"
                         Snackbar.make(requireView(), "[${state._data}] $message 실패", Snackbar.LENGTH_SHORT).show()
                     }
 
                     is State.Error -> {
                         Log.d("ERROR", state.exception.message.toString())
-                        val message = if (isTemporary) "저장" else "임시저장"
+                        val message = if (isTemporary) "임시저장" else "저장"
                         Snackbar.make(requireView(), "[Error] $message 실패", Snackbar.LENGTH_SHORT).show()
                     }
                 }

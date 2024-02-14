@@ -25,8 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewPostViewModel @Inject constructor(
-    private val newPostService: NewPostService,
-    private val newTempService: NewTempService
+    private val newPostService: NewPostService
+//    private val newTempService: NewTempService
 ): ViewModel() {
     private val _postInfo = MutableStateFlow(Post())
 
@@ -67,58 +67,23 @@ class NewPostViewModel @Inject constructor(
     }
 
 
-//    fun sendPostToServer(context: Context): Flow<State<Int>> = flow {
-//        emit(State.Loading)
-//
-//        var imagePart: MultipartBody.Part? = null
-//        val request = NewPostRequest(
-//            file = _postInfo.value.postImgUri?.toString(),
-//            postRequestDTO = PostRequestDTO(
-//                category = _postInfo.value.category,
-//                content = _postInfo.value.text,
-//                level = _postInfo.value.level,
-//                status = "published", // 예시로 고정값 사용
-//                subhead = _postInfo.value.subtitle,
-//                title = _postInfo.value.title
-//            )
-//        )
-//
-//        _postInfo.value.postImgUri?.let { uri ->
-//            val file = toFile(context, uri)
-//            val image = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-//            imagePart = MultipartBody.Part.createFormData(name = "file", file.name, image)
-//        }
-//
-//        val response = newPostService.newPostService(request, imagePart)
-//        val statusCode = response.code()
-//
-//        response.body()?.isSuccess?.let {
-//            if (it) {
-//                // 서버 응답이 성공적으로 처리됐을 때
-//                emit(State.Success(statusCode))
-//            } else {
-//                // 서버 응답이 실패했을 때
-//                emit(State.ServerError(statusCode))
-//            }
-//        }
-//    }.catch { e ->
-//        emit(State.Error(e))
-//    }
-
     fun sendPostToServer(context: Context, isTemporary: Boolean): Flow<State<Int>> = flow {
         emit(State.Loading)
         // 멀티파트파일을 서버에 전송하기 함수
         var imagePart: MultipartBody.Part? = null
         val status = if (isTemporary) "TEMP" else "POST" // 임시저장 or 등록
+        val category = getCategory(_postInfo.value.category)
+        val level = getLevel(_postInfo.value.level)
+
         val request = NewPostRequest(
             file = _postInfo.value.postImgUri?.toString(),
             postRequestDTO = PostRequestDTO(
-                category = _postInfo.value.category,
-                content = _postInfo.value.text,
-                level = _postInfo.value.level,
-                status = status,
+                title = _postInfo.value.title,
                 subhead = _postInfo.value.subtitle,
-                title = _postInfo.value.title
+                category = category,
+                level = level,
+                status = status,
+                content =  _postInfo.value.text
             )
         )
 
@@ -145,4 +110,25 @@ class NewPostViewModel @Inject constructor(
             emit(State.Error(e))
         }
     }
+    private fun getCategory(category: String): String {
+        return when (category) {
+            "한식" -> "KOREAN"
+            "양식" -> "WESTERN"
+            "일식" -> "JAPANESE"
+            "중식" -> "CHINESE"
+            "이색음식" -> "UNIQUE"
+            "간편요리" -> "SIMPLE"
+            "고급요리" -> "ADVANCED"
+            else -> "KOREAN"
+        }
+    }
+    private fun getLevel(level: String): String {
+        return when (level) {
+            "상" -> "DIFFICULT"
+            "중" -> "MID"
+            "하" -> "EASY"
+            else -> "DIFFICULT"
+        }
+    }
+
 }
