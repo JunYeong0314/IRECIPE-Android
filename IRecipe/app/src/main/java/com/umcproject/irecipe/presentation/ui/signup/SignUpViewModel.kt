@@ -114,7 +114,7 @@ class SignUpViewModel @Inject constructor(
 
         var imagePart: MultipartBody.Part? = null
         val request = SignUpRequest(
-            age = _userInfo.value.age.substring(0, 2).toInt(),
+            age = mapperToAge(_userInfo.value.age),
             allergyList = emptyList(),
             gender = _userInfo.value.genderCode,
             name = _userInfo.value.name,
@@ -154,6 +154,18 @@ class SignUpViewModel @Inject constructor(
 
     fun setSecondStepComplete(check: Boolean){
         _isSecondComplete.value = check
+    }
+
+    private fun mapperToAge(age: String): String{
+        return when(age){
+            "10대" -> "TEN"
+            "20대" -> "TWENTY"
+            "30대" -> "THIRTY"
+            "40대" -> "FORTY"
+            "50대" -> "FIFTY"
+            "60대" -> "SIXTY"
+            else -> "ERROR"
+        }
     }
 
 }

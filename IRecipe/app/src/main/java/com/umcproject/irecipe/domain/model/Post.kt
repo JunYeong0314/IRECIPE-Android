@@ -1,15 +1,12 @@
 package com.umcproject.irecipe.domain.model
 
-data class Post(
-//    var time: String = "",
-    var title: String = "",
-    var subtitle: String = "",
-    var text: String = ""
-//    var name: String = "",
-//    var postImg: Int = 0,
-//    var profileImg: Int = 0,
+import android.net.Uri
 
-//    var heart: Int = 0,
-//    var star: Int = 0,
-//    var comment: Int
+data class Post(
+    var title: String = "",
+    var subtitle: String = "", // subhead
+    var content: String = "", //content
+    var postImgUri: Uri? = null,
+    var level: String = "",
+    var category: String = ""
 )

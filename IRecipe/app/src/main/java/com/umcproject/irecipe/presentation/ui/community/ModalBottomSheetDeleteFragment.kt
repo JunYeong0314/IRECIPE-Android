@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.umcproject.irecipe.databinding.FragmentModalBottomSheetDeleteBinding
-import com.umcproject.irecipe.presentation.ui.community.makePost.MakePostFragment
 
 class ModalBottomSheetDeleteFragment : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentModalBottomSheetDeleteBinding

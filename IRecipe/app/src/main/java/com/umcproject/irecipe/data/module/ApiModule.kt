@@ -98,7 +98,7 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideAiChatRefriService(retrofit: Retrofit): AiChatRefriService {
+    fun provideAiChatRefriService(retrofit: Retrofit):AiChatRefriService{
         return retrofit.create(AiChatRefriService::class.java)
     }
 
@@ -110,7 +110,7 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideAiChatExpiryService(retrofit: Retrofit): AiChatExpiryService {
+    fun provideAiChatExpiryService(retrofit: Retrofit):AiChatExpiryService{
         return retrofit.create(AiChatExpiryService::class.java)
     }
 
@@ -122,13 +122,13 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideAiChatRandomService(retrofit: Retrofit): AiChatRandomService {
+    fun provideAiChatRandomService(retrofit: Retrofit):AiChatRandomService{
         return retrofit.create(AiChatRandomService::class.java)
     }
 
     @Provides
     @Singleton
-    fun provideAiChatDislikeService(retrofit: Retrofit): AiChatDislikeService {
+    fun provideAiChatDislikeService(retrofit: Retrofit):AiChatDislikeService{
         return retrofit.create(AiChatDislikeService::class.java)
     }
 }
