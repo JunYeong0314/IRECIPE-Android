@@ -4,21 +4,21 @@ import com.squareup.moshi.Json
 
 data class FixMemberRequest(
     @field:Json(name = "activity")
-    val activity: Boolean,
+    val activity: Boolean?,
     @field:Json(name = "age")
-    val age: Int,
+    val age: Int?,
     @field:Json(name = "allergyList")
-    val allergyList: List<Int>,
+    val allergyList: List<Int>?,
     @field:Json(name = "event")
-    val event: Boolean,
+    val event: Boolean?,
     @field:Json(name = "gender")
-    val gender: Int,
+    val gender: Int?,
     @field:Json(name = "imageUrl")
-    val imageUrl: String,
+    val imageUrl: String?,
     @field:Json(name = "important")
-    val important: Boolean,
+    val important: Boolean?,
     @field:Json(name = "name")
-    val name: String,
+    val name: String?,
     @field:Json(name = "nickname")
-    val nickname: String
+    val nickname: String?
 )

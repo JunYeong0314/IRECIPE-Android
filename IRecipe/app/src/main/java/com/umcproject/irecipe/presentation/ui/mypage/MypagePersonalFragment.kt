@@ -61,9 +61,10 @@ class MypagePersonalFragment(
         observeNick()
         onClickAllergy()
 
-        viewModel.isComplete.observe(requireActivity(), Observer { complete->
+        viewModel.isComplete2.observe(viewLifecycleOwner, Observer { complete->
             modifyBtnActive(complete)
         })
+        nextStepBtn()
 
         if(mainActivity?.binding?.tvTitle?.text.toString() == "개인정보"){
             changeMargin(binding.layoutName)
@@ -93,7 +94,7 @@ class MypagePersonalFragment(
         viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
             binding.etNick.setText(nickname)
             nickCheck(true)
-            viewModel.setNickComplete(true)
+            //viewModel.setNickComplete(true)
         }
         viewModel.resultNick()
 
@@ -111,38 +112,38 @@ class MypagePersonalFragment(
 
         //나이
         viewModel.ageResponse.observe(viewLifecycleOwner) { age ->
-            if(age.toString() == "null"){
-                binding.tvChoice.text = getString(R.string.age_20)
-                binding.tvChoice.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-                binding.ibtnCheckAge.setImageResource(R.drawable.ic_check_true)
-            }else {
-                when (age.toString()) {
-                    "TEN" -> {
-                        binding.tvChoice.text = getString(R.string.age_20)
-                        changeAgeText()
-                    }
-                    "TWENTY" -> {
-                        binding.tvChoice.text = getString(R.string.age_20)
-                        changeAgeText()
-                    }
-                    "THIRTY" -> {
-                        binding.tvChoice.text = getString(R.string.age_30)
-                        changeAgeText()
-                    }
-                    "FORTY" -> {
-                        binding.tvChoice.text = getString(R.string.age_40)
-                        changeAgeText()
-                    }
-                    "FIFTY" -> {
-                        binding.tvChoice.text = getString(R.string.age_50)
-                        changeAgeText()
-                    }
-                    "SIXTY" -> {
-                        binding.tvChoice.text = getString(R.string.age_60)
-                        changeAgeText()
-                    }
-                    else -> "ERROR"
+            when (age.toString()) {
+                "TEN" -> {
+                    binding.tvChoice.text = getString(R.string.age_20)
+                    changeAgeText()
+                    viewModel.setAge(binding.tvChoice.text.toString())
                 }
+                "TWENTY" -> {
+                    binding.tvChoice.text = getString(R.string.age_20)
+                    changeAgeText()
+                    viewModel.setAge(binding.tvChoice.text.toString())
+                }
+                "THIRTY" -> {
+                    binding.tvChoice.text = getString(R.string.age_30)
+                    changeAgeText()
+                    viewModel.setAge(binding.tvChoice.text.toString())
+                }
+                "FORTY" -> {
+                    binding.tvChoice.text = getString(R.string.age_40)
+                    changeAgeText()
+                    viewModel.setAge(binding.tvChoice.text.toString())
+                }
+                "FIFTY" -> {
+                    binding.tvChoice.text = getString(R.string.age_50)
+                    changeAgeText()
+                    viewModel.setAge(binding.tvChoice.text.toString())
+                }
+                "SIXTY" -> {
+                    binding.tvChoice.text = getString(R.string.age_60)
+                    changeAgeText()
+                    viewModel.setAge(binding.tvChoice.text.toString())
+                }
+                else -> "ERROR"
             }
         }
         viewModel.resultAge()
@@ -195,10 +196,10 @@ class MypagePersonalFragment(
     private fun nameCheckActive(name: String){
         if(name != ""){
             binding.ibtnCheckName.setImageResource(R.drawable.ic_check_true)
-            //viewModel.setName(name = name)
+            viewModel.setName(name = name)
         }else{
             binding.ibtnCheckName.setImageResource(R.drawable.ic_check)
-            //viewModel.setName(name = name)
+            viewModel.setName(name = name)
         }
     }
     private fun observeName(){
@@ -242,7 +243,6 @@ class MypagePersonalFragment(
                     binding.tvCheck.isEnabled = false
                 }else{
                     binding.tvCheck.isEnabled = true
-                    viewModel.setNickComplete(true)
                     onClickCheckNick(nick = binding.etNick.text.toString())
                 }
             }
@@ -258,12 +258,10 @@ class MypagePersonalFragment(
                             is State.Loading -> {}
                             is State.Success -> {
                                 if (state.data == 200) {
-                                    viewModel.setNickComplete(true)
                                     nickCheck(true)
-                                } else {
-                                    viewModel.setNickComplete(false)
-                                    nickCheck(false)
+                                    viewModel.setNickComplete(true)
                                 }
+                                else { nickCheck(false) }
                             }
                             is State.Error-> { nickCheck(false) }
                             is State.ServerError -> {
@@ -290,7 +288,7 @@ class MypagePersonalFragment(
     private fun genderCheckActive(genderCode: Int){
         if(genderCode != -1){
             binding.ibtnCheckGender.setImageResource(R.drawable.ic_check_true)
-            //viewModel.setGender(genderCode = genderCode)
+            viewModel.setGender(genderCode = genderCode)
         }
     }
 
@@ -318,7 +316,7 @@ class MypagePersonalFragment(
             tvChoice.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
             ibtnCheckAge.setImageResource(R.drawable.ic_check_true)
         }
-        //viewModel.setAge(getString(id))
+        viewModel.setAge(getString(id))
     }
 
 
@@ -329,7 +327,7 @@ class MypagePersonalFragment(
         binding.tvSearch.setOnClickListener {
             val dialog = AllergyChoiceDialog(
                 onClickAllergyList = {
-                    //viewModel.setAllergy(it)
+                    viewModel.setAllergy(it)
                     allergyList = it
                 },
                 onClickOk = {
@@ -353,8 +351,24 @@ class MypagePersonalFragment(
 
     private fun nextStepBtn(){
         binding.tvNext.setOnClickListener {
-            Snackbar.make(requireView(), "수정하였습니다.", Snackbar.LENGTH_SHORT).show()
-            //viewModel. ...수정 서버
+            CoroutineScope(Dispatchers.Main).launch{
+                viewModel.setLastComplete(requireContext()).collect{ state->
+                    when(state){
+                        is State.Loading -> {}
+                        is State.Success -> {
+                            Snackbar.make(requireView(), "수정하였습니다.", Snackbar.LENGTH_SHORT).show()
+                        }
+                        is State.Error -> {
+                            Snackbar.make(requireView(), "[Error] 수정 실패", Snackbar.LENGTH_SHORT).show()
+                            Log.d("ERROR", state.exception.message.toString())
+                        }
+                        is State.ServerError -> {
+                            Snackbar.make(requireView(), "[${state._data}] 수정 실패", Snackbar.LENGTH_SHORT).show()
+                        }
+                        else -> {}
+                    }
+                }
+            }
         }
     }
 
