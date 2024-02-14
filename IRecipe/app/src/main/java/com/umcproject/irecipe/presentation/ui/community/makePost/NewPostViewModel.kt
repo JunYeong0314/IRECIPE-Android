@@ -6,9 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.umcproject.irecipe.data.remote.request.NewPostRequest
 import com.umcproject.irecipe.data.remote.request.PostRequestDTO
 import com.umcproject.irecipe.data.remote.service.community.NewPostService
-import com.umcproject.irecipe.data.remote.service.community.NewTempService
+import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
-import com.umcproject.irecipe.presentation.util.State
 import com.umcproject.irecipe.presentation.util.UriUtil.toFile
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
