@@ -156,15 +156,15 @@ class SignUpViewModel @Inject constructor(
         _isSecondComplete.value = check
     }
 
-    private fun mapperToAge(age: String): String{
+    private fun mapperToAge(age: String): Int?{
         return when(age){
-            "10대" -> "TEN"
-            "20대" -> "TWENTY"
-            "30대" -> "THIRTY"
-            "40대" -> "FORTY"
-            "50대" -> "FIFTY"
-            "60대" -> "SIXTY"
-            else -> "ERROR"
+            "10대" -> 1
+            "20대" -> 2
+            "30대" -> 3
+            "40대" -> 4
+            "50대" -> 5
+            "60대" -> 6
+            else -> null
         }
     }
 
