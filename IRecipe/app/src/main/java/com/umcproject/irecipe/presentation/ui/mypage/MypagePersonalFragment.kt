@@ -35,6 +35,7 @@ class MypagePersonalFragment(
     private val onCLickBackBtn: (String) -> Unit
 ) : BaseFragment<FragmentSignupFirstBinding>() {
     private val viewModel: MypageViewModel by viewModels()
+    private var check = 0
     companion object{
         const val TAG = "MypagePersonalFragment"
     }
@@ -128,8 +129,7 @@ class MypagePersonalFragment(
         viewModel.resultName()
 
         binding.etName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(name: Editable?) {
                 if(name.isNullOrEmpty()){
@@ -191,8 +191,10 @@ class MypagePersonalFragment(
                             is State.Loading -> {}
                             is State.Success -> {
                                 if (state.data == 200) {
+                                    viewModel.setNickComplete(true)
                                     nickCheck(true)
                                 } else {
+                                    viewModel.setNickComplete(false)
                                     nickCheck(false)
                                 }
                             }
@@ -200,6 +202,7 @@ class MypagePersonalFragment(
                             is State.ServerError -> {
                                 Snackbar.make(requireView(), "Server Error: ${state.code}", Snackbar.LENGTH_SHORT).show()
                             }
+                            else -> {}
                         }
                     }
                 }
@@ -237,6 +240,17 @@ class MypagePersonalFragment(
     }
 
     private fun setAge(view: View){
+        //기본 정보 출력
+        viewModel.ageResponse.observe(viewLifecycleOwner) { gender ->
+            Log.d(TAG, gender.toString() +"age")
+            if(gender.toString() == null){
+                binding.tvChoice.text = getString(R.string.age_20)
+                binding.tvChoice.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+                binding.ibtnCheckAge.setImageResource(R.drawable.ic_check_true)
+            }
+        }
+        viewModel.resultAge()
+
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.menuInflater.inflate(R.menu.menu_age, popupMenu.menu)
 

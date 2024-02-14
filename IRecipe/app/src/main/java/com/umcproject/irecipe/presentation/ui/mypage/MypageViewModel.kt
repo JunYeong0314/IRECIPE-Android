@@ -102,7 +102,7 @@ class MypageViewModel @Inject constructor(
             Log.d(ChatBotActivity.TAG, response.body()?.result?.age.toString())
             _ageResponse.value = response.body()?.result?.age.toString()
         }
-        checkStep()
+        //checkStep()
     }
 
     fun resultAllergy(){
@@ -110,15 +110,14 @@ class MypageViewModel @Inject constructor(
             val response = checkMemberService.checkMember()
             Log.d(ChatBotActivity.TAG, response.body()?.result?.allergyList.toString())
             _allergyResponse.value = (response.body()?.result?.allergyList ?: emptyList()) as List<String>?
-
         }
-    }
-
-    private fun checkStep(){
-        _isComplete.value = _nameResponse.value != "" && _genderResponse.value != "" && _ageResponse.value != ""&& _nicknameResponse.value != "" &&  _isSecondComplete.value != false
     }
     fun setNickComplete(check: Boolean){
         _isSecondComplete.value = check
+    }
+
+    private fun checkStep(){
+        _isComplete.value = _nameResponse.value != "" && _genderResponse.value != "" && _nicknameResponse.value != ""
     }
 
 }
