@@ -26,8 +26,6 @@ class MypageViewModel @Inject constructor(
     private var checkMemberService: CheckMemberService,
     private val duplicationService: NickDuplicationService,
 ): ViewModel() {
-    private val _userInfo = MutableStateFlow(User())
-    val userInfo: StateFlow<User> get() = _userInfo.asStateFlow()
 
     private val _nameResponse = MutableLiveData<String>()
     val nameResponse: LiveData<String> get() = _nameResponse
