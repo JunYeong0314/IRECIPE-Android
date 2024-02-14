@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 
 data class SignUpRequest(
     @field:Json(name = "age")
-    val age: Int?,
+    val age: String?,
     @field:Json(name = "allergyList")
     val allergyList: List<Int?>?,
     @field:Json(name = "gender")
