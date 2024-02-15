@@ -56,10 +56,7 @@ class FirstStepFragment(
         }
 
         viewModel.setInit() // 초기 설정
-        // 나이 설정
-        binding.clAge.setOnClickListener{
-            setAge(it)
-        }
+        binding.clAge.setOnClickListener{ setAge(it) } // 나이 설정
         nextStepBtn() // 다음 단계 버튼 이벤트
         observeName() // 이름 작성 observe
         setGender() // 성별 설정
