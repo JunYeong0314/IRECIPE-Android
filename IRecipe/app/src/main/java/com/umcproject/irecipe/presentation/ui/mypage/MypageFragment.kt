@@ -119,7 +119,14 @@ class MypageFragment( private val onClickDetail: (String) -> Unit,
 
     private fun onClickMyInfo(){
         binding.mypagePersonal.setOnClickListener{//개인정보
-            showHorizontalFragment(R.id.fv_main, requireActivity(), MypagePersonalFragment(onClickBackBtn), MypagePersonalFragment.TAG)
+            showHorizontalFragment(
+                R.id.fv_main, requireActivity(),
+                MypagePersonalFragment(
+                    onClickBackBtn,
+                    onNickCallBack = { viewModel.resultNick() }
+                ),
+                MypagePersonalFragment.TAG
+            )
             onClickDetail("개인정보")
             changeBottom()
         }
