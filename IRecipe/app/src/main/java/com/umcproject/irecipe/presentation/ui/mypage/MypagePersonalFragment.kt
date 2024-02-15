@@ -32,7 +32,8 @@ import okhttp3.internal.threadName
 
 @AndroidEntryPoint
 class MypagePersonalFragment(
-    private val onCLickBackBtn: (String) -> Unit
+    private val onCLickBackBtn: (String) -> Unit,
+    private val onNickCallBack: () -> Unit
 ) : BaseFragment<FragmentSignupFirstBinding>() {
     private val viewModel: MypageViewModel by viewModels()
     private var check = 0
@@ -358,6 +359,7 @@ class MypagePersonalFragment(
                         is State.Loading -> {}
                         is State.Success -> {
                             Snackbar.make(requireView(), "수정하였습니다.", Snackbar.LENGTH_SHORT).show()
+                            onNickCallBack()
                         }
                         is State.Error -> {
                             Snackbar.make(requireView(), "[Error] 수정 실패", Snackbar.LENGTH_SHORT).show()
