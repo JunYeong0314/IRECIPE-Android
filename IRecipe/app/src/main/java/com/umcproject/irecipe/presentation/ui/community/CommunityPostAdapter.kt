@@ -1,6 +1,5 @@
 package com.umcproject.irecipe.presentation.ui.community
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
