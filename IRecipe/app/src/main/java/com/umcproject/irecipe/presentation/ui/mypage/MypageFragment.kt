@@ -2,14 +2,21 @@ package com.umcproject.irecipe.presentation.ui.mypage
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.umcproject.irecipe.R
+import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.databinding.FragmentMypageBinding
+import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util
@@ -21,10 +28,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class MypageFragment( private val onClickDetail: (String) -> Unit,
                       private val onClickBackBtn: (String) -> Unit
     ): BaseFragment<FragmentMypageBinding>() {
-
+    private val viewModel: MypageViewModel by viewModels()
     companion object{
         const val TAG = "MypageFragment"
     }
@@ -41,6 +49,25 @@ class MypageFragment( private val onClickDetail: (String) -> Unit,
         super.onViewCreated(view, savedInstanceState)
         changeTop()
 
+        basicInfo() //기본 정보
+
+
+        viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
+            Log.d(MypageFragment.TAG, "Observer called with nickname: $nickname")
+            binding.tvNickname.text = nickname
+            Log.d(MypageFragment.TAG, "hiyyy")
+        }
+        viewModel.resultNick()
+
+        viewModel.nick.observe(viewLifecycleOwner){nick->
+            Log.d(MypageFragment.TAG, nick)
+        }
+        viewModel.getNick()
+        Log.d(MypageFragment.TAG, viewModel.userInfo.value.nick)
+        //binding.tvNickname.text = viewModel.userInfo.value.nick
+
+
+
         onClickRecipe() // 레시피보관함
         onClickAlarm() // 알림설정
         onClickMyInfo() // 개인정보
@@ -49,16 +76,31 @@ class MypageFragment( private val onClickDetail: (String) -> Unit,
         onClickDelete() // 회원탈퇴
     }
 
+    private fun basicInfo(){
+        viewModel.imgResponse.observe(viewLifecycleOwner){img->
+            if(img == null){
+                binding.ivProfile.setImageResource(R.drawable.ic_base_profile)
+            }else{
+                try {
+                    val resourceId = img.toInt()
+                    binding.ivProfile.setImageResource(resourceId)
+                } catch (e: NumberFormatException) {
+                    binding.ivProfile.setImageResource(R.drawable.ic_base_profile)
+                }
+            }
+        }
+        viewModel.resultImg()
+    }
+
     private fun changeBottom(){
-        (context as MainActivity).binding.btmMain.visibility = View.GONE
+        val mainActivity = activity as? MainActivity
+        mainActivity?.binding?.btmMain?.visibility = View.GONE
     }
     private fun changeTop(){
-        //화면 이름 변경
-        (context as MainActivity).binding.tvTitle.text = "마이페이지"
-        //뒤로가는 버튼 지우기
-        (context as MainActivity).binding.ibtnBack.visibility = View.GONE
-        //바텀바 등장
-        (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
+        val mainActivity = activity as? MainActivity
+        mainActivity?.binding?.tvTitle?.text = "마이페이지"
+        mainActivity?.binding?.ibtnBack?.visibility = View.GONE
+        mainActivity?.binding?.btmMain?.visibility = View.VISIBLE
     }
 
     private fun onClickRecipe(){

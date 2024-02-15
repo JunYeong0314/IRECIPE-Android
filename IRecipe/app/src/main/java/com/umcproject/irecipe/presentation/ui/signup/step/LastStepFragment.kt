@@ -53,6 +53,7 @@ class LastStepFragment(
                         is State.ServerError -> {
                             Snackbar.make(requireView(), "[${state._data}] 회원가입 실패", Snackbar.LENGTH_SHORT).show()
                         }
+                        else -> {}
                     }
                 }
             }
