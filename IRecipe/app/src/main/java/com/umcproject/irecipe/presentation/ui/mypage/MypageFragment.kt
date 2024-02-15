@@ -53,9 +53,7 @@ class MypageFragment( private val onClickDetail: (String) -> Unit,
 
 
         viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
-            Log.d(MypageFragment.TAG, "Observer called with nickname: $nickname")
             binding.tvNickname.text = nickname
-            Log.d(MypageFragment.TAG, "hiyyy")
         }
         viewModel.resultNick()
 

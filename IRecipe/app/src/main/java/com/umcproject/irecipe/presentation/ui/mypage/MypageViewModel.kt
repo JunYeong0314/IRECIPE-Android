@@ -185,7 +185,7 @@ class MypageViewModel @Inject constructor(
         _isSecondComplete.value = check
     }
     private fun checkStep2(){
-        _isComplete2.value = _userInfo.value.name != ""  &&  _isSecondComplete.value.toString() != "false"
+        _isComplete2.value = _userInfo.value.name != ""  &&  _isSecondComplete.value.toString() != "false" && _userInfo.value.age.toString() != "-1"
     }
 
     fun setLastComplete(context: Context): Flow<State<Int>> = flow {
