@@ -4,23 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
+import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommunityBinding
+import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.domain.model.WritePost
 import com.umcproject.irecipe.presentation.ui.community.post.WritePostFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CommunityFragment(
     private val onClickDetail: (String) -> Unit,
     private val onClickBackBtn: (String) -> Unit
 ): BaseFragment<FragmentCommunityBinding>() {
-
-    private var postDatas = ArrayList<Post>()
-    lateinit var postAdapter: CommunityPostAdapter
+    private val viewModel: CommunityViewModel by viewModels()
+    private var page = 0
 
     companion object{
         const val TAG = "CommunityFragment"
@@ -34,55 +42,69 @@ class CommunityFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView()
+        // 게시글 fetch
+        viewModel.postState.observe(viewLifecycleOwner){
+            if(it == 200) initView()
+            else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
+        }
+
+        // 에러 감지
+        viewModel.postError.observe(viewLifecycleOwner){
+            Snackbar.make(requireView(), getString(R.string.error_fetch_post, it), Snackbar.LENGTH_SHORT).show()
+        }
+
+        binding.llSortBtn.setOnClickListener { onClickSort(it) } // 정렬 클릭 이벤트
         onClickPost() // 글쓰기 버튼 이벤트
     }
 
     private fun initView() {
-        postAdapter = CommunityPostAdapter(postDatas)
+        val postList = viewModel.getPostList()
+        val postAdapter = CommunityPostAdapter(postList)
         binding.rvPost.adapter = postAdapter
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-
-        adapterClick(postAdapter)
-
     }
 
     private fun onClickPost(){
-        binding.btnMakePost.setOnClickListener {
-            showVerticalFragment(R.id.fv_main,requireActivity(),WritePostFragment(onClickBackBtn),WritePostFragment.TAG)
+        binding.llWritePost.setOnClickListener {
+            showVerticalFragment(
+                R.id.fv_main,requireActivity(),
+                WritePostFragment(
+                    onClickBackBtn,
+                    postCallBack = {
+                        viewModel.fetchPost(0, binding.tvSort.text.toString())
+                    }),
+                WritePostFragment.TAG
+            )
             onClickDetail("커뮤니티 글쓰기")
         }
     }
 
-    private fun adapterClick(postAdapter: CommunityPostAdapter) {
-        postAdapter.setMyItemClickListener(object : CommunityPostAdapter.MyItemClickListener {
-            override fun onItemClick(post: Post, position:Int) {
-                val bundle = Bundle()
-                val gson = Gson()
-                val postJson = gson.toJson(post)
-                bundle.putString("post", postJson)
+    private fun onClickSort(view: View){
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(R.menu.menu_sort_post, popupMenu.menu)
 
-                val postFragment = PostFragment(onClickBackBtn, position,
-                    CommunityFragment(onClickDetail,onClickBackBtn)
-                )
-                postFragment.arguments = bundle
-
-                (context as MainActivity).supportFragmentManager.beginTransaction()
-                    .replace(R.id.fv_main, postFragment)
-                    .addToBackStack(null)
-                    .commit()
-                //showFragment(R.id.fv_main,requireActivity(),PostFragment(onClickBackBtn),PostFragment.TAG)
-                onClickDetail("커뮤니티")
+        popupMenu.setOnMenuItemClickListener { item->
+            when(item.itemId) {
+                R.id.menu_sort_basic -> {
+                    binding.tvSort.text = getString(R.string.com_sort_basic)
+                    viewModel.fetchPost(0, binding.tvSort.text.toString())
+                }
+                R.id.menu_sort_like -> {
+                    binding.tvSort.text = getString(R.string.com_sort_like)
+                    viewModel.fetchPost(0, binding.tvSort.text.toString())
+                }
+                R.id.menu_sort_score -> {
+                    binding.tvSort.text = getString(R.string.com_sort_score)
+                    viewModel.fetchPost(0, binding.tvSort.text.toString())
+                }
             }
-
-//            override fun onItemDelete(position: Int) {
-//                postAdapter.removeItem(position)
-//            }
-        })
+            true
+        }
+        popupMenu.show()
     }
 
-    fun deletePost(index: Int) { // 수정 필요
-        postAdapter.removeItem(index)
+    private fun getPostResponse(page: Int, criteria: String){
+
     }
 
 }

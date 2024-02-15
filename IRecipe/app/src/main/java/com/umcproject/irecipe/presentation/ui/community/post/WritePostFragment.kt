@@ -32,7 +32,8 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WritePostFragment(
-    private val onCLickBackBtn: (String) -> Unit
+    private val onCLickBackBtn: (String) -> Unit,
+    private val postCallBack: () -> Unit
 ) : BaseFragment<FragmentWritePostBinding>() {
     private val viewModel: WritePostViewModel by viewModels()
 
@@ -181,6 +182,7 @@ class WritePostFragment(
                     when(state){
                         is State.Loading -> {}
                         is State.Success -> {
+                            postCallBack()
                             popFragment(requireActivity())
                         }
                         is State.ServerError -> {

@@ -120,6 +120,10 @@ dependencies {
 
     // splash
     implementation ("androidx.core:core-splashscreen:1.1.0-alpha02")
+
+    //Coil
+    implementation("io.coil-kt:coil:2.4.0")
+
 }
 
 kapt {
