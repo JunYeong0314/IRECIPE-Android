@@ -4,31 +4,31 @@ import com.squareup.moshi.Json
 
 data class MemberLikeResponse(
     @Json(name = "code")
-    val code: String,
+    val code: String?,
     @Json(name = "isSuccess")
-    val isSuccess: Boolean,
+    val isSuccess: Boolean?,
     @Json(name = "message")
-    val message: String,
+    val message: String?,
     @Json(name = "result")
-    val result: List<MemberLikeResult>
+    val result: List<MemberLikeResult>?
 )
 data class MemberLikeResult(
     @Json(name = "category")
-    val category: String,
+    val category: String?,
     @Json(name = "content")
-    val content: String,
+    val content: String?,
     @Json(name = "fileName")
-    val fileName: String,
+    val fileName: String?,
     @Json(name = "imageUrl")
-    val imageUrl: String,
+    val imageUrl: String?,
     @Json(name = "level")
-    val level: String,
+    val level: String?,
     @Json(name = "likes")
-    val likes: Int,
+    val likes: Int?,
     @Json(name = "score")
-    val score: Int,
+    val score: Int?,
     @Json(name = "subhead")
-    val subhead: String,
+    val subhead: String?,
     @Json(name = "title")
-    val title: String
+    val title: String?
 )

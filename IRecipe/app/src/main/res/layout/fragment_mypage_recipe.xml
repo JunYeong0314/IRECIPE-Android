@@ -15,6 +15,19 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_recipe_like"
+            android:visibility="gone"
+            android:layout_width="60dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_recipe_btn_selector"
+            android:text="관심"
+            android:textColor="@color/gray_1"
+            android:textSize="12sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_recipe_like_select"
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
@@ -27,6 +40,19 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_recipe_write"
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_recipe_btn_selector"
+            android:text="작성한 글"
+            android:textColor="@color/gray_1"
+            android:textSize="12sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_recipe_write_select"
+            android:visibility="gone"
             android:layout_width="80dp"
             android:layout_height="30dp"
             android:layout_marginStart="10dp"

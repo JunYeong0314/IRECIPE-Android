@@ -16,6 +16,8 @@ import com.umcproject.irecipe.presentation.util.Util
 class MypageRecipeFragment(
     private val onCLickBackBtn: (String) -> Unit
 ): BaseFragment<FragmentMypageRecipeBinding>() {
+    private var ch1:Int? = 1
+    private var ch2:Int? = 0
 
     companion object{
         const val TAG = "MypageAlarmFragment"
@@ -33,6 +35,9 @@ class MypageRecipeFragment(
         initView()
 
         binding.btnRecipeLike.setOnClickListener{
+            ch1 = 1
+            ch2 = 0
+            checkBtn()
             Util.showNoStackFragment(
                 R.id.fv_recipe,
                 requireActivity(),
@@ -41,6 +46,9 @@ class MypageRecipeFragment(
             )
         }
         binding.btnRecipeWrite.setOnClickListener{
+            ch1 = 0
+            ch2 = 1
+            checkBtn()
             Util.showNoStackFragment(
                 R.id.fv_recipe,
                 requireActivity(),
@@ -57,6 +65,24 @@ class MypageRecipeFragment(
             RecipeLikeFragment(),
             RecipeLikeFragment.TAG
         )
+    }
+
+    private fun checkBtn(){
+        if(ch1 == 1){
+            binding.btnRecipeLikeSelect.visibility = View.VISIBLE
+            binding.btnRecipeLike.visibility = View.GONE
+        }else{
+            binding.btnRecipeLikeSelect.visibility = View.GONE
+            binding.btnRecipeLike.visibility = View.VISIBLE
+        }
+
+        if(ch2==1){
+            binding.btnRecipeWriteSelect.visibility = View.VISIBLE
+            binding.btnRecipeWrite.visibility = View.GONE
+        }else{
+            binding.btnRecipeWriteSelect.visibility = View.GONE
+            binding.btnRecipeWrite.visibility = View.VISIBLE
+        }
     }
 
     override fun onDestroy() {
