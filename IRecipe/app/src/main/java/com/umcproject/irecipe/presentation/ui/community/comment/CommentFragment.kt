@@ -10,7 +10,6 @@ import com.umcproject.irecipe.databinding.FragmentCommentBinding
 import com.umcproject.irecipe.presentation.ui.community.comment.qa.QAFragment
 import com.umcproject.irecipe.presentation.ui.community.comment.review.ReviewFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util.showFragment
 import com.umcproject.irecipe.presentation.util.Util.showNoStackFragment
 
 class CommentFragment: BaseFragment<FragmentCommentBinding>() {
