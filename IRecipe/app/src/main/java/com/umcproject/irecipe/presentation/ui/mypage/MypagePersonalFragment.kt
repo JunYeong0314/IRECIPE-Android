@@ -94,7 +94,7 @@ class MypagePersonalFragment(
         viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
             binding.etNick.setText(nickname)
             nickCheck(true)
-            //viewModel.setNickComplete(true)
+            viewModel.setNick1(nickname)
         }
         viewModel.resultNick()
 
@@ -164,6 +164,7 @@ class MypagePersonalFragment(
     override fun onDestroy() {
         val mainActivity = activity as? MainActivity
         super.onDestroy()
+        viewModel.getNick()
         onCLickBackBtn("마이페이지")
         mainActivity?.binding?.btmMain?.visibility = View.VISIBLE
     }

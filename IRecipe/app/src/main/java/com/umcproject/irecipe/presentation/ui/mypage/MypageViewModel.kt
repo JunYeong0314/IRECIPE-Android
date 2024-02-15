@@ -40,6 +40,9 @@ class MypageViewModel @Inject constructor(
 ): ViewModel() {
     private val _userInfo = MutableStateFlow(User())
     val userInfo: StateFlow<User> get() = _userInfo.asStateFlow()
+    private val _nick = MutableLiveData<String>()
+    val nick: LiveData<String> get() = _nick
+
 
 
     private val _nameResponse = MutableLiveData<String>()
@@ -91,12 +94,27 @@ class MypageViewModel @Inject constructor(
         }
     }
 
+    fun setNick1(nick: String){
+        _userInfo.update { it ->
+            it.copy(nick = nick)
+        }
+        Log.d(MypagePersonalFragment.TAG, _userInfo.value.nick + " setNick")
+        //checkStep2()
+    }
+    fun getNick(){
+        viewModelScope.launch {
+            _nick.value = _userInfo.value.nick
+            Log.d(MypagePersonalFragment.TAG, _nick.value + " getNick")
+        }
+    }
+
     fun setNick(nick: String): Flow<State<Int>> = flow {
         emit(State.Loading)
         val response = duplicationService.getNickDuplication(nickname = nick)
 
         if(response.isSuccessful){
             _userInfo.update { it.copy(nick = nick) }
+
             Log.d(MypagePersonalFragment.TAG, _userInfo.value.nick + " setNick")
             emit(State.Success(200))
             checkStep2()
