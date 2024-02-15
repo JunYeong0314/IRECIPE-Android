@@ -113,6 +113,9 @@
     <string name="com_follow">팔로우</string>
     <string name="com_text">본문</string>
     <string name="com_addImg">이미지 업로드</string>
+    <string name="com_sort_basic">기본순</string>
+    <string name="com_sort_like">인기순</string>
+    <string name="com_sort_score">평점 높은 순</string>
 
     <!-- modal UI -->
     <string name="modal_korean">한식</string>
@@ -162,6 +165,8 @@
     <string name="error_refrigerator">[Error: %s] 냉장고를 불러오는데 실패했습니다.</string>
     <string name="error_add_ingredient">[Error: %d] 음식을 저장하는데 실패했습니다.</string>
     <string name="error_write_post">[Error: %d] 게시글 요청이 실패했습니다.</string>
+    <string name="error_server_fetch_post">[Error: %d] 게시글을 불러올 수 없습니다.</string>
+    <string name="error_fetch_post">[Error: %s] 게시글을 불러올 수 없습니다.</string>
 
     <!-- Confirm Message -->
     <string name="confirm_add_ingredient">음식을 등록했어요!</string>

@@ -19,6 +19,7 @@
         android:largeHeap="true"
         android:enableOnBackInvokedCallback="true"
         android:hardwareAccelerated="true"
+        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_app"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Starting"

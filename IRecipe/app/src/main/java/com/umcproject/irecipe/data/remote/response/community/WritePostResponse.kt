@@ -2,6 +2,7 @@ package com.umcproject.irecipe.data.remote.response.community
 
 
 import com.squareup.moshi.Json
+import com.umcproject.irecipe.data.remote.response.community.getPost.Result
 
 data class WritePostResponse(
     @field:Json(name = "code")

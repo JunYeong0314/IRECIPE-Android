@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_sort_basic"
+        android:title="@string/com_sort_basic"/>
+    <item
+        android:id="@+id/menu_sort_like"
+        android:title="@string/com_sort_like"/>
+    <item
+        android:id="@+id/menu_sort_score"
+        android:title="@string/com_sort_score"/>
+</menu>
