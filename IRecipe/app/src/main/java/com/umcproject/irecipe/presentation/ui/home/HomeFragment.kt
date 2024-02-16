@@ -1,17 +1,13 @@
 package com.umcproject.irecipe.presentation.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentHomeBinding
-import com.umcproject.irecipe.presentation.ui.community.PostFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.Util
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

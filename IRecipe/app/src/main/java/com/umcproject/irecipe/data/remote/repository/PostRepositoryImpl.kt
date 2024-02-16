@@ -8,8 +8,6 @@ import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
-import com.umcproject.irecipe.domain.State
-import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostDetail
 import com.umcproject.irecipe.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +16,7 @@ import kotlinx.coroutines.flow.flow
 
 class PostRepositoryImpl(
     private val getPostService: GetPostService,
-    private val getPostRankingService: GetPostRankingService
+    private val getPostRankingService: GetPostRankingService,
     private val getPostDetailService: GetPostDetailService,
     private val postLikeService: PostLikeService,
     private val postUnLikeService: PostUnLikeService
