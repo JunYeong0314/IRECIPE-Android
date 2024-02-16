@@ -2,6 +2,10 @@ package com.umcproject.irecipe.data.remote.repository
 
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
+import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
+import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.domain.State
@@ -14,6 +18,7 @@ import kotlinx.coroutines.flow.flow
 
 class PostRepositoryImpl(
     private val getPostService: GetPostService,
+    private val getPostRankingService: GetPostRankingService
     private val getPostDetailService: GetPostDetailService,
     private val postLikeService: PostLikeService,
     private val postUnLikeService: PostUnLikeService
@@ -118,5 +123,32 @@ class PostRepositoryImpl(
             "평점 높은 순" -> "score"
             else -> ""
         }
+    }
+
+    override fun fetchPostRanking(): Flow<State<List<PostRank>>> = flow {
+        emit(State.Loading)
+
+        val response = getPostRankingService.getPostRanking()
+        val statusCode = response.code()
+
+        if (statusCode == 200) {
+            val responseBody = response.body()?.result?.postList?.mapNotNull{ post ->
+                post?.let {
+                    PostRank(
+                        it?.postId ?: -1,
+                        title = it?.title ?: "",
+                        imageUrl = it?.imageUrl,
+                        likes = it?.likes,
+                        score = it?.scores,
+                        scoresInOneMonth = it?.scoresInOneMonth
+                    )
+                }
+            } ?: emptyList()
+            emit(State.Success(responseBody))
+        } else {
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
     }
 }

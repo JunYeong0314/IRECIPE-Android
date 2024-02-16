@@ -13,6 +13,7 @@ import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
+import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
@@ -160,6 +161,12 @@ class ApiModule {
         return retrofit.create(GetPostService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideGetPostRankingService(retrofit: Retrofit): GetPostRankingService {
+        return retrofit.create(GetPostRankingService::class.java)
+    }
+    
     @Provides
     @Singleton
     fun provideMemberLikeService(retrofit: Retrofit): MemberLikeService{

@@ -1,5 +1,4 @@
 package com.umcproject.irecipe.presentation.ui.community
-
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater

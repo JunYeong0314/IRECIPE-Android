@@ -39,7 +39,10 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                 R.id.nav_frag_home -> {
                     id = R.id.nav_frag_home
                     hideTitle()
-                    HomeFragment().changeFragment(HomeFragment.TAG)
+                    HomeFragment(
+                        onClickDetail = { title-> showTitle(title, true) },
+                        onClickBackBtn = { title-> showTitle(title, false) }
+                    ).changeFragment(HomeFragment.TAG)
                     hideFragment(HomeFragment.TAG)
                 }
                 R.id.nav_frag_chat -> {
