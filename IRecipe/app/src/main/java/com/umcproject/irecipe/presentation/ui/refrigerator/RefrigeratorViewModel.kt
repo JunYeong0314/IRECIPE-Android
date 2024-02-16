@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RefrigeratorViewModel @Inject constructor(
-    private val refrigeratorRepository: RefrigeratorRepository
+    private val refrigeratorRepository: RefrigeratorRepository,
+    private val refrigeratorSearchService: RefrigeratorSearchService
 ): ViewModel() {
 
     // 냉장고 재료 불러오기
@@ -36,6 +38,9 @@ class RefrigeratorViewModel @Inject constructor(
     private val _fetchState = MutableLiveData<Int?>(null)
     val fetchState: LiveData<Int?>
         get() = _fetchState
+
+    private val _searchState = MutableLiveData<Int?>(null)
+    val searchState: LiveData<Int?> get() = _searchState
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?>
@@ -56,6 +61,23 @@ class RefrigeratorViewModel @Inject constructor(
                     }
                     is State.ServerError -> { _fetchState.value = state.code }
                     is State.Error -> { _errorMessage.value = state.exception.message }
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    fun searchRefrigerator(food:String){
+        viewModelScope.launch {
+            refrigeratorRepository.searchIngredient(food).collect{state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        _searchState.value = 200
+                    }
+                    is State.ServerError -> { _searchState.value = state.code }
+                    is State.Error -> { _errorMessage.value = state.exception.message }
+                    else -> {}
                 }
             }
         }

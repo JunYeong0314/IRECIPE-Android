@@ -44,6 +44,7 @@ class RefrigeratorFragment(
         // 냉장고 재료 fetch
         viewModel.fetchState.observe(viewLifecycleOwner) { state ->
             state?.let {
+                Log.d(TAG, state.toString())
                 if(state == 200) initView()
                 else Snackbar.make(requireView(), getString(R.string.error_server_refrigerator, state), Snackbar.LENGTH_SHORT).show()
             }
@@ -54,6 +55,18 @@ class RefrigeratorFragment(
             error?.let{ Snackbar.make(requireView(), getString(R.string.error_refrigerator, error), Snackbar.LENGTH_SHORT).show() }
         }
         goAddFoodPage() // 음식추가 버튼 이벤트
+
+        binding.ivSearch.setOnClickListener{
+            viewModel.searchRefrigerator(binding.etSearch.text.toString())
+
+            viewModel.searchState.observe(viewLifecycleOwner){state->
+                state?.let {
+                    if(state ==200){
+                        initView()
+                    }else Snackbar.make(requireView(), getString(R.string.error_server_refrigerator, state), Snackbar.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun initView() {

@@ -2,6 +2,7 @@ package com.umcproject.irecipe.data.remote.repository
 
 import com.umcproject.irecipe.data.remote.request.refrigerator.SetRefrigeratorRequest
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Ingredient
@@ -15,7 +16,8 @@ import okhttp3.RequestBody.Companion.toRequestBody
 
 class RefrigeratorRepositoryImpl(
     private val setRefrigeratorService: SetRefrigeratorService,
-    private val getTypeIngredientService: GetTypeIngredientService
+    private val getTypeIngredientService: GetTypeIngredientService,
+    private val refrigeratorSearchService: RefrigeratorSearchService
 ): RefrigeratorRepository {
     override fun setIngredient(ingredient: Ingredient): Flow<State<Int>> = flow{
         emit(State.Loading)
@@ -69,4 +71,31 @@ class RefrigeratorRepositoryImpl(
         emit(State.Error(e))
     }
 
+    override fun searchIngredient(food:String): Flow<State<List<Ingredient>>> = flow{
+        emit(State.Loading)
+
+        val response = refrigeratorSearchService.refrigeratorSearch(
+            name = food, page = 0
+        )
+        val statusCode = response.code()
+
+        if(statusCode == 200){
+            val responseBody = response.body()?.result?.ingredientList
+
+            val ingredient = responseBody?.mapNotNull {
+                Ingredient(
+                    name = it?.name!!,
+                    category = it.category!!,
+                    expiration = it.expiryDate!!,
+                    memo = it.memo!!,
+                    type = it.type!!
+                )
+            } ?: emptyList()
+            emit(State.Success(ingredient))
+        }else{
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
+    }
 }
