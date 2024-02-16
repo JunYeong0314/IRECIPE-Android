@@ -8,6 +8,8 @@ import com.umcproject.irecipe.data.remote.service.chat.AiChatDislikeService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
+import com.umcproject.irecipe.data.remote.service.community.GetPostService
+import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
@@ -19,6 +21,8 @@ import com.umcproject.irecipe.data.remote.service.login.GetRefreshTokenService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
 import com.umcproject.irecipe.data.remote.service.login.SignUpService
+import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
+import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetRefrigeratorService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
@@ -158,10 +162,22 @@ class ApiModule {
 
     @Provides
     @Singleton
+    fun provideMemberLikeService(retrofit: Retrofit): MemberLikeService{
+        return retrofit.create(MemberLikeService::class.java)
+    }
+    
+    @Provides
+    @Singleton
     fun provideGetPostDetailService(retrofit: Retrofit): GetPostDetailService {
         return retrofit.create(GetPostDetailService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideMemberWriteService(retrofit: Retrofit):MemberWriteService{
+        return retrofit.create(MemberWriteService::class.java)
+    }
+    
     @Provides
     @Singleton
     fun providePostLikeService(retrofit: Retrofit): PostLikeService {
