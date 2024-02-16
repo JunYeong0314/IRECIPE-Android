@@ -6,7 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.umcproject.irecipe.databinding.FragmentHomeBinding
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFirstFragment
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFourthFragment
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseSecondFragment
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseThirdFragment
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseVpAdapter
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,6 +38,7 @@ class HomeFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        initView()
+        advertiseView()
     }
 
     private fun initView() {
@@ -43,6 +50,17 @@ class HomeFragment(
         )
         binding.rvHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHome.adapter = homeAdapter
+    }
+
+    private fun advertiseView(){
+        val advertiseAdapter = AdvertiseVpAdapter(this)
+        advertiseAdapter.addFragment(AdvertiseFirstFragment())
+        advertiseAdapter.addFragment(AdvertiseSecondFragment())
+        advertiseAdapter.addFragment(AdvertiseThirdFragment())
+        advertiseAdapter.addFragment(AdvertiseFourthFragment())
+
+        binding.vpAd.adapter = advertiseAdapter
+        binding.vpAd.orientation = ViewPager2.ORIENTATION_HORIZONTAL
     }
 
 }
