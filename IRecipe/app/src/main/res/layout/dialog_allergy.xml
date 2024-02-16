@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:orientation="vertical">
-            <CheckBox
+            류<CheckBox
                 android:id="@+id/cb_nan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

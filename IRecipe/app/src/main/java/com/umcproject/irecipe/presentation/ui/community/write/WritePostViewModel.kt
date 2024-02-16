@@ -1,4 +1,4 @@
-package com.umcproject.irecipe.presentation.ui.community.post
+package com.umcproject.irecipe.presentation.ui.community.write
 
 import android.content.Context
 import android.net.Uri
@@ -27,7 +27,6 @@ import javax.inject.Inject
 @HiltViewModel
 class WritePostViewModel @Inject constructor(
     private val writePostService: WritePostService
-//    private val newTempService: NewTempService
 ): ViewModel() {
     private val _writePostInfo = MutableStateFlow(WritePost())
     val writePostInfo: StateFlow<WritePost>

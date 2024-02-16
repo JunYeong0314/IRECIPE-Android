@@ -31,10 +31,6 @@ class ModalBottomSheetDeleteFragment : BottomSheetDialogFragment() {
         binding.btnCancel.setOnClickListener {
             dismiss()
         }
-        binding.btnDelete.setOnClickListener {
-            (parentFragment as? ModalBottomSheetMyFragment)?.deletePost()
-            dismiss()
-        }
     }
 
     companion object {
