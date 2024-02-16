@@ -54,23 +54,6 @@ class MypageFragment(
 
         basicInfo() //기본 정보
 
-
-        viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
-            Log.d(MypageFragment.TAG, "Observer called with nickname: $nickname")
-            binding.tvNickname.text = nickname
-            Log.d(MypageFragment.TAG, "hiyyy")
-        }
-        viewModel.resultNick()
-
-        viewModel.nick.observe(viewLifecycleOwner){nick->
-            Log.d(MypageFragment.TAG, nick)
-        }
-        viewModel.getNick()
-        Log.d(MypageFragment.TAG, viewModel.userInfo.value.nick)
-        //binding.tvNickname.text = viewModel.userInfo.value.nick
-
-
-
         onClickRecipe() // 레시피보관함
         onClickAlarm() // 알림설정
         onClickMyInfo() // 개인정보
@@ -80,6 +63,11 @@ class MypageFragment(
     }
 
     private fun basicInfo(){
+        viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
+            binding.tvNickname.text = nickname
+        }
+        viewModel.resultNick()
+
         viewModel.imgResponse.observe(viewLifecycleOwner){img->
             if(img == null){
                 binding.ivProfile.setImageResource(R.drawable.ic_base_profile)
