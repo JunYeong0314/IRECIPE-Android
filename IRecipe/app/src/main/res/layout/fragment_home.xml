@@ -10,7 +10,7 @@
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp_ad"
-        android:layout_width="350dp"
+        android:layout_width="360dp"
         android:layout_height="100dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/bg_rounded_back"

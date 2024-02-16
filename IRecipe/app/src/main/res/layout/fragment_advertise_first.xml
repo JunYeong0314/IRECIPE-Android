@@ -6,11 +6,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+        android:id="@+id/cardView1"
         android:layout_width="350dp"
         android:layout_height="95dp"
         android:layout_gravity="center"
-        app:cardCornerRadius="20dp">
+        app:cardCornerRadius="10dp">
 
 
         <ImageView
