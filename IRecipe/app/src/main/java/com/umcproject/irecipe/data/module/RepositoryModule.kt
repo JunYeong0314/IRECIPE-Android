@@ -2,7 +2,10 @@ package com.umcproject.irecipe.data.module
 
 import com.umcproject.irecipe.data.remote.repository.PostRepositoryImpl
 import com.umcproject.irecipe.data.remote.repository.RefrigeratorRepositoryImpl
+import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
+import com.umcproject.irecipe.data.remote.service.community.PostLikeService
+import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetRefrigeratorService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
@@ -29,8 +32,11 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun providePostRepository(
-        getPostService: GetPostService
+        getPostService: GetPostService,
+        getPostDetailService: GetPostDetailService,
+        postLikeService: PostLikeService,
+        postUnLikeService: PostUnLikeService
     ): PostRepository{
-        return PostRepositoryImpl(getPostService)
+        return PostRepositoryImpl(getPostService, getPostDetailService, postLikeService, postUnLikeService)
     }
 }

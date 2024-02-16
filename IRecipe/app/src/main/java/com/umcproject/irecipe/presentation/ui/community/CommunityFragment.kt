@@ -10,22 +10,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommunityBinding
-import com.umcproject.irecipe.domain.State
-import com.umcproject.irecipe.domain.model.Post
-import com.umcproject.irecipe.domain.model.WritePost
-import com.umcproject.irecipe.presentation.ui.community.post.WritePostFragment
+import com.umcproject.irecipe.presentation.ui.community.post.PostFragment
+import com.umcproject.irecipe.presentation.ui.community.write.WritePostFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CommunityFragment(
     private val onClickDetail: (String) -> Unit,
-    private val onClickBackBtn: (String) -> Unit
+    private val onClickBackBtn: (String) -> Unit,
+    private val onHideBottomBar: () -> Unit,
+    private val onShowBottomBar: () -> Unit
 ): BaseFragment<FragmentCommunityBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
     private var page = 0
@@ -59,7 +56,18 @@ class CommunityFragment(
 
     private fun initView() {
         val postList = viewModel.getPostList()
-        val postAdapter = CommunityPostAdapter(postList)
+        val postAdapter = CommunityPostAdapter(
+            postList,
+            onClickPost = { // 게시글 클릭 콜백 함수
+                showHorizontalFragment(
+                    R.id.fv_main, requireActivity(),
+                    PostFragment(onClickBackBtn, it, viewModel, onShowBottomBar),
+                    PostFragment.TAG
+                )
+                onHideBottomBar()
+                onClickDetail("커뮤니티")
+            }
+        )
         binding.rvPost.adapter = postAdapter
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }

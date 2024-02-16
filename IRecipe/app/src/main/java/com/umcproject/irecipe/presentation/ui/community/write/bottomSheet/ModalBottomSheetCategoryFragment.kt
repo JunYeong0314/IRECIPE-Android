@@ -1,4 +1,4 @@
-package com.umcproject.irecipe.presentation.ui.community.post.bottomSheet
+package com.umcproject.irecipe.presentation.ui.community.write.bottomSheet
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -60,7 +60,9 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                     showTitle(getString(R.string.title_community), false)
                     CommunityFragment(
                         onClickDetail = { title-> showTitle(title, true) }, // 상세페이지 들어갔을때
-                        onClickBackBtn = { title-> showTitle(title, false) } // 상세페이지 나왔을 때
+                        onClickBackBtn = { title-> showTitle(title, false) }, // 상세페이지 나왔을 때
+                        onHideBottomBar = { hideBottomBar() },
+                        onShowBottomBar = { showBottomBar() }
                     ).changeFragment(CommunityFragment.TAG)
                     hideFragment(CommunityFragment.TAG)
                 }
@@ -107,6 +109,14 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
 
     private fun onClickBackBtn(){
         binding.ibtnBack.setOnClickListener { popFragment(this@MainActivity) }
+    }
+
+    private fun hideBottomBar(){
+        binding.btmMain.visibility = View.GONE
+    }
+
+    private fun showBottomBar(){
+        binding.btmMain.visibility = View.VISIBLE
     }
 
     override fun onResume() {

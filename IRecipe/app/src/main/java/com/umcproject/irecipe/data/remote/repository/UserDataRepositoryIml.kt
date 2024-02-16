@@ -6,19 +6,27 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.umcproject.irecipe.data.remote.service.login.GetRefreshTokenService
 import com.umcproject.irecipe.domain.model.User
 import com.umcproject.irecipe.domain.repository.UserDataRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class UserDataRepositoryIml @Inject constructor(
+class UserDataRepositoryIml(
     private val context: Context
 ): UserDataRepository {
+
+    @Inject
+    lateinit var getRefreshTokenService: GetRefreshTokenService
+
     private val Context.dataStore by preferencesDataStore(name = "user_data")
     private val _userData = MutableStateFlow(User())
 
@@ -68,6 +76,19 @@ class UserDataRepositoryIml @Inject constructor(
         val token = preferences[ACCESS_KEY] ?: ""
 
         return User(num, token)
+    }
+
+    override suspend fun getRefreshToken(){
+        val response = getRefreshTokenService.getRefreshToken(personalId = getUserData().num)
+        val statusCode = response.code()
+
+        if(statusCode == 200){
+            setUserData("access", response.body()?.result?.accessToken ?: "")
+            setUserData("refresh", response.body()?.result?.refreshToken ?: "")
+        }else{
+            setUserData("access", "")
+            setUserData("refresh", "")
+        }
     }
 
 }
