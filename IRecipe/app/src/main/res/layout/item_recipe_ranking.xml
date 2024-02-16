@@ -3,7 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/ll_recipe_ranking">
+    android:id="@+id/cl_recipe_ranking">
     <ImageView
         android:id="@+id/iv_recipe"
         android:layout_width="135dp"

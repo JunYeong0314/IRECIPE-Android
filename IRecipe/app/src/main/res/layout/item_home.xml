@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -12,13 +12,13 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginStart="12dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <ImageButton
         android:id="@+id/ibtn_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:src="@drawable/ic_arrow_right"
         android:backgroundTint="@color/transparent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,8 +31,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_home_title"
         android:layout_marginTop="15dp"
-        android:orientation="horizontal"
-        android:visibility="gone"/>
-
+        android:orientation="horizontal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

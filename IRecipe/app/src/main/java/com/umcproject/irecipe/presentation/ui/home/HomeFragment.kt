@@ -5,11 +5,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentHomeBinding
+import com.umcproject.irecipe.presentation.ui.community.PostFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.Util
+import dagger.hilt.android.AndroidEntryPoint
 
-class HomeFragment: BaseFragment<FragmentHomeBinding>() {
+@AndroidEntryPoint
+class HomeFragment(
+    private val onClickDetail: (String) -> Unit,
+    private val onClickBackBtn: (String) -> Unit
+): BaseFragment<FragmentHomeBinding>() {
+    private val viewModel: HomeViewModel by viewModels()
+//    private var homeDatas = ListOf(
+        // 이달의 레시피 랭킹    이따 어케묶지 있는지 물어보자 아니 근데
+        // 나의 냉장고 유통기한 )
     companion object{
         const val TAG = "HomeFragment"
     }
@@ -22,6 +35,18 @@ class HomeFragment: BaseFragment<FragmentHomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+//        initView()
+    }
+
+    private fun initView() {
+
+        val homeAdapter = HomeAdapter(
+//            homeDatas
+//            onClickDetail()
+//            onClickItem = { showVerticalFragment(R.id.fv_main, requireActivity(),) } 포스트 호출 후 구현
+        )
+        binding.rvHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rvHome.adapter = homeAdapter
     }
 
 }

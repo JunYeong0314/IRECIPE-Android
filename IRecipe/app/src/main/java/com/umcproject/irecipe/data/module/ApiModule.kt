@@ -10,6 +10,7 @@ import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
 import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
+import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.FixMemberService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
@@ -151,5 +152,11 @@ class ApiModule {
     @Singleton
     fun provideGetPostService(retrofit: Retrofit): GetPostService {
         return retrofit.create(GetPostService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetPostRankingService(retrofit: Retrofit): GetPostRankingService {
+        return retrofit.create(GetPostRankingService::class.java)
     }
 }
