@@ -1,6 +1,8 @@
 package com.umcproject.irecipe.presentation.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,8 @@ import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseThirdFragm
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseVpAdapter
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Timer
+import java.util.TimerTask
 
 @AndroidEntryPoint
 class HomeFragment(
@@ -25,6 +29,9 @@ class HomeFragment(
 //    private var homeDatas = ListOf(
         // 이달의 레시피 랭킹    이따 어케묶지 있는지 물어보자 아니 근데
         // 나의 냉장고 유통기한 )
+
+    private val timer = Timer()
+    private val handler = Handler(Looper.getMainLooper())
     companion object{
         const val TAG = "HomeFragment"
     }
@@ -52,7 +59,7 @@ class HomeFragment(
         binding.rvHome.adapter = homeAdapter
     }
 
-    private fun advertiseView(){
+    private fun advertiseView(){ //광고배너 화면
         val advertiseAdapter = AdvertiseVpAdapter(this)
         advertiseAdapter.addFragment(AdvertiseFirstFragment())
         advertiseAdapter.addFragment(AdvertiseSecondFragment())
@@ -61,6 +68,25 @@ class HomeFragment(
 
         binding.vpAd.adapter = advertiseAdapter
         binding.vpAd.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        binding.homeIndicator.setViewPager(binding.vpAd)
+
+        autoSlide(advertiseAdapter)//자동 슬라이드
+    }
+
+    private fun autoSlide(adapter: AdvertiseVpAdapter) {
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                handler.post {
+                    val nextItem = binding.vpAd.currentItem + 1
+                    if (nextItem < adapter.itemCount) {
+                        binding.vpAd.currentItem = nextItem
+                    } else {
+                        binding.vpAd.currentItem = 0 // 순환
+                    }
+                }
+            }
+        }, 3000, 3000)
     }
 
 }
