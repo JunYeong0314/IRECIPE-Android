@@ -21,6 +21,7 @@ class HomeViewModel @Inject constructor(
         fetchRank()
     }
 
+    private var postRank : PostRank? = null
     private var postRankList = emptyList<PostRank>()
     private val _fetchState = MutableLiveData<Int?>(null)
     val fetchState: LiveData<Int?>
@@ -44,6 +45,10 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getPostRank(): PostRank?{
+        return postRank
     }
 
 }

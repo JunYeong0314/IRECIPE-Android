@@ -6,19 +6,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentHomeBinding
+import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.domain.model.Refrigerator
+import com.umcproject.irecipe.presentation.ui.community.post.PostFragment
+import com.umcproject.irecipe.presentation.ui.home.detail.HomeDetailFragment
+import com.umcproject.irecipe.presentation.ui.refrigerator.detail.RefrigeratorDetailFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.Util
+import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment(
+    private val onHideTitle: () -> Unit,
     private val onClickDetail: (String) -> Unit,
     private val onClickBackBtn: (String) -> Unit
 ): BaseFragment<FragmentHomeBinding>() {
     private val viewModel: HomeViewModel by viewModels()
-//    private var homeDatas = ListOf(
-        // 이달의 레시피 랭킹    이따 어케묶지 있는지 물어보자 아니 근데
-        // 나의 냉장고 유통기한 )
+
     companion object{
         const val TAG = "HomeFragment"
     }
@@ -31,18 +38,54 @@ class HomeFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        initView()
+//        viewModel.fetchState.observe(viewLifecycleOwner) {state ->
+//            state?.let {
+//                if (state==200) initView()
+//            }
+//        }
+        initView()
     }
 
     private fun initView() {
+        binding.ibtnDetail.setOnClickListener {
+            onClickDetail("이달의 레시피 랭킹")
+            showHorizontalFragment(
+                R.id.fv_main,
+                requireActivity(),
+                HomeDetailFragment(onClickDetail, onClickBackBtn,onHideTitle),
+                HomeDetailFragment.TAG
+            )
 
-        val homeAdapter = HomeAdapter(
-//            homeDatas
-//            onClickDetail()
-//            onClickItem = { showVerticalFragment(R.id.fv_main, requireActivity(),) } 포스트 호출 후 구현
-        )
-        binding.rvHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvHome.adapter = homeAdapter
+        }
+//        binding.rvHome.apply {
+//            adapter = HomeRankingAdapter(
+////                    home, ... onClickItem
+//            )
+//            layoutManager = LinearLayoutManager(binding.rvHome.context, LinearLayoutManager.HORIZONTAL, false)
+//        }
+
+
+        // 리사이클러뷰로 구현할 때
+//        val homeDatas = listOf(
+//            viewModel.getPostRank()
+//        )
+
+//        val homeAdapter = HomeAdapter(
+//            homeDatas = homeDatas,
+//            onClickDetail = {goDetailPage()}
+//            onClickItem = { showVerticalFragment(R.id.fv_main, requireActivity(),PostFragment(onClickBackBtn, )) } 포스트 호출 후 구현
+//        )
+//        binding.rvHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+//        binding.rvHome.adapter = homeAdapter
     }
+//    private fun goDetailPage(){
+//        onClickDetail("이달의 레시피 랭킹")
+//        Util.showHorizontalFragment(
+//            R.id.fv_main,
+//            requireActivity(),
+//            HomeDetailFragment(),
+//            HomeDetailFragment.TAG
+//        )
+//    }
 
 }

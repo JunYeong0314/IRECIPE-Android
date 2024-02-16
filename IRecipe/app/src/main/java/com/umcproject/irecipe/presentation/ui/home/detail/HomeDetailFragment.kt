@@ -1,15 +1,18 @@
 package com.umcproject.irecipe.presentation.ui.home.detail
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.umcproject.irecipe.R
-import com.umcproject.irecipe.databinding.FragmentHomeBinding
+import androidx.recyclerview.widget.GridLayoutManager
+import com.umcproject.irecipe.databinding.FragmentHomeDetailBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
-class HomeDetailFragment : BaseFragment<FragmentHomeBinding>() {
+class HomeDetailFragment(
+    private val onClickDetail: (String) -> Unit,
+    private val onClickBackBtn: (String) -> Unit,
+    private val onHideTitle: () -> Unit
+) : BaseFragment<FragmentHomeDetailBinding>() {
 
     companion object{
         const val TAG = "HomeDetailFragment"
@@ -18,13 +21,21 @@ class HomeDetailFragment : BaseFragment<FragmentHomeBinding>() {
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FragmentHomeBinding {
-        return FragmentHomeBinding.inflate(inflater, container, false)
+    ): FragmentHomeDetailBinding {
+        return FragmentHomeDetailBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+        onHideTitle()
+    }
+    private fun initView(){
+        binding.rvHomeDetail.layoutManager= GridLayoutManager(requireActivity(), 2)
+//        binding.rvHomeDetail.adapter = HomeDetailAdapter()
     }
 
 }
