@@ -16,6 +16,7 @@ import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseSecondFrag
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseThirdFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseVpAdapter
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Timer
 import java.util.TimerTask
@@ -63,7 +64,7 @@ class HomeFragment(
         val advertiseAdapter = AdvertiseVpAdapter(this)
         advertiseAdapter.addFragment(AdvertiseFirstFragment())
         advertiseAdapter.addFragment(AdvertiseSecondFragment())
-        advertiseAdapter.addFragment(AdvertiseThirdFragment())
+        advertiseAdapter.addFragment(AdvertiseThirdFragment(onClickDetail, onClickBackBtn))
         advertiseAdapter.addFragment(AdvertiseFourthFragment())
 
         binding.vpAd.adapter = advertiseAdapter
@@ -88,5 +89,10 @@ class HomeFragment(
             }
         }, 3000, 3000)
     }
-
+    private fun changeTop(){
+        val mainActivity = activity as? MainActivity
+        mainActivity?.binding?.tvTitle?.text = ""
+        mainActivity?.binding?.ibtnBack?.visibility = View.GONE
+        mainActivity?.binding?.btmMain?.visibility = View.VISIBLE
+    }
 }
