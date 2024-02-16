@@ -35,11 +35,6 @@ class ModalBottomSheetMyFragment : BottomSheetDialogFragment() {
 //        binding.llPostModify.setOnClickListener {  } 피그마 구현 후 | 바로 편집하기인지?
     }
 
-    fun deletePost() {
-        (parentFragment as? PostFragment)?.deletePost()
-        dismiss()
-    }
-
     companion object {
         const val TAG = "BasicBottomModalSheetMy"
     }

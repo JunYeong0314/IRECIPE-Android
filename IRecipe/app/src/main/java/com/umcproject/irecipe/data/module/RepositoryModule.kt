@@ -1,12 +1,21 @@
 package com.umcproject.irecipe.data.module
 
+import com.umcproject.irecipe.data.remote.repository.MemberLikeRepositoryImpl
+import com.umcproject.irecipe.data.remote.repository.MemberWriteRepositoryImpl
 import com.umcproject.irecipe.data.remote.repository.PostRepositoryImpl
 import com.umcproject.irecipe.data.remote.repository.RefrigeratorRepositoryImpl
+import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
+import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
+import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
+import com.umcproject.irecipe.data.remote.service.community.PostLikeService
+import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetRefrigeratorService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
+import com.umcproject.irecipe.domain.repository.MemberLikeRepository
+import com.umcproject.irecipe.domain.repository.MemberWriteRepository
 import com.umcproject.irecipe.domain.repository.PostRepository
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
 import dagger.Module
@@ -31,8 +40,27 @@ object RepositoryModule {
     @Provides
     fun providePostRepository(
         getPostService: GetPostService,
-        getPostRankingService :GetPostRankingService
+        getPostRankingService :GetPostRankingService,
+        getPostDetailService: GetPostDetailService,
+        postLikeService: PostLikeService,
+        postUnLikeService: PostUnLikeService
     ): PostRepository{
-        return PostRepositoryImpl(getPostService, getPostRankingService)
+        return PostRepositoryImpl(getPostService, getPostRankingService, getPostDetailService, postLikeService, postUnLikeService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMemberWriteRepository(
+        memberWriteService: MemberWriteService
+    ):MemberWriteRepository{
+        return MemberWriteRepositoryImpl(memberWriteService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMemberLikeRepository(
+        memberLikeService: MemberLikeService
+    ):MemberLikeRepository{
+        return MemberLikeRepositoryImpl(memberLikeService)
     }
 }

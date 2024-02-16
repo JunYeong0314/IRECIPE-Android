@@ -176,7 +176,7 @@ class MypageViewModel @Inject constructor(
     }
     fun setAllergy(allergy: List<String>){
         _userInfo.update { it->
-            it.copy(allergy = allergy)
+            it.copy(allergy = mapperToAllergy(allergy))
         }
         Log.d(MypagePersonalFragment.TAG, _userInfo.value.allergy.toString() + " setAllergy")
 
@@ -185,7 +185,7 @@ class MypageViewModel @Inject constructor(
         _isSecondComplete.value = check
     }
     private fun checkStep2(){
-        _isComplete2.value = _userInfo.value.name != ""  &&  _isSecondComplete.value.toString() != "false"
+        _isComplete2.value = _userInfo.value.name != ""  &&  _isSecondComplete.value.toString() != "false" && _userInfo.value.age.toString() != "-1"
     }
 
     fun setLastComplete(context: Context): Flow<State<Int>> = flow {
@@ -233,5 +233,25 @@ class MypageViewModel @Inject constructor(
             "60대" -> 6
             else -> null
         }
+    }
+
+    private fun mapperToAllergy(allergyList: List<String>): List<Int>{
+        val mapperToAllergyList = mutableListOf<Int>()
+
+        allergyList.forEach { it->
+            when(it){
+                "난류" -> { mapperToAllergyList.add(1) }
+                "우유" -> { mapperToAllergyList.add(2) }
+                "땅콩" -> { mapperToAllergyList.add(3) }
+                "견과류" -> { mapperToAllergyList.add(4) }
+                "밀" -> { mapperToAllergyList.add(5) }
+                "참깨" -> { mapperToAllergyList.add(6) }
+                "콩(대두)" -> { mapperToAllergyList.add(7) }
+                "과일 및 채소" -> { mapperToAllergyList.add(8) }
+                "해산물 및 조개류" -> { mapperToAllergyList.add(9) }
+            }
+        }
+
+        return mapperToAllergyList
     }
 }

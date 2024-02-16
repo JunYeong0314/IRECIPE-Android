@@ -12,5 +12,5 @@ data class User(
     var age: String = "",
     var photoUri: Uri? = null,
     var nick: String = "",
-    var allergy: List<String>? = null
+    var allergy: List<Int>? = null
 )

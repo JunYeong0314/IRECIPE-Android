@@ -8,14 +8,22 @@ import com.umcproject.irecipe.data.remote.service.chat.AiChatDislikeService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
+import com.umcproject.irecipe.data.remote.service.community.GetPostService
+import com.umcproject.irecipe.data.remote.service.community.WritePostService
+import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
+import com.umcproject.irecipe.data.remote.service.community.PostLikeService
+import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.FixMemberService
+import com.umcproject.irecipe.data.remote.service.login.GetRefreshTokenService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
 import com.umcproject.irecipe.data.remote.service.login.SignUpService
+import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
+import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetRefrigeratorService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
@@ -27,7 +35,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -158,5 +165,41 @@ class ApiModule {
     @Singleton
     fun provideGetPostRankingService(retrofit: Retrofit): GetPostRankingService {
         return retrofit.create(GetPostRankingService::class.java)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideMemberLikeService(retrofit: Retrofit): MemberLikeService{
+        return retrofit.create(MemberLikeService::class.java)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideGetPostDetailService(retrofit: Retrofit): GetPostDetailService {
+        return retrofit.create(GetPostDetailService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideMemberWriteService(retrofit: Retrofit):MemberWriteService{
+        return retrofit.create(MemberWriteService::class.java)
+    }
+    
+    @Provides
+    @Singleton
+    fun providePostLikeService(retrofit: Retrofit): PostLikeService {
+        return retrofit.create(PostLikeService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePostUnLikeService(retrofit: Retrofit): PostUnLikeService {
+        return retrofit.create(PostUnLikeService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRefreshToken(retrofit: Retrofit): GetRefreshTokenService {
+        return retrofit.create(GetRefreshTokenService::class.java)
     }
 }

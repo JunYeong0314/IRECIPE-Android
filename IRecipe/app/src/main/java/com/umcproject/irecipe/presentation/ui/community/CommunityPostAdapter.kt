@@ -1,5 +1,6 @@
 package com.umcproject.irecipe.presentation.ui.community
-
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,11 @@ import coil.load
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ItemPostBinding
 import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.presentation.util.Util
 
 class CommunityPostAdapter(
-    private val postList: List<Post>
+    private val postList: List<Post>,
+    private val onClickPost: (Int) -> Unit
 ):RecyclerView.Adapter<CommunityPostAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): CommunityPostAdapter.ViewHolder {
@@ -22,11 +25,16 @@ class CommunityPostAdapter(
         val post = postList[position]
 
         holder.setPost(post)
+        post.postId?.let{ holder.onClickPostEvent(it) }
     }
 
     override fun getItemCount(): Int = postList.size
 
     inner class ViewHolder(val binding: ItemPostBinding):RecyclerView.ViewHolder(binding.root){
+        fun onClickPostEvent(postId: Int){
+            binding.clPost.setOnClickListener { onClickPost(postId) }
+        }
+
         fun setPost(post: Post){
             if(post.postImageUrl != null){
                 binding.cvImage.visibility = View.VISIBLE
