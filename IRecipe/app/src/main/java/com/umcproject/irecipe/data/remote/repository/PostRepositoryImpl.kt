@@ -129,9 +129,12 @@ class PostRepositoryImpl(
     }
 
     override fun fetchPostRanking(page: Int): Flow<State<List<PostRank>>> = flow {
+        println("fetchPostRanking - Start fetching post ranking for page: $page")
         emit(State.Loading)
 
         val response = getPostRankingService.getPostRanking(page)
+        println("fetchPostRanking - Response received with code: ${response.code()}")
+
         val statusCode = response.code()
 
         if (statusCode == 200) {
@@ -147,11 +150,14 @@ class PostRepositoryImpl(
                     )
                 }
             } ?: emptyList()
+            println("fetchPostRanking - Success: $responseBody")
             emit(State.Success(responseBody))
         } else {
+            println("fetchPostRanking - Server error with status code: $statusCode")
             emit(State.ServerError(statusCode))
         }
     }.catch { e->
+        println("fetchPostRanking - Error occurred: $e")
         emit(State.Error(e))
     }
     override fun fetchPostRankingCategory(page: Int, category: String): Flow<State<List<PostRank>>> = flow {

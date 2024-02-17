@@ -13,7 +13,6 @@ import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 class HomeRankingAdapter(
     private val minPostList: List<PostRank>,
     private val onClickPost: (Int) -> Unit
-
 ): RecyclerView.Adapter<HomeRankingAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,7 +46,7 @@ class HomeRankingAdapter(
             binding.clRecipeRanking.setOnClickListener { onClickPost(postId) }
         }
         fun rankingBind(rank: Int){
-            binding.tvRanking.text = rank.toString()
+            binding.tvRanking.text = (rank + 1).toString()
         }
     }
 }

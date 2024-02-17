@@ -11,19 +11,21 @@ import com.umcproject.irecipe.databinding.FragmentHomeDetailBinding
 import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.post.PostFragment
+import com.umcproject.irecipe.presentation.ui.home.HomeViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 class HomeDetailFragment(
+    private val viewModel: HomeViewModel,
     private val minPostList: List<PostRank>,
-    private val minPostCategoryList: List<PostRank>,
+    private var minPostCategoryList: List<PostRank>,
     private val onClickDetail: (String) -> Unit,
     private val onClickBackBtn: (String) -> Unit,
     private val onHideBottomBar: () -> Unit,
     private val onShowBottomBar: () -> Unit,
     private val onHideTitle: () -> Unit
 ) : BaseFragment<FragmentHomeDetailBinding>() {
-    private val viewModel: CommunityViewModel by viewModels()
+    private val coViewModel: CommunityViewModel by viewModels()
     private var selectBtn: String = ""
 
     companion object{
@@ -39,6 +41,7 @@ class HomeDetailFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initView()
     }
     override fun onDestroy() {
@@ -46,23 +49,48 @@ class HomeDetailFragment(
         onHideTitle()
     }
     private fun initView(){
+        initbtns()
+
+        if (selectBtn == "전체") {
+            binding.rvHomeDetail.layoutManager= GridLayoutManager(requireActivity(), 2)
+            binding.rvHomeDetail.adapter = HomeDetailAdapter(
+                minPostList,
+                onClickPost = {
+                    showVerticalFragment(R.id.fv_main, requireActivity(),
+                        PostFragment(onClickBackBtn, it, coViewModel, onShowBottomBar),
+                        PostFragment.TAG
+                    )
+                    onHideBottomBar()
+                    onClickDetail("커뮤니티")
+                }
+            )
+        } else {
+            viewModel.fetchRankCategory(0, selectBtn)
+            minPostCategoryList = viewModel.getPostRankCategory()
+
+            binding.rvHomeDetail.layoutManager= GridLayoutManager(requireActivity(), 2)
+            binding.rvHomeDetail.adapter = HomeDetailAdapter(
+                minPostCategoryList,
+                onClickPost = {
+                    showVerticalFragment(R.id.fv_main, requireActivity(),
+                        PostFragment(onClickBackBtn, it, coViewModel, onShowBottomBar),
+                        PostFragment.TAG
+                    )
+                    onHideBottomBar()
+                    onClickDetail("커뮤니티")
+                }
+            )
+        }
+
+    }
+
+    private fun initbtns() {
         binding.btnAll.isSelected = true
         selectBtn = getString(R.string.home_detail_all)
 
         onClickBtns()
-        binding.rvHomeDetail.layoutManager= GridLayoutManager(requireActivity(), 2)
-        binding.rvHomeDetail.adapter = HomeDetailAdapter(
-            minPostList,
-            onClickPost = {
-                showVerticalFragment(R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, viewModel, onShowBottomBar),
-                    PostFragment.TAG
-                )
-                onHideBottomBar()
-                onClickDetail("커뮤니티")
-            }
-        )
     }
+
     private fun onClickBtns(){
         val buttons = listOf(binding.btnAll, binding.btnKorean, binding.btnChinese, binding.btnJapanese,binding.btnWestern,binding.btnUnusual,binding.btnSimple,binding.btnHigh)
         buttons.forEachIndexed { index, button ->

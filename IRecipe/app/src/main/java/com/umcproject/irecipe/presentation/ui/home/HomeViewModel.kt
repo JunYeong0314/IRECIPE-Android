@@ -19,11 +19,12 @@ class HomeViewModel @Inject constructor(
     // 랭킹가져오기
     init {
         fetchRank(0)
-        fetchRankCategory(0, "한식")
+//        fetchRankCategory(0, "한식")
     }
 
     private var postRankList = emptyList<PostRank>()
     private var postRankCategoryList = emptyList<PostRank>()
+
     private val _fetchState = MutableLiveData<Int?>(null)
     val fetchState: LiveData<Int?>
         get() = _fetchState
@@ -31,6 +32,18 @@ class HomeViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?>
         get() = _errorMessage
+
+
+
+    private val _cafetchState = MutableLiveData<Int>()
+    val cafetchState: LiveData<Int>
+        get() = _cafetchState
+
+    private val _caerrorMessage = MutableLiveData<String>()
+    val caerrorMessage: LiveData<String>
+        get() = _caerrorMessage
+
+
 
     private fun fetchRank(page: Int) {
         viewModelScope.launch {
@@ -53,16 +66,16 @@ class HomeViewModel @Inject constructor(
         return postRankList
     }
 
-    private fun fetchRankCategory(page: Int, category: String) {
+    fun fetchRankCategory(page: Int, category: String) {
         viewModelScope.launch {
             postRepository.fetchPostRankingCategory(page,category).collect{ state->
                 when(state){
-                    is State.Error -> {_errorMessage.value = state.exception.message}
+                    is State.Error -> {_caerrorMessage.value = state.exception.message}
                     State.Loading -> {}
-                    is State.ServerError -> { _fetchState.value = state.code }
+                    is State.ServerError -> { _cafetchState.value = state.code }
                     is State.Success -> {
-                        postRankList = state.data
-                        _fetchState.value = 200
+                        postRankCategoryList = state.data
+                        _cafetchState.value = 200
 
                     }
                 }

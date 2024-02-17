@@ -19,6 +19,7 @@ import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util
 import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFirstFragment
@@ -43,10 +44,6 @@ class HomeFragment(
     private val homeViewModel: HomeViewModel by viewModels()
     private val communityViewModel: CommunityViewModel by viewModels()
 
-//    private var homeDatas = ListOf(
-        // 이달의 레시피 랭킹    이따 어케묶지 있는지 물어보자 아니 근데
-        // 나의 냉장고 유통기한 )
-
     private val timer = Timer()
     private val handler = Handler(Looper.getMainLooper())
     companion object{
@@ -61,30 +58,40 @@ class HomeFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.fetchState.observe(viewLifecycleOwner) {state ->
-//            state?.let {
-//                if (state==200) initView()
-//            }
+
+        homeViewModel.fetchState.observe(viewLifecycleOwner) {
+            if (it==200) initView()
+            else Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
+        }
+        homeViewModel.errorMessage.observe(viewLifecycleOwner){
+            Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
+        }
+        // 카테고리별 이달의 랭킹 fetch
+//        homeViewModel.cafetchState.observe(viewLifecycleOwner) {
+//            if (it!=200) Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
 //        }
-        initView()
+//        homeViewModel.caerrorMessage.observe(viewLifecycleOwner){
+//            Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
+//        }
+
         advertiseView()
     }
 
     private fun initView() {
-        val minPostList: List<PostRank> = homeViewModel.getPostRank() // 사이즈가 0으로 뜸;;
+        val minPostList: List<PostRank> = homeViewModel.getPostRank()
         val minPostCategoryList: List<PostRank> = homeViewModel.getPostRankCategory()
         binding.ibtnDetail.setOnClickListener {
             onClickDetail("이달의 레시피 랭킹")
             showHorizontalFragment(
                 R.id.fv_main, requireActivity(),
-                HomeDetailFragment(minPostList, minPostCategoryList,onClickDetail, onClickBackBtn,onHideBottomBar,onShowBottomBar,onHideTitle),
+                HomeDetailFragment(homeViewModel, minPostList, minPostCategoryList, onClickDetail, onClickBackBtn,onHideBottomBar,onShowBottomBar,onHideTitle),
                 HomeDetailFragment.TAG
             )
         }
-        val postList = homeViewModel.getPostRank()
+
         binding.rvHome.apply {
             adapter = HomeRankingAdapter(
-                    postList,
+                    minPostList,
                 onClickPost = { // 게시글 클릭 콜백 함수
                     showHorizontalFragment(
                         R.id.fv_main, requireActivity(),
@@ -97,7 +104,6 @@ class HomeFragment(
             )
             layoutManager = LinearLayoutManager(binding.rvHome.context, LinearLayoutManager.HORIZONTAL, false)
         }
-
 
         // 리사이클러뷰로 구현할 때
 //        val homeDatas = listOf(
