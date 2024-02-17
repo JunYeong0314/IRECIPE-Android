@@ -6,9 +6,12 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.umcproject.irecipe.BuildConfig
+import com.umcproject.irecipe.data.remote.response.login.token.GetRefreshTokenResponse
 import com.umcproject.irecipe.data.remote.service.login.GetRefreshTokenService
 import com.umcproject.irecipe.domain.model.User
 import com.umcproject.irecipe.domain.repository.UserDataRepository
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,17 +19,20 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.IOException
 import java.lang.IllegalStateException
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UserDataRepositoryIml(
     private val context: Context
 ): UserDataRepository {
-
-    @Inject
-    lateinit var getRefreshTokenService: GetRefreshTokenService
-
     private val Context.dataStore by preferencesDataStore(name = "user_data")
     private val _userData = MutableStateFlow(User())
 
@@ -79,7 +85,7 @@ class UserDataRepositoryIml(
     }
 
     override suspend fun getRefreshToken(){
-        val response = getRefreshTokenService.getRefreshToken(personalId = getUserData().num)
+        /*val response = getRefreshTokenService(getUserData().num)
         val statusCode = response.code()
 
         if(statusCode == 200){
@@ -88,7 +94,6 @@ class UserDataRepositoryIml(
         }else{
             setUserData("access", "")
             setUserData("refresh", "")
-        }
+        }*/
     }
-
 }

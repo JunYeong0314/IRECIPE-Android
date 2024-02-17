@@ -4,6 +4,7 @@ import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.domain.model.PostDetail
+import com.umcproject.irecipe.domain.model.Review
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {

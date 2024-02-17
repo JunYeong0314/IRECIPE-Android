@@ -1,6 +1,7 @@
 package com.umcproject.irecipe.data.remote
 
 import android.util.Log
+import com.umcproject.irecipe.data.remote.service.login.GetRefreshTokenService
 import com.umcproject.irecipe.domain.repository.UserDataRepository
 import com.umcproject.irecipe.presentation.util.ApplicationClass
 import kotlinx.coroutines.runBlocking
@@ -26,7 +27,9 @@ class AppInterceptor @Inject constructor(
 
         val response = chain.proceed(request)
 
-        return if(response.isSuccessful){
+        return response
+
+        /*return if(response.isSuccessful){
             response
         }else{
             val newToken = runBlocking {
@@ -37,7 +40,7 @@ class AppInterceptor @Inject constructor(
             val newRequest = chain.request().putTokenHeader(newToken)
 
             chain.proceed(newRequest)
-        }
+        }*/
     }
 
     private fun Request.putTokenHeader(token: String): Request{

@@ -67,7 +67,7 @@ class PostRepositoryImpl(
                 writerNick = post?.writerNickName,
                 writerProfileUrl = post?.writerImage,
                 likes = post?.likes,
-                score = post?.score?.toInt(),
+                score = post?.score,
                 reviewCount = post?.reviewsCount,
                 createdAt = post?.createdAt,
                 isLike = post?.likeOrNot,
