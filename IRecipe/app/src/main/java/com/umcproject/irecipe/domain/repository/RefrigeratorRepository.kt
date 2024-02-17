@@ -8,4 +8,5 @@ import kotlinx.coroutines.flow.Flow
 interface RefrigeratorRepository {
     fun setIngredient(ingredient: Ingredient): Flow<State<Int>> // 냉장고 재료 넣기
     fun fetchIngredientType(type: String): Flow<State<Refrigerator>> // type에 따른 재료 불러오기
+    fun searchIngredient(food:String): Flow<State<List<Ingredient>>> // 검색해서 type에 따른 재료 불러오기
 }
