@@ -126,6 +126,9 @@ dependencies {
 
     //Viewpager
     implementation ("androidx.viewpager2:viewpager2:1.0.0")
+
+    // Lottie Animation
+    implementation ("com.airbnb.android:lottie:6.1.0")
 }
 
 kapt {

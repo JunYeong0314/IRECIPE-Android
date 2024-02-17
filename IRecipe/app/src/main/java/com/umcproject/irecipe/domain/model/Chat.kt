@@ -7,5 +7,6 @@ data class Chat(
     companion object {
         const val SENT_BY_ME = "me"
         const val SENT_BY_BOT = "bot"
+        const val LOADING = "load"
     }
 }

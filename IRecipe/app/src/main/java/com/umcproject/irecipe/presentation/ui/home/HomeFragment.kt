@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.umcproject.irecipe.databinding.FragmentHomeBinding
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFirstFragment
@@ -26,16 +27,16 @@ class HomeFragment(
     private val onClickDetail: (String) -> Unit,
     private val onClickBackBtn: (String) -> Unit
 ): BaseFragment<FragmentHomeBinding>() {
-    private val viewModel: HomeViewModel by viewModels()
-//    private var homeDatas = ListOf(
-        // 이달의 레시피 랭킹    이따 어케묶지 있는지 물어보자 아니 근데
-        // 나의 냉장고 유통기한 )
-
-    private val timer = Timer()
-    private val handler = Handler(Looper.getMainLooper())
     companion object{
         const val TAG = "HomeFragment"
+        const val DELAY_MS: Long = 3000 // 슬라이드 간 딜레이
+        const val PERIOD_MS: Long = 2000 // 자동 슬라이드 주기
+        const val NUM_PAGES = 4
     }
+
+    private val viewModel: HomeViewModel by viewModels()
+    private var currentPage = 0
+
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -45,12 +46,11 @@ class HomeFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        initView()
+
         advertiseView()
     }
 
     private fun initView() {
-
         val homeAdapter = HomeAdapter(
 //            homeDatas
 //            onClickDetail()
@@ -69,30 +69,45 @@ class HomeFragment(
 
         binding.vpAd.adapter = advertiseAdapter
         binding.vpAd.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        val child = binding.vpAd.getChildAt(0)
+        (child as? RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
 
         binding.homeIndicator.setViewPager(binding.vpAd)
 
-        autoSlide(advertiseAdapter)//자동 슬라이드
+        binding.vpAd.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentPage = position
+            }
+        })
+
+        // 자동 슬라이딩 시작
+        startAutoSlide()
     }
 
-    private fun autoSlide(adapter: AdvertiseVpAdapter) {
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                handler.post {
-                    val nextItem = binding.vpAd.currentItem + 1
-                    if (nextItem < adapter.itemCount) {
-                        binding.vpAd.currentItem = nextItem
-                    } else {
-                        binding.vpAd.currentItem = 0 // 순환
-                    }
-                }
-            }
-        }, 3000, 3000)
-    }
     private fun changeTop(){
         val mainActivity = activity as? MainActivity
         mainActivity?.binding?.tvTitle?.text = ""
         mainActivity?.binding?.ibtnBack?.visibility = View.GONE
         mainActivity?.binding?.btmMain?.visibility = View.VISIBLE
     }
+
+    // 자동 슬라이드 시작
+    private fun startAutoSlide() {
+        val swipeTimer = Timer()
+        val handler = Handler(Looper.getMainLooper())
+        val update = Runnable {
+            if (currentPage == NUM_PAGES) {
+                currentPage = 0
+            }
+            binding.vpAd.setCurrentItem(currentPage++, true)
+        }
+
+        swipeTimer.schedule(object : TimerTask() {
+            override fun run() {
+                handler.post(update)
+            }
+        }, DELAY_MS, PERIOD_MS)
+    }
+
 }
