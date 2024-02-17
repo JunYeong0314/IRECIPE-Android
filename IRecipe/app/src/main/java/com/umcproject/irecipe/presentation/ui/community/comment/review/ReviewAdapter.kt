@@ -2,8 +2,10 @@ package com.umcproject.irecipe.presentation.ui.community.comment.review
 
 import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.umcproject.irecipe.databinding.ItemReviewBinding
 import com.umcproject.irecipe.domain.model.Review
 import java.util.Date
@@ -24,24 +26,26 @@ class ReviewAdapter(
         val review = reviewList[position]
 
         holder.setReview(
-            profile = review.profile,
-            photo = review.photo,
-            name = review.name,
-            rating = review.rating,
-            date = review.date,
-            content = review.content
+            profileUrl = review.writerProfile,
+            nick = review.writerNick,
+            content = review.content,
+            score = review.score,
+            imageUrl = review.imageUrl,
+            createdAt = review.createdAt
         )
     }
 
     inner class ViewHolder(val binding: ItemReviewBinding): RecyclerView.ViewHolder(binding.root){
-        fun setReview(profile: Uri?, photo: Uri?, name: String, rating: Double, date: Date, content: String) {
-            profile?.let { binding.ivProfile.setImageURI(it) }
-            photo?.let { binding.ivPhoto.setImageURI(it) }
-            binding.tvName.text = name
-            binding.tvDate.text = date.toString()
+        fun setReview(nick: String?, profileUrl: String?, content: String?, score: Int?, imageUrl: String?, createdAt: String?) {
+            //profileUrl?.let { binding.ivProfile.load(it) }
+            imageUrl?.let {
+                binding.ivPhoto.visibility = View.VISIBLE
+                binding.ivPhoto.load(it)
+            }
+            binding.tvName.text = nick
+            binding.tvDate.text = createdAt?.substring(0, 10)
             binding.tvContent.text = content
-
-            binding.rbScore.rating = rating.toFloat()
+            binding.rbScore.rating = score?.toFloat()!!
         }
 
     }

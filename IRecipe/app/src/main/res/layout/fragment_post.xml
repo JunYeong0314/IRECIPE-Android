@@ -141,6 +141,7 @@
                 android:id="@+id/cv_image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:visibility="gone"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginVertical="12dp"
                 app:cardCornerRadius="12dp"
@@ -161,6 +162,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:text="@string/com_text"
+                android:textSize="18sp"
                 android:textColor="@color/black"
                 app:layout_constraintTop_toBottomOf="@id/cv_image"
                 app:layout_constraintStart_toStartOf="parent"
@@ -188,56 +190,62 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
         <ImageView
-            android:id="@+id/iv_heart"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_heart"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_marginStart="20dp"/>
+        android:id="@+id/iv_heart"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/ic_heart"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_marginStart="20dp"/>
         <TextView
             android:id="@+id/tv_heart_cnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/com_count"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:layout_marginStart="10dp"/>
 
-        <ImageView
-            android:id="@+id/iv_star"
-            android:layout_width="26dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_star"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_marginStart="18dp"/>
-        <TextView
-            android:id="@+id/tv_star_cnt"
+        <LinearLayout
+            android:id="@+id/ll_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/com_count"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginStart="5dp"/>
-
-        <ImageView
-            android:id="@+id/iv_comment"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_comment"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:layout_marginStart="20dp" />
-        <TextView
-            android:id="@+id/tv_comment_cnt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/com_count"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginStart="10dp"
-            android:layout_gravity="center"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/iv_star"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_star"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="18dp"/>
+            <TextView
+                android:id="@+id/tv_star_cnt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/com_count"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"/>
+            <ImageView
+                android:id="@+id/iv_comment"
+                android:layout_width="20dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_comment"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="20dp" />
+            <TextView
+                android:id="@+id/tv_comment_cnt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/com_count"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,12 +7,17 @@ import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayout
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommentBinding
+import com.umcproject.irecipe.domain.model.PostDetail
+import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.comment.qa.QAFragment
 import com.umcproject.irecipe.presentation.ui.community.comment.review.ReviewFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util.showNoStackFragment
 
-class CommentFragment: BaseFragment<FragmentCommentBinding>() {
+class CommentFragment(
+    private val viewModel: CommunityViewModel,
+    private val postId: Int
+): BaseFragment<FragmentCommentBinding>() {
     companion object{
         const val TAG = "CommentFragment"
     }
@@ -31,7 +36,7 @@ class CommentFragment: BaseFragment<FragmentCommentBinding>() {
     }
 
     private fun initView(){
-        showNoStackFragment(R.id.fv_comment, requireActivity(), ReviewFragment(), ReviewFragment.TAG)
+        showNoStackFragment(R.id.fv_comment, requireActivity(), ReviewFragment(viewModel, postId), ReviewFragment.TAG)
     }
 
     private fun onTabClick(){
@@ -39,7 +44,7 @@ class CommentFragment: BaseFragment<FragmentCommentBinding>() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when(tab.position){
                     0 -> {
-                        showNoStackFragment(R.id.fv_comment, requireActivity(), ReviewFragment(), ReviewFragment.TAG)
+                        showNoStackFragment(R.id.fv_comment, requireActivity(), ReviewFragment(viewModel, postId), ReviewFragment.TAG)
                     }
                     1 -> {
                         showNoStackFragment(R.id.fv_comment, requireActivity(), QAFragment(), QAFragment.TAG)
