@@ -29,6 +29,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
         initBottomNav() // 바텀바 설정
         onClickBackBtn() // 이전버튼 로직
     }
@@ -81,6 +82,18 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
             }
             return@setOnItemSelectedListener true
         }
+    }
+
+    private fun initView(){
+        id = R.id.nav_frag_home
+        manager.beginTransaction().add(
+            R.id.fv_main,
+            HomeFragment(
+                onClickDetail = { title-> showTitle(title, true) },
+                onClickBackBtn = { title-> showTitle(title, false) }
+            ),
+            HomeFragment.TAG
+        ).commit()
     }
     private fun Fragment.changeFragment(tag: String) {
         val fragment = manager.findFragmentByTag(tag)
