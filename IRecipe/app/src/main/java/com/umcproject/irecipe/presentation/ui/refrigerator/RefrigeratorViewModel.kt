@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
 import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.domain.model.Ingredient
+import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,12 +27,12 @@ class RefrigeratorViewModel @Inject constructor(
     private val refrigeratorRepository: RefrigeratorRepository,
     private val refrigeratorSearchService: RefrigeratorSearchService
 ): ViewModel() {
-
     // 냉장고 재료 불러오기
     init {
         allIngredientFetch()
     }
 
+    private var searchIngredientList = emptyList<Ingredient>()
     private var normalIngredient: Refrigerator? = null
     private var coldIngredient: Refrigerator? = null
     private var frozenIngredient: Refrigerator? = null
@@ -73,6 +75,7 @@ class RefrigeratorViewModel @Inject constructor(
                 when(state){
                     is State.Loading -> {}
                     is State.Success -> {
+                        searchIngredientList = state.data
                         _searchState.value = 200
                     }
                     is State.ServerError -> { _searchState.value = state.code }
@@ -81,6 +84,10 @@ class RefrigeratorViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getSearchIngredientList(): List<Ingredient> {
+        return searchIngredientList
     }
 
     fun getNormalIngredient(): Refrigerator?{
