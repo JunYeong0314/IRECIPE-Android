@@ -20,14 +20,13 @@ import javax.inject.Inject
 class RecipeViewModel @Inject constructor(
     private val memberWriteRepository: MemberWriteRepository,
     private val memberLikeRepository: MemberLikeRepository,
-    private var checkMemberService: CheckMemberService,
 ): ViewModel() {
 
     init {
         fetchWrite(0)
     }
 
-    private var myWriteList = emptyList<MyPost>()
+    private var myWriteList = emptyList<Post>()
 
     private val _myWriteState = MutableLiveData<Int>()
     val myWriteState: LiveData<Int> get() = _myWriteState
@@ -43,11 +42,6 @@ class RecipeViewModel @Inject constructor(
     private val _myLikeError = MutableLiveData<String>()
     val myLikeError: LiveData<String> get() = _myLikeError
 
-    private val _nicknameResponse = MutableLiveData<String>()
-    val nicknameResponse: LiveData<String> get() = _nicknameResponse
-
-    private val _imgResponse = MutableLiveData<String>()
-    val imgResponse: LiveData<String> get() = _imgResponse
 
     fun fetchWrite(page: Int){
         viewModelScope.launch {
@@ -69,7 +63,7 @@ class RecipeViewModel @Inject constructor(
         }
     }
 
-    fun getMyWriteList(): List<MyPost>{
+    fun getMyWriteList(): List<Post>{
         return myWriteList
     }
 
@@ -97,19 +91,4 @@ class RecipeViewModel @Inject constructor(
         return myLikeList
     }
 
-    fun resultNick(){
-        viewModelScope.launch{
-            val response = checkMemberService.checkMember()
-            Log.d(ChatBotActivity.TAG, response.body()?.result?.nickname.toString())
-            _nicknameResponse.value = response.body()?.result?.nickname.toString()
-        }
-    }
-
-    fun resultImg(){
-        viewModelScope.launch {
-            val response = checkMemberService.checkMember()
-            Log.d(ChatBotActivity.TAG, response.body()?.result?.imageUrl.toString())
-            _imgResponse.value = response.body()?.result?.imageUrl.toString()
-        }
-    }
 }

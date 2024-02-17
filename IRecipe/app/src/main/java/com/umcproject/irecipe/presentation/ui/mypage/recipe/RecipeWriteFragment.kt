@@ -18,8 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class RecipeWriteFragment: BaseFragment<FragmentMypageWirteBinding>() {
     private val viewModel: RecipeViewModel by viewModels()
-    private var nick:String? = null
-    private var profile:String? = null
     companion object{
         const val TAG = "RecipeWriteFragment"
     }
@@ -32,16 +30,6 @@ class RecipeWriteFragment: BaseFragment<FragmentMypageWirteBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModel.nicknameResponse.observe(viewLifecycleOwner) { nickname ->
-            nick = nickname
-        }
-        viewModel.resultNick()
-
-        viewModel.imgResponse.observe(viewLifecycleOwner){img->
-            profile = img
-        }
-        viewModel.resultImg()
 
         viewModel.myWriteState.observe(viewLifecycleOwner){
             //val postList = viewModel.getMyWriteList()
@@ -60,7 +48,7 @@ class RecipeWriteFragment: BaseFragment<FragmentMypageWirteBinding>() {
         binding.llRecipeWrite.visibility = View.GONE
         binding.rvRecipeWrite.visibility = View.VISIBLE
         val myWriteList = viewModel.getMyWriteList()
-        val myWriteAdapter = RecipeWriteAdapter(myWriteList, nick, profile)
+        val myWriteAdapter = RecipeWriteAdapter(myWriteList)
         binding.rvRecipeWrite.adapter = myWriteAdapter
         binding.rvRecipeWrite.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
