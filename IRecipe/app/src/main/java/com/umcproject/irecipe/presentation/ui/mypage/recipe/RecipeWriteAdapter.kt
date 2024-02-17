@@ -1,5 +1,6 @@
 package com.umcproject.irecipe.presentation.ui.mypage.recipe
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,12 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ItemPostBinding
 import com.umcproject.irecipe.domain.model.MyPost
 import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
+import com.umcproject.irecipe.presentation.util.MainActivity
 
-class RecipeWriteAdapter(private val writeList: List<Post>):
+class RecipeWriteAdapter(
+    private val writeList: List<Post>,
+    private val onClickWrite: (Int) -> Unit):
     RecyclerView.Adapter<RecipeWriteAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecipeWriteAdapter.ViewHolder {
@@ -21,13 +26,17 @@ class RecipeWriteAdapter(private val writeList: List<Post>):
     override fun onBindViewHolder(holder: RecipeWriteAdapter.ViewHolder, position: Int) {
         val post = writeList[position]
         holder.setPost(post)
+        post.postId?.let{ holder.onClickPostEvent(it) }
     }
 
     override fun getItemCount(): Int = writeList.size
 
     inner class ViewHolder(val binding: ItemPostBinding):RecyclerView.ViewHolder(binding.root){
+        fun onClickPostEvent(postId: Int){
+            binding.clPost.setOnClickListener { onClickWrite(postId) }
+        }
         fun setPost(mpost: Post){
-            if(mpost.postImageUrl != null){
+            if(mpost.postImageUrl.toString() != ""){
                 binding.cvImage.visibility = View.VISIBLE
                 binding.ivImage.load(mpost.postImageUrl){
                     placeholder(R.drawable.bg_placeholder_gray)
@@ -36,7 +45,7 @@ class RecipeWriteAdapter(private val writeList: List<Post>):
                 binding.cvImage.visibility = View.GONE
             }
 
-            if(mpost.writerProfileUrl != null){
+            if(mpost.writerProfileUrl.toString() != ""){
                 binding.ivImgProfile.load(mpost.writerProfileUrl){
                     placeholder(R.drawable.bg_placeholder_gray)
                 }
@@ -51,6 +60,11 @@ class RecipeWriteAdapter(private val writeList: List<Post>):
             binding.tvHeartCnt.text = mpost.likes.toString()
             binding.tvCommentCnt.text = mpost.reviewCount.toString()
             binding.tvStarCnt.text = mpost.score.toString()
+
+            mpost.isLike?.let {
+                if(it) binding.ivHeart.setImageResource(R.drawable.ic_heart)
+                else binding.ivHeart.setImageResource(R.drawable.ic_heart_empty)
+            }
         }
     }
 }

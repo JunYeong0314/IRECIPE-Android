@@ -61,7 +61,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, viewModel, onShowBottomBar),
+                    PostFragment(onClickBackBtn, it, viewModel, onShowBottomBar, "CommunityFragment"),
                     PostFragment.TAG
                 )
                 onHideBottomBar()

@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.domain.model.Ingredient
 import com.umcproject.irecipe.domain.model.MyPost
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.repository.MemberLikeRepository
@@ -21,7 +22,6 @@ class RecipeViewModel @Inject constructor(
     private val memberWriteRepository: MemberWriteRepository,
     private val memberLikeRepository: MemberLikeRepository,
 ): ViewModel() {
-
     init {
         fetchWrite(0)
     }

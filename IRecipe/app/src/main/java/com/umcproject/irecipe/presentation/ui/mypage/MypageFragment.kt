@@ -35,7 +35,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MypageFragment(
     private val onClickDetail: (String) -> Unit,
-    private val onClickBackBtn: (String) -> Unit
+    private val onClickBackBtn: (String) -> Unit,
+    private val onHideBottomBar: () -> Unit,
+    private val onShowBottomBar: () -> Unit
 ): BaseFragment<FragmentMypageBinding>() {
     private val viewModel: MypageViewModel by viewModels()
     companion object{
@@ -98,7 +100,7 @@ class MypageFragment(
 
     private fun onClickRecipe(){
         binding.mypageReceipe.setOnClickListener{//레시피
-            showHorizontalFragment(R.id.fv_main, requireActivity(), MypageRecipeFragment(onClickBackBtn), MypageRecipeFragment.TAG)
+            showHorizontalFragment(R.id.fv_main, requireActivity(), MypageRecipeFragment(onClickDetail, onClickBackBtn, onHideBottomBar, onShowBottomBar), MypageRecipeFragment.TAG)
             onClickDetail("레시피 보관함")
             changeBottom()
         }

@@ -14,7 +14,10 @@ import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util
 
 class MypageRecipeFragment(
-    private val onCLickBackBtn: (String) -> Unit
+    private val onClickDetail: (String) -> Unit,
+    private val onClickBackBtn: (String) -> Unit,
+    private val onHideBottomBar: () -> Unit,
+    private val onShowBottomBar: () -> Unit
 ): BaseFragment<FragmentMypageRecipeBinding>() {
     private var ch1:Int? = 1
     private var ch2:Int? = 0
@@ -52,7 +55,7 @@ class MypageRecipeFragment(
             Util.showNoStackFragment(
                 R.id.fv_recipe,
                 requireActivity(),
-                RecipeWriteFragment(),
+                RecipeWriteFragment(onClickDetail, onClickBackBtn, onHideBottomBar, onShowBottomBar),
                 RecipeWriteFragment.TAG
             )
         }
@@ -87,7 +90,7 @@ class MypageRecipeFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-        onCLickBackBtn("마이페이지")
+        onClickBackBtn("마이페이지")
         (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
     }
 
