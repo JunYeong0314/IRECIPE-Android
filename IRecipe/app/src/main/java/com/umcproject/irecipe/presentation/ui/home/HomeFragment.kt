@@ -20,12 +20,14 @@ import com.umcproject.irecipe.presentation.util.Util
 import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.umcproject.irecipe.domain.model.PostRank
+import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFirstFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFourthFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseSecondFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseThirdFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseVpAdapter
 import com.umcproject.irecipe.presentation.util.MainActivity
+import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Timer
 import java.util.TimerTask
@@ -38,7 +40,8 @@ class HomeFragment(
     private val onHideBottomBar: () -> Unit,
     private val onShowBottomBar: () -> Unit
 ): BaseFragment<FragmentHomeBinding>() {
-    private val viewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
+    private val communityViewModel: CommunityViewModel by viewModels()
 
 //    private var homeDatas = ListOf(
         // 이달의 레시피 랭킹    이따 어케묶지 있는지 물어보자 아니 근데
@@ -68,8 +71,8 @@ class HomeFragment(
     }
 
     private fun initView() {
-        val minPostList: List<PostRank> = viewModel.getPostRank()
-        val minPostCategoryList: List<PostRank> = viewModel.getPostRankCategory()
+        val minPostList: List<PostRank> = homeViewModel.getPostRank() // 사이즈가 0으로 뜸;;
+        val minPostCategoryList: List<PostRank> = homeViewModel.getPostRankCategory()
         binding.ibtnDetail.setOnClickListener {
             onClickDetail("이달의 레시피 랭킹")
             showHorizontalFragment(
@@ -78,12 +81,22 @@ class HomeFragment(
                 HomeDetailFragment.TAG
             )
         }
-//        binding.rvHome.apply {
-//            adapter = HomeRankingAdapter(
-////                    home, ... onClickItem
-//            )
-//            layoutManager = LinearLayoutManager(binding.rvHome.context, LinearLayoutManager.HORIZONTAL, false)
-//        }
+        val postList = homeViewModel.getPostRank()
+        binding.rvHome.apply {
+            adapter = HomeRankingAdapter(
+                    postList,
+                onClickPost = { // 게시글 클릭 콜백 함수
+                    showHorizontalFragment(
+                        R.id.fv_main, requireActivity(),
+                        PostFragment(onClickBackBtn, it, communityViewModel, onShowBottomBar),
+                        PostFragment.TAG
+                    )
+                    onHideBottomBar()
+                    onClickDetail("커뮤니티")
+                }
+            )
+            layoutManager = LinearLayoutManager(binding.rvHome.context, LinearLayoutManager.HORIZONTAL, false)
+        }
 
 
         // 리사이클러뷰로 구현할 때

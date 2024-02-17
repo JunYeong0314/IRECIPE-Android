@@ -40,10 +40,10 @@ class HomeAdapter(
         ) {
 //            binding.tvHomeTitle.text = 리스트에서 꺼내서 제목 부여
             binding.rvHome.apply {
-                adapter = HomeRankingAdapter(
-//                    home, ... onClickItem
-                    )
-                layoutManager = LinearLayoutManager(binding.rvHome.context, LinearLayoutManager.HORIZONTAL, false)
+//                adapter = HomeRankingAdapter(
+////                    home, ... onClickItem
+//                    )
+//                layoutManager = LinearLayoutManager(binding.rvHome.context, LinearLayoutManager.HORIZONTAL, false)
             }
         }
     }

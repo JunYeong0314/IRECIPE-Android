@@ -19,6 +19,7 @@ class HomeViewModel @Inject constructor(
     // 랭킹가져오기
     init {
         fetchRank(0)
+        fetchRankCategory(0, "한식")
     }
 
     private var postRankList = emptyList<PostRank>()
@@ -52,7 +53,7 @@ class HomeViewModel @Inject constructor(
         return postRankList
     }
 
-    private fun fetchRankCategotry(page: Int, category: String) {
+    private fun fetchRankCategory(page: Int, category: String) {
         viewModelScope.launch {
             postRepository.fetchPostRankingCategory(page,category).collect{ state->
                 when(state){

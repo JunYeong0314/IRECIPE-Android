@@ -1,35 +1,53 @@
 package com.umcproject.irecipe.presentation.ui.home
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ItemRecipeRankingBinding
 import com.umcproject.irecipe.domain.model.Post
+import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 
 class HomeRankingAdapter(
+    private val minPostList: List<PostRank>,
+    private val onClickPost: (Int) -> Unit
 
 ): RecyclerView.Adapter<HomeRankingAdapter.ViewHolder>() {
-    inner class ViewHolder(val binding: ItemRecipeRankingBinding): RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
-
-        }
-        fun onItemClickListener(item: Post) {
-            binding.clRecipeRanking.setOnClickListener {
-                // 해당 레시피로 이동
-            }
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
+        val binding = ItemRecipeRankingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount(): Int = minPostList.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val minPost = minPostList[position]
+
+        holder.bind(minPost)
+        minPost.postId?.let{ holder.onClickPostEvent(it) }
+        holder.rankingBind(position)
+    }
+
+    inner class ViewHolder(val binding: ItemRecipeRankingBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(minPost: PostRank) {
+            binding.tvRankingTitle.text = minPost.title
+            binding.tvRankingStarTotal.text = minPost.scoresInOneMonth.toString()
+            binding.tvRankingCnt.text = minPost.likes.toString()
+
+            if (minPost.imageUrl!= null){
+                binding.ivRecipe.load(minPost.imageUrl){
+                    placeholder(R.drawable.bg_placeholder_gray)
+                }
+            }
+        }
+        fun onClickPostEvent(postId: Int){
+            binding.clRecipeRanking.setOnClickListener { onClickPost(postId) }
+        }
+        fun rankingBind(rank: Int){
+            binding.tvRanking.text = rank.toString()
+        }
     }
 }
