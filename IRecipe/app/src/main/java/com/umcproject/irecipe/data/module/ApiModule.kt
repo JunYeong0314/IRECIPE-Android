@@ -8,6 +8,7 @@ import com.umcproject.irecipe.data.remote.service.chat.AiChatDislikeService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
 import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
@@ -228,5 +229,11 @@ class ApiModule {
     @Singleton
     fun provideSetQAService(retrofit: Retrofit): SetQAService {
         return retrofit.create(SetQAService::class.java)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideAiChatService(retrofit: Retrofit):AiChatService{
+        return retrofit.create(AiChatService::class.java)
     }
 }
