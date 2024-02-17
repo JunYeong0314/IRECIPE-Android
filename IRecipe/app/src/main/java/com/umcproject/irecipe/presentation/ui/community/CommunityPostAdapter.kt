@@ -36,25 +36,19 @@ class CommunityPostAdapter(
         }
 
         fun setPost(post: Post){
-            if(post.postImageUrl != null){
+            post.postImageUrl?.let {
                 binding.cvImage.visibility = View.VISIBLE
-                binding.ivImage.load(post.postImageUrl){
-                    placeholder(R.drawable.bg_placeholder_gray)
-                }
+                binding.ivImage.load(it){ placeholder(R.drawable.bg_placeholder_gray) }
             }
 
-            if(post.writerProfileUrl != null){
-                binding.ivImgProfile.load(post.writerProfileUrl){
-                    placeholder(R.drawable.bg_placeholder_gray)
-                }
-            }
+            //post.writerProfileUrl?.let { binding.ivImgProfile.load(it){ placeholder(R.drawable.bg_placeholder_gray)} }
 
             binding.tvName.text = post.writerNick
             binding.tvTitle.text = post.title
             binding.tvSubtitle.text = post.subTitle
             binding.tvHeartCnt.text = post.likes.toString()
             binding.tvCommentCnt.text = post.reviewCount.toString()
-            binding.tvStarCnt.text = post.score.toString()
+            binding.tvStarCnt.text = post.score.toString().substring(0, 3)
 
             post.isLike?.let {
                 if(it) binding.ivHeart.setImageResource(R.drawable.ic_heart)

@@ -110,9 +110,4 @@ class CommunityFragment(
         }
         popupMenu.show()
     }
-
-    private fun getPostResponse(page: Int, criteria: String){
-
-    }
-
 }
