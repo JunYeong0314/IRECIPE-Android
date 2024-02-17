@@ -16,6 +16,7 @@ import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 class HomeDetailFragment(
     private val minPostList: List<PostRank>,
+    private val minPostCategoryList: List<PostRank>,
     private val onClickDetail: (String) -> Unit,
     private val onClickBackBtn: (String) -> Unit,
     private val onHideBottomBar: () -> Unit,

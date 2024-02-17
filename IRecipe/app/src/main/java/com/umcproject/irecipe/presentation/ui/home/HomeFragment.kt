@@ -64,21 +64,19 @@ class HomeFragment(
 //            }
 //        }
         initView()
-//        initView()
         advertiseView()
     }
 
     private fun initView() {
         val minPostList: List<PostRank> = viewModel.getPostRank()
+        val minPostCategoryList: List<PostRank> = viewModel.getPostRankCategory()
         binding.ibtnDetail.setOnClickListener {
             onClickDetail("이달의 레시피 랭킹")
             showHorizontalFragment(
-                R.id.fv_main,
-                requireActivity(),
-                HomeDetailFragment(minPostList ,onClickDetail, onClickBackBtn,onHideBottomBar,onShowBottomBar,onHideTitle),
+                R.id.fv_main, requireActivity(),
+                HomeDetailFragment(minPostList, minPostCategoryList,onClickDetail, onClickBackBtn,onHideBottomBar,onShowBottomBar,onHideTitle),
                 HomeDetailFragment.TAG
             )
-
         }
 //        binding.rvHome.apply {
 //            adapter = HomeRankingAdapter(
