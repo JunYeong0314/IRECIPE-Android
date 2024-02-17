@@ -1,10 +1,12 @@
 package com.umcproject.irecipe.presentation.ui.refrigerator
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -61,6 +63,10 @@ class RefrigeratorFragment(
 
         binding.ivSearch.setOnClickListener{
             viewModel.searchRefrigerator(binding.etSearch.text.toString())
+
+            // 키보드 내리기
+            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
 
             //글자 지우기
             binding.etSearch.text.clear()
