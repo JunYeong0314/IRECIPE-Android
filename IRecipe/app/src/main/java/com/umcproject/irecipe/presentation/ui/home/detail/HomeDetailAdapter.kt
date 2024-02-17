@@ -41,7 +41,7 @@ class HomeDetailAdapter(
             }
         }
         fun rankingBind(rank: Int){
-            binding.tvRanking.text = rank.toString()
+            binding.tvRanking.text = (rank+1).toString()
         }
         fun onClickPostEvent(postId: Int){
             binding.clRecipeRanking.setOnClickListener { onClickPost(postId) }
