@@ -8,6 +8,7 @@ import com.umcproject.irecipe.data.remote.service.chat.AiChatDislikeService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
 import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
@@ -33,6 +34,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -199,5 +201,11 @@ class ApiModule {
     @Singleton
     fun provideRefreshToken(retrofit: Retrofit): GetRefreshTokenService {
         return retrofit.create(GetRefreshTokenService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAiChatService(retrofit: Retrofit):AiChatService{
+        return retrofit.create(AiChatService::class.java)
     }
 }
