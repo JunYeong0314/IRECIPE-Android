@@ -24,7 +24,7 @@ class AdvertiseFirstFragment(): BaseFragment<FragmentAdvertiseFirstBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.cardView1.setOnClickListener{
+        binding.pannelImageIv.setOnClickListener{
             //구글링크로 이동...
         }
     }
