@@ -121,7 +121,7 @@ class RefrigeratorFragment(
                             R.id.fv_main,
                             requireActivity(),
                             RefrigeratorSearchFragment(searchList, onClickBackBtn),
-                            RefrigeratorDetailFragment.TAG
+                            RefrigeratorSearchFragment.TAG
                         )
                     }
                 }

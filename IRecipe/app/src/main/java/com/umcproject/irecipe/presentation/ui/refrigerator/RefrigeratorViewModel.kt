@@ -25,7 +25,6 @@ import javax.inject.Inject
 @HiltViewModel
 class RefrigeratorViewModel @Inject constructor(
     private val refrigeratorRepository: RefrigeratorRepository,
-    private val refrigeratorSearchService: RefrigeratorSearchService
 ): ViewModel() {
     // 냉장고 재료 불러오기
     init {
