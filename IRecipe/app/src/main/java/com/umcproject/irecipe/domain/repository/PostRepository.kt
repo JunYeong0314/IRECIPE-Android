@@ -9,8 +9,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {
     fun fetchPost(page: Int, criteria: String): Flow<State<List<Post>>>
-    fun fetchPostRanking(): Flow<State<List<PostRank>>>
+    fun fetchPostRanking(page: Int): Flow<State<List<PostRank>>>
     fun getPostDetailInfo(postId: Int): Flow<State<PostDetail>>
     fun setLikePost(postId: Int): Flow<State<Int>>
     fun setUnLikePost(postId: Int): Flow<State<Int>>
+    fun fetchPostRankingCategory(page: Int, category: String): Flow<State<List<PostRank>>>
 }

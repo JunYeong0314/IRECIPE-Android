@@ -8,6 +8,7 @@ import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
+import com.umcproject.irecipe.data.remote.service.home.GetPostRankingCategoryService
 import com.umcproject.irecipe.domain.model.PostDetail
 import com.umcproject.irecipe.domain.repository.PostRepository
 import kotlinx.coroutines.flow.Flow
@@ -17,10 +18,12 @@ import kotlinx.coroutines.flow.flow
 class PostRepositoryImpl(
     private val getPostService: GetPostService,
     private val getPostRankingService: GetPostRankingService,
+    private val getPostRankingCategoryService: GetPostRankingCategoryService,
     private val getPostDetailService: GetPostDetailService,
     private val postLikeService: PostLikeService,
     private val postUnLikeService: PostUnLikeService
 ): PostRepository {
+
     override fun fetchPost(page: Int, criteria: String): Flow<State<List<Post>>> = flow {
         emit(State.Loading)
 
@@ -51,6 +54,7 @@ class PostRepositoryImpl(
     }.catch { e->
         emit(State.Error(e))
     }
+
 
     override fun getPostDetailInfo(postId: Int): Flow<State<PostDetail>> = flow{
         emit(State.Loading)
@@ -114,6 +118,7 @@ class PostRepositoryImpl(
         emit(State.Error(e))
     }
 
+
     private fun mapperToCriteria(sort: String): String{
         return when(sort){
             "기본순" -> "createdAt"
@@ -123,10 +128,10 @@ class PostRepositoryImpl(
         }
     }
 
-    override fun fetchPostRanking(): Flow<State<List<PostRank>>> = flow {
+    override fun fetchPostRanking(page: Int): Flow<State<List<PostRank>>> = flow {
         emit(State.Loading)
 
-        val response = getPostRankingService.getPostRanking()
+        val response = getPostRankingService.getPostRanking(page)
         val statusCode = response.code()
 
         if (statusCode == 200) {
@@ -148,5 +153,44 @@ class PostRepositoryImpl(
         }
     }.catch { e->
         emit(State.Error(e))
+    }
+    override fun fetchPostRankingCategory(page: Int, category: String): Flow<State<List<PostRank>>> = flow {
+        emit(State.Loading)
+
+        val response = getPostRankingCategoryService.getPostRankingCategory(page = page, category = mapperToCategory(category))
+        val statusCode = response.code()
+
+        if (statusCode == 200) {
+            val responseBody = response.body()?.result?.postList?.mapNotNull{ post ->
+                post?.let {
+                    PostRank(
+                        it?.postId ?: -1,
+                        title = it?.title ?: "",
+                        imageUrl = it?.imageUrl,
+                        likes = it?.likes,
+                        score = it?.scores,
+                        scoresInOneMonth = it?.scoresInOneMonth
+                    )
+                }
+            } ?: emptyList()
+            emit(State.Success(responseBody))
+        } else {
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
+    }
+
+    private fun mapperToCategory(category: String): String{
+        return when(category){
+            "양식" -> "WESTERN"
+            "한식" -> "KOREAN"
+            "중식" -> "CHINESE"
+            "일식" -> "JAPANESE"
+            "이색음식" -> "UNIQUE"
+            "간편요리" -> "SIMPLE"
+            "고급요리" -> "ADVANCED"
+            else -> ""
+        }
     }
 }

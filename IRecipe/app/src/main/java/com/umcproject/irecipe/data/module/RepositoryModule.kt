@@ -14,6 +14,7 @@ import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
+import com.umcproject.irecipe.data.remote.service.home.GetPostRankingCategoryService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import com.umcproject.irecipe.domain.repository.CommentRepository
@@ -44,11 +45,12 @@ object RepositoryModule {
     fun providePostRepository(
         getPostService: GetPostService,
         getPostRankingService :GetPostRankingService,
+        getPostRankingCategoryService: GetPostRankingCategoryService,
         getPostDetailService: GetPostDetailService,
         postLikeService: PostLikeService,
         postUnLikeService: PostUnLikeService,
     ): PostRepository{
-        return PostRepositoryImpl(getPostService, getPostRankingService, getPostDetailService, postLikeService, postUnLikeService)
+        return PostRepositoryImpl(getPostService, getPostRankingService, getPostRankingCategoryService, getPostDetailService, postLikeService, postUnLikeService)
     }
 
     @Singleton
