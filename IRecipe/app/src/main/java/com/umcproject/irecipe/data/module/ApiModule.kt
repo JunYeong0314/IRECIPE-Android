@@ -20,6 +20,7 @@ import com.umcproject.irecipe.data.remote.service.comment.GetQAService
 import com.umcproject.irecipe.data.remote.service.comment.SetQAService
 import com.umcproject.irecipe.data.remote.service.comment.SetReviewService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
+import com.umcproject.irecipe.data.remote.service.login.DeleteMemberService
 import com.umcproject.irecipe.data.remote.service.login.FixMemberService
 import com.umcproject.irecipe.data.remote.service.login.GetRefreshTokenService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
@@ -235,5 +236,11 @@ class ApiModule {
     @Singleton
     fun provideAiChatService(retrofit: Retrofit):AiChatService{
         return retrofit.create(AiChatService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteService(retrofit: Retrofit): DeleteMemberService {
+        return retrofit.create(DeleteMemberService::class.java)
     }
 }
