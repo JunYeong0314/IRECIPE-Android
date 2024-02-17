@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface GetPostRankingCategoryService {
     @GET("/post/ranking/{category}")
     suspend fun getPostRankingCategory(
-        @Query("page") page: Int,
-        @Path("category") category: String
+        @Path("category") category: String,
+        @Query("page") page: Int
     ): Response<GetPostRankingCategoryResponse>
 }

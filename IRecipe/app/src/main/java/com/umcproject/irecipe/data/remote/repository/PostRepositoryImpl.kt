@@ -163,7 +163,7 @@ class PostRepositoryImpl(
     override fun fetchPostRankingCategory(page: Int, category: String): Flow<State<List<PostRank>>> = flow {
         emit(State.Loading)
 
-        val response = getPostRankingCategoryService.getPostRankingCategory(page = page, category = mapperToCategory(category))
+        val response = getPostRankingCategoryService.getPostRankingCategory(mapperToCategory(category), page)
         val statusCode = response.code()
 
         if (statusCode == 200) {

@@ -5,18 +5,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentHomeDetailBinding
+import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.post.PostFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeViewModel
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.Util
+import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.onEach
+
+
 
 class HomeDetailFragment(
-    private val viewModel: HomeViewModel,
+    private val homeViewModel: HomeViewModel,
     private val minPostList: List<PostRank>,
     private var minPostCategoryList: List<PostRank>,
     private val onClickDetail: (String) -> Unit,
@@ -25,8 +34,9 @@ class HomeDetailFragment(
     private val onShowBottomBar: () -> Unit,
     private val onHideTitle: () -> Unit
 ) : BaseFragment<FragmentHomeDetailBinding>() {
-    private val coViewModel: CommunityViewModel by viewModels()
+    private val communityViewModel: CommunityViewModel by viewModels()
     private var selectBtn: String = ""
+    private var currentJob: Job? = null
 
     companion object{
         const val TAG = "HomeDetailFragment"
@@ -42,46 +52,61 @@ class HomeDetailFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initbtns()
         initView()
     }
     override fun onDestroy() {
         super.onDestroy()
         onHideTitle()
+        currentJob?.cancel() // 현재 작업이 있으면 취소하기
     }
     private fun initView(){
-        initbtns()
-
         if (selectBtn == "전체") {
-            binding.rvHomeDetail.layoutManager= GridLayoutManager(requireActivity(), 2)
-            binding.rvHomeDetail.adapter = HomeDetailAdapter(
-                minPostList,
-                onClickPost = {
-                    showVerticalFragment(R.id.fv_main, requireActivity(),
-                        PostFragment(onClickBackBtn, it, coViewModel, onShowBottomBar),
-                        PostFragment.TAG
-                    )
-                    onHideBottomBar()
-                    onClickDetail("커뮤니티")
-                }
-            )
+            setRV(minPostList)
         } else {
-            viewModel.fetchRankCategory(0, selectBtn)
-            minPostCategoryList = viewModel.getPostRankCategory()
+            homeViewModel.fetchRankCategory(0, selectBtn)
+            minPostCategoryList = homeViewModel.getPostRankCategory()
 
-            binding.rvHomeDetail.layoutManager= GridLayoutManager(requireActivity(), 2)
-            binding.rvHomeDetail.adapter = HomeDetailAdapter(
-                minPostCategoryList,
-                onClickPost = {
-                    showVerticalFragment(R.id.fv_main, requireActivity(),
-                        PostFragment(onClickBackBtn, it, coViewModel, onShowBottomBar),
-                        PostFragment.TAG
+            homeViewModel.cafetchState.observe(viewLifecycleOwner) {
+                if (it==200) {
+                    binding.rvHomeDetail.layoutManager= GridLayoutManager(requireActivity(), 2)
+                    binding.rvHomeDetail.adapter = HomeDetailAdapter(
+                        minPostCategoryList,
+                        onClickPost = {
+                            showHorizontalFragment(
+                                R.id.fv_main, requireActivity(),
+                                PostFragment(onClickBackBtn, it, communityViewModel, onShowBottomBar),
+                                PostFragment.TAG
+                            )
+                            onHideBottomBar()
+                            onClickDetail("커뮤니티")
+                        }
                     )
-                    onHideBottomBar()
-                    onClickDetail("커뮤니티")
                 }
-            )
+                else Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.", Snackbar.LENGTH_SHORT).show()
+            }
+            homeViewModel.caerrorMessage.observe(viewLifecycleOwner){
+                Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.", Snackbar.LENGTH_SHORT).show()
+            }
+
         }
 
+    }
+
+    private fun setRV(minPostList: List<PostRank>) {
+        binding.rvHomeDetail.layoutManager = GridLayoutManager(requireActivity(), 2)
+        binding.rvHomeDetail.adapter = HomeDetailAdapter(
+            minPostList,
+            onClickPost = {
+                showHorizontalFragment(
+                    R.id.fv_main, requireActivity(),
+                    PostFragment(onClickBackBtn, it, communityViewModel, onShowBottomBar),
+                    PostFragment.TAG
+                )
+                onHideBottomBar()
+                onClickDetail("커뮤니티")
+            }
+        )
     }
 
     private fun initbtns() {
@@ -109,6 +134,8 @@ class HomeDetailFragment(
                     7 -> getString(R.string.modal_high)
                     else -> ""
                 }
+
+                initView()
             }
         }
     }

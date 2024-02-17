@@ -67,12 +67,12 @@ class HomeFragment(
             Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
         }
         // 카테고리별 이달의 랭킹 fetch
-//        homeViewModel.cafetchState.observe(viewLifecycleOwner) {
-//            if (it!=200) Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
-//        }
-//        homeViewModel.caerrorMessage.observe(viewLifecycleOwner){
-//            Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
-//        }
+        homeViewModel.cafetchState.observe(viewLifecycleOwner) {
+            if (it!=200) Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
+        }
+        homeViewModel.caerrorMessage.observe(viewLifecycleOwner){
+            Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
+        }
 
         advertiseView()
     }
