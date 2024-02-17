@@ -44,49 +44,75 @@ class ChatViewModel  @Inject constructor(
     private val _chatResponse = MutableLiveData<String>()
     val chatResponse: LiveData<String> get() = _chatResponse
 
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean> get() = _isLoading
+
     fun resultRefri() {
         viewModelScope.launch{
+            _isLoading.value = true
             val response = aiChatRefriService.aiChatRefriService()
-            Log.d(ChatBotActivity.TAG, response.body()?.result?.gptResponse.toString())
-            _refriResponse.value = response.body()?.result?.gptResponse.toString()
+            val statusCode = response.code()
+
+            if(statusCode == 200) {
+                _isLoading.value = false
+                _refriResponse.value = response.body()?.result?.gptResponse.toString()
+            }
         }
     }
 
     fun resultRandom() {
         viewModelScope.launch{
+            _isLoading.value = true
             val response = aiChatRandomService.aiChatRandom()
-            Log.d(ChatBotActivity.TAG, response.body()?.result?.gptResponse.toString())
-            _randomResponse.value = response.body()?.result?.gptResponse.toString()
+            val statusCode = response.code()
+
+            if(statusCode == 200) {
+                _isLoading.value = false
+                _randomResponse.value = response.body()?.result?.gptResponse.toString()
+            }
         }
     }
 
     fun resultExpiry() {
         viewModelScope.launch{
+            _isLoading.value = true
             val response = aiChatExpiryService.aiChatExpiryService()
-            Log.d(ChatBotActivity.TAG, response.body()?.result?.gptResponse.toString())
-            _expiryResponse.value = response.body()?.result?.gptResponse.toString()
+            val statusCode = response.code()
+
+            if(statusCode == 200){
+                _isLoading.value = false
+                _expiryResponse.value = response.body()?.result?.gptResponse.toString()
+            }
         }
     }
 
     fun resultDislike(question: String) {
         viewModelScope.launch {
+            _isLoading.value = true
             val response = aiChatDislikeService.aiChatDislike(
                 AiChatDislikeRequest(question)
             )
-            Log.d(TAG, question)
-            Log.d(TAG, response.body()?.result.toString())
-            _dislikeResponse.value = response.body()?.result.toString()
+            val statusCode = response.code()
+
+            if(statusCode == 200){
+                _isLoading.value = false
+                _dislikeResponse.value = response.body()?.result.toString()
+            }
         }
     }
 
     fun resultChat(question: String){
         viewModelScope.launch {
+            _isLoading.value = true
             val response = aiChatService.aiChatService(
                 AiChatRequest(question)
             )
-            Log.d(TAG, question)
-            Log.d(TAG, response.body()?.result.toString())
-            _chatResponse.value = response.body()?.result?.gptResponse.toString()
+            val statusCode = response.code()
+
+            if(statusCode == 200){
+                _isLoading.value = false
+                _chatResponse.value = response.body()?.result?.gptResponse.toString()
+            }
         }
     }
 }
