@@ -8,13 +8,19 @@ import com.umcproject.irecipe.data.remote.service.chat.AiChatDislikeService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatExpiryService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
+import com.umcproject.irecipe.data.remote.service.chat.AiChatService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
 import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
+import com.umcproject.irecipe.data.remote.service.comment.GetReviewService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
+import com.umcproject.irecipe.data.remote.service.comment.GetQAService
+import com.umcproject.irecipe.data.remote.service.comment.SetQAService
+import com.umcproject.irecipe.data.remote.service.comment.SetReviewService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
+import com.umcproject.irecipe.data.remote.service.login.DeleteMemberService
 import com.umcproject.irecipe.data.remote.service.login.FixMemberService
 import com.umcproject.irecipe.data.remote.service.login.GetRefreshTokenService
 import com.umcproject.irecipe.data.remote.service.login.LoginService
@@ -33,6 +39,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -199,5 +206,41 @@ class ApiModule {
     @Singleton
     fun provideRefreshToken(retrofit: Retrofit): GetRefreshTokenService {
         return retrofit.create(GetRefreshTokenService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetReviewService(retrofit: Retrofit): GetReviewService {
+        return retrofit.create(GetReviewService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetReviewService(retrofit: Retrofit): SetReviewService {
+        return retrofit.create(SetReviewService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGetQAService(retrofit: Retrofit): GetQAService {
+        return retrofit.create(GetQAService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSetQAService(retrofit: Retrofit): SetQAService {
+        return retrofit.create(SetQAService::class.java)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideAiChatService(retrofit: Retrofit):AiChatService{
+        return retrofit.create(AiChatService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeleteService(retrofit: Retrofit): DeleteMemberService {
+        return retrofit.create(DeleteMemberService::class.java)
     }
 }

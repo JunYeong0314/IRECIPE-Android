@@ -42,6 +42,7 @@ class PostFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // 게시글 단일 조회 성공인 경우
         viewModel.postDetailState.observe(viewLifecycleOwner){
             if(it == 200) initView()
             else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
@@ -50,6 +51,8 @@ class PostFragment(
         viewModel.postDetailError.observe(viewLifecycleOwner){
             Snackbar.make(requireView(), getString(R.string.error_fetch_post, it), Snackbar.LENGTH_SHORT).show()
         }
+
+        onClickReview() // Q&A, 리뷰글 버튼 이벤트
     }
 
     private fun initView(){
@@ -64,11 +67,14 @@ class PostFragment(
             binding.tvContent.text = post.content
             binding.tvHeartCnt.text = post.likes.toString()
             binding.tvCommentCnt.text = post.reviewCount.toString()
-            binding.tvStarCnt.text = post.score.toString()
+            binding.tvStarCnt.text = post.score.toString().substring(0, 3)
         }
 
-        postInfo?.writerProfileUrl?.let { binding.ivImgProfile.load(it) }
-        postInfo?.postImageUrl?.let { binding.ivImage.load(it) }
+        //postInfo?.writerProfileUrl?.let { binding.ivImgProfile.load(it) }
+        postInfo?.postImageUrl?.let {
+            binding.cvImage.visibility = View.VISIBLE
+            binding.ivImage.load(it)
+        }
 
         postInfo?.isLike?.let {
             if(it) binding.ivHeart.setImageResource(R.drawable.ic_heart)
@@ -81,6 +87,12 @@ class PostFragment(
         super.onDestroy()
         onClickBackBtn("커뮤니티")
         onShowBottomBar()
+    }
+
+    private fun onClickReview() {
+        binding.llReview.setOnClickListener {
+            showVerticalFragment(R.id.fv_main, requireActivity(), CommentFragment(viewModel, postId), CommentFragment.TAG)
+        }
     }
 
     private fun onClickLike(){

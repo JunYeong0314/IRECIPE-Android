@@ -5,14 +5,11 @@ import java.text.DateFormat
 import java.util.Date
 
 data class Review(
-    val profile: Uri?,
-    val name: String,
-    val photo: Uri?,
-    val date: Date,
-    val rating: Double,
-    val content: String
-)
-
-val mockReviewList = listOf(
-    Review(null, "익명", null, Date(System.currentTimeMillis()), 5.0, "테스트")
+    val reviewId: Int?,
+    val writerNick: String?,
+    val writerProfile: String?,
+    val content: String?,
+    val score: Int?,
+    val imageUrl: String?,
+    val createdAt: String?
 )

@@ -5,19 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.umcproject.irecipe.databinding.FrgamentCommentQaBinding
-import com.umcproject.irecipe.domain.model.mockQAList
+import com.umcproject.irecipe.databinding.FragmentCommentQaBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
-class QAFragment: BaseFragment<FrgamentCommentQaBinding>() {
+class QAFragment: BaseFragment<FragmentCommentQaBinding>() {
     companion object{
         const val TAG = "QAFragment"
     }
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
-    ): FrgamentCommentQaBinding {
-        return FrgamentCommentQaBinding.inflate(inflater, container, false)
+    ): FragmentCommentQaBinding {
+        return FragmentCommentQaBinding.inflate(inflater, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,8 +26,12 @@ class QAFragment: BaseFragment<FrgamentCommentQaBinding>() {
     }
 
     private fun initView(){
-        val qaAdapter = QAAdapter(mockQAList)
+        /*val qaAdapter = QAAdapter(mockQAList)
         binding.rvQa.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rvQa.adapter = qaAdapter
+        binding.rvQa.adapter = qaAdapter*/
+    }
+
+    private fun onClickSetQA(){
+
     }
 }

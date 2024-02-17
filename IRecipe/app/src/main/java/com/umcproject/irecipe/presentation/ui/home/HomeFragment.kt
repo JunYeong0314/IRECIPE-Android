@@ -1,6 +1,8 @@
 package com.umcproject.irecipe.presentation.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,16 +18,34 @@ import com.umcproject.irecipe.presentation.ui.refrigerator.detail.RefrigeratorDe
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util
 import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
+import androidx.viewpager2.widget.ViewPager2
+import com.umcproject.irecipe.domain.model.PostRank
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFirstFragment
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFourthFragment
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseSecondFragment
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseThirdFragment
+import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseVpAdapter
+import com.umcproject.irecipe.presentation.util.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Timer
+import java.util.TimerTask
 
 @AndroidEntryPoint
 class HomeFragment(
     private val onHideTitle: () -> Unit,
     private val onClickDetail: (String) -> Unit,
-    private val onClickBackBtn: (String) -> Unit
+    private val onClickBackBtn: (String) -> Unit,
+    private val onHideBottomBar: () -> Unit,
+    private val onShowBottomBar: () -> Unit
 ): BaseFragment<FragmentHomeBinding>() {
     private val viewModel: HomeViewModel by viewModels()
 
+//    private var homeDatas = ListOf(
+        // 이달의 레시피 랭킹    이따 어케묶지 있는지 물어보자 아니 근데
+        // 나의 냉장고 유통기한 )
+
+    private val timer = Timer()
+    private val handler = Handler(Looper.getMainLooper())
     companion object{
         const val TAG = "HomeFragment"
     }
@@ -44,15 +64,18 @@ class HomeFragment(
 //            }
 //        }
         initView()
+//        initView()
+        advertiseView()
     }
 
     private fun initView() {
+        val minPostList: List<PostRank> = viewModel.getPostRank()
         binding.ibtnDetail.setOnClickListener {
             onClickDetail("이달의 레시피 랭킹")
             showHorizontalFragment(
                 R.id.fv_main,
                 requireActivity(),
-                HomeDetailFragment(onClickDetail, onClickBackBtn,onHideTitle),
+                HomeDetailFragment(minPostList ,onClickDetail, onClickBackBtn,onHideBottomBar,onShowBottomBar,onHideTitle),
                 HomeDetailFragment.TAG
             )
 
@@ -88,4 +111,39 @@ class HomeFragment(
 //        )
 //    }
 
+    private fun advertiseView(){ //광고배너 화면
+        val advertiseAdapter = AdvertiseVpAdapter(this)
+        advertiseAdapter.addFragment(AdvertiseFirstFragment())
+        advertiseAdapter.addFragment(AdvertiseSecondFragment())
+        advertiseAdapter.addFragment(AdvertiseThirdFragment(onClickDetail, onClickBackBtn))
+        advertiseAdapter.addFragment(AdvertiseFourthFragment())
+
+        binding.vpAd.adapter = advertiseAdapter
+        binding.vpAd.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+
+        binding.homeIndicator.setViewPager(binding.vpAd)
+
+        autoSlide(advertiseAdapter)//자동 슬라이드
+    }
+
+    private fun autoSlide(adapter: AdvertiseVpAdapter) {
+        timer.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                handler.post {
+                    val nextItem = binding.vpAd.currentItem + 1
+                    if (nextItem < adapter.itemCount) {
+                        binding.vpAd.currentItem = nextItem
+                    } else {
+                        binding.vpAd.currentItem = 0 // 순환
+                    }
+                }
+            }
+        }, 3000, 3000)
+    }
+    private fun changeTop(){
+        val mainActivity = activity as? MainActivity
+        mainActivity?.binding?.tvTitle?.text = ""
+        mainActivity?.binding?.ibtnBack?.visibility = View.GONE
+        mainActivity?.binding?.btmMain?.visibility = View.VISIBLE
+    }
 }

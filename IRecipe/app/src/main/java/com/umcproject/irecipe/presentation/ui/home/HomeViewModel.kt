@@ -47,8 +47,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getPostRank(): PostRank?{
-        return postRank
+    fun getPostRank(): List<PostRank>{
+        return postRankList
     }
 
 }

@@ -25,14 +25,14 @@ class QAAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val qa = qaList[position]
 
-        holder.setOtherUser(qa.otherUser)
+        /*holder.setOtherUser(qa.otherUser)
         qa.writer?.let {
             holder.setWriter(it)
-        }
+        }*/
     }
 
     inner class ViewHolder(val binding: ItemQaBinding): RecyclerView.ViewHolder(binding.root){
-        fun setOtherUser(otherUser: OtherUser){
+        /*fun setOtherUser(otherUser: OtherUser){
             with(otherUser) {
                 profile?.let { binding.ivProfile.setImageURI(it) }
                 binding.tvName.text = name
@@ -49,6 +49,6 @@ class QAAdapter(
                 binding.tvWriterDate.text = date.toString()
                 binding.tvWriterContent.text = content
             }
-        }
+        }*/
     }
 }

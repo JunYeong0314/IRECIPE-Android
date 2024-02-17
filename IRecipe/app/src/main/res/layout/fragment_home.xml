@@ -7,6 +7,30 @@
     android:focusable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp_ad"
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_rounded_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/home_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="7dp"
+        app:ci_animator="@animator/scale_with_alpha"
+        app:ci_drawable="@drawable/bg_main_radius"
+        app:ci_drawable_unselected="@drawable/bg_gray_radius"
+        app:layout_constraintBottom_toBottomOf="@+id/vp_ad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
     <TextView
         android:id="@+id/tv_home_title"
         android:layout_width="0dp"
@@ -17,15 +41,16 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/home_indicator"/>
     <ImageButton
         android:id="@+id/ibtn_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_right"
         android:backgroundTint="@color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_indicator"
         app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_home"
         android:layout_width="0dp"

@@ -6,5 +6,5 @@ data class PostRank(
     val imageUrl: String?,
     val likes: Int?,
     val score: Double?,
-    val scoresInOneMonth: Int?
+    val scoresInOneMonth: Double?
 )

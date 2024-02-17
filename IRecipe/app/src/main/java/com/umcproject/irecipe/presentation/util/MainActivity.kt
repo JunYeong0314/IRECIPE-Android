@@ -43,7 +43,9 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                     HomeFragment(
                         onHideTitle = { hideTitle()},
                         onClickDetail = { title-> showTitle(title, true) },
-                        onClickBackBtn = { title-> showTitle(title, false) }
+                        onClickBackBtn = { title-> showTitle(title, false) },
+                        onHideBottomBar = { hideBottomBar() },
+                        onShowBottomBar = { showBottomBar() }
                     ).changeFragment(HomeFragment.TAG)
                     hideFragment(HomeFragment.TAG)
                 }

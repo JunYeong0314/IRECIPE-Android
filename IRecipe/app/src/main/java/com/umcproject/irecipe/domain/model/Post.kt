@@ -8,7 +8,7 @@ data class Post(
     val writerNick: String?,
     val writerProfileUrl: String?,
     val likes: Int?,
-    val score: Int?,
+    val score: Double?,
     val reviewCount: Int?,
     val createdAt: String?,
     val isLike: Boolean?

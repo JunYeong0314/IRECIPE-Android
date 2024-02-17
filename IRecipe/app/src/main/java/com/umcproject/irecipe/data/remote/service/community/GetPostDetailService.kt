@@ -1,6 +1,6 @@
 package com.umcproject.irecipe.data.remote.service.community
 
-import com.umcproject.irecipe.data.remote.response.community.getPostDetail.getPostDetailResponse
+import com.umcproject.irecipe.data.remote.response.community.postDetail.getPostDetailResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path

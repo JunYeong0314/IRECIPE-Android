@@ -1,19 +1,22 @@
 package com.umcproject.irecipe.data.module
 
+import com.umcproject.irecipe.data.remote.repository.CommentRepositoryImpl
 import com.umcproject.irecipe.data.remote.repository.MemberLikeRepositoryImpl
 import com.umcproject.irecipe.data.remote.repository.MemberWriteRepositoryImpl
 import com.umcproject.irecipe.data.remote.repository.PostRepositoryImpl
 import com.umcproject.irecipe.data.remote.repository.RefrigeratorRepositoryImpl
+import com.umcproject.irecipe.data.remote.service.comment.GetQAService
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
+import com.umcproject.irecipe.data.remote.service.comment.GetReviewService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
-import com.umcproject.irecipe.data.remote.service.refrigerator.GetRefrigeratorService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
+import com.umcproject.irecipe.domain.repository.CommentRepository
 import com.umcproject.irecipe.domain.repository.MemberLikeRepository
 import com.umcproject.irecipe.domain.repository.MemberWriteRepository
 import com.umcproject.irecipe.domain.repository.PostRepository
@@ -43,7 +46,7 @@ object RepositoryModule {
         getPostRankingService :GetPostRankingService,
         getPostDetailService: GetPostDetailService,
         postLikeService: PostLikeService,
-        postUnLikeService: PostUnLikeService
+        postUnLikeService: PostUnLikeService,
     ): PostRepository{
         return PostRepositoryImpl(getPostService, getPostRankingService, getPostDetailService, postLikeService, postUnLikeService)
     }
@@ -62,5 +65,14 @@ object RepositoryModule {
         memberLikeService: MemberLikeService
     ):MemberLikeRepository{
         return MemberLikeRepositoryImpl(memberLikeService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCommentRepository(
+        getReviewService: GetReviewService,
+        getQAService: GetQAService
+    ): CommentRepository{
+        return CommentRepositoryImpl(getReviewService, getQAService)
     }
 }
