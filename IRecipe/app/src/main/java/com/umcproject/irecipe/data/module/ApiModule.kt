@@ -31,6 +31,7 @@ import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetRefrigeratorService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import dagger.Module
 import dagger.Provides
@@ -237,6 +238,12 @@ class ApiModule {
     @Singleton
     fun provideAiChatService(retrofit: Retrofit):AiChatService{
         return retrofit.create(AiChatService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRefrigeratorSearchService(retrofit: Retrofit):RefrigeratorSearchService{
+        return retrofit.create(RefrigeratorSearchService::class.java)
     }
 
     @Provides

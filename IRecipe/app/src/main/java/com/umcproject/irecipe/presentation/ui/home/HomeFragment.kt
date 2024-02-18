@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.umcproject.irecipe.R
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.umcproject.irecipe.databinding.FragmentHomeBinding
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.Refrigerator
@@ -44,11 +46,16 @@ class HomeFragment(
     private val homeViewModel: HomeViewModel by viewModels()
     private val communityViewModel: CommunityViewModel by viewModels()
 
-    private val timer = Timer()
-    private val handler = Handler(Looper.getMainLooper())
     companion object{
         const val TAG = "HomeFragment"
+        const val DELAY_MS: Long = 3000 // 슬라이드 간 딜레이
+        const val PERIOD_MS: Long = 2000 // 자동 슬라이드 주기
+        const val NUM_PAGES = 4
     }
+
+    private val viewModel: HomeViewModel by viewModels()
+    private var currentPage = 0
+
     override fun getFragmentBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -73,7 +80,6 @@ class HomeFragment(
         homeViewModel.caerrorMessage.observe(viewLifecycleOwner){
             Snackbar.make(requireView(),"이달의 랭킹을 불러오는데 실패했습니다.",Snackbar.LENGTH_SHORT).show()
         }
-
         advertiseView()
     }
 
@@ -117,6 +123,13 @@ class HomeFragment(
 //        )
 //        binding.rvHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 //        binding.rvHome.adapter = homeAdapter
+        val homeAdapter = HomeAdapter(
+//            homeDatas
+//            onClickDetail()
+//            onClickItem = { showVerticalFragment(R.id.fv_main, requireActivity(),) } 포스트 호출 후 구현
+        )
+        binding.rvHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rvHome.adapter = homeAdapter
     }
 //    private fun goDetailPage(){
 //        onClickDetail("이달의 레시피 랭킹")
@@ -137,30 +150,45 @@ class HomeFragment(
 
         binding.vpAd.adapter = advertiseAdapter
         binding.vpAd.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        val child = binding.vpAd.getChildAt(0)
+        (child as? RecyclerView)?.overScrollMode = View.OVER_SCROLL_NEVER
 
         binding.homeIndicator.setViewPager(binding.vpAd)
 
-        autoSlide(advertiseAdapter)//자동 슬라이드
+        binding.vpAd.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                currentPage = position
+            }
+        })
+
+        // 자동 슬라이딩 시작
+        startAutoSlide()
     }
 
-    private fun autoSlide(adapter: AdvertiseVpAdapter) {
-        timer.scheduleAtFixedRate(object : TimerTask() {
-            override fun run() {
-                handler.post {
-                    val nextItem = binding.vpAd.currentItem + 1
-                    if (nextItem < adapter.itemCount) {
-                        binding.vpAd.currentItem = nextItem
-                    } else {
-                        binding.vpAd.currentItem = 0 // 순환
-                    }
-                }
-            }
-        }, 3000, 3000)
-    }
     private fun changeTop(){
         val mainActivity = activity as? MainActivity
         mainActivity?.binding?.tvTitle?.text = ""
         mainActivity?.binding?.ibtnBack?.visibility = View.GONE
         mainActivity?.binding?.btmMain?.visibility = View.VISIBLE
     }
+
+    // 자동 슬라이드 시작
+    private fun startAutoSlide() {
+        val swipeTimer = Timer()
+        val handler = Handler(Looper.getMainLooper())
+        val update = Runnable {
+            if (currentPage == NUM_PAGES) {
+                currentPage = 0
+            }
+            binding.vpAd.setCurrentItem(currentPage++, true)
+        }
+
+        swipeTimer.schedule(object : TimerTask() {
+            override fun run() {
+                handler.post(update)
+            }
+        }, DELAY_MS, PERIOD_MS)
+    }
+
 }

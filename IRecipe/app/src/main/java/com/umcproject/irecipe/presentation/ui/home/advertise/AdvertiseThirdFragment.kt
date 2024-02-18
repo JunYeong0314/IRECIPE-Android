@@ -31,7 +31,7 @@ class AdvertiseThirdFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.cardView3.setOnClickListener{
+        binding.llAdvertise.setOnClickListener{
             Util.showHorizontalFragment(
                 R.id.fv_main,
                 requireActivity(),

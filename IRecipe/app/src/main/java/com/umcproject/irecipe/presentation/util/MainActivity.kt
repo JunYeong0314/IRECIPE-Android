@@ -8,7 +8,6 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ActivityMainBinding
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
-import com.umcproject.irecipe.presentation.ui.chat.ChatFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
@@ -23,13 +22,14 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
         var id = R.id.nav_frag_home // 채팅 Activity 이동 후 태그 기록
     }
     private val tagList = listOf(
-        HomeFragment.TAG, ChatFragment.TAG, RefrigeratorFragment.TAG,
+        HomeFragment.TAG, RefrigeratorFragment.TAG,
         CommunityFragment.TAG, MypageFragment.TAG
     )
     private val manager = supportFragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initView()
         initBottomNav() // 바텀바 설정
         onClickBackBtn() // 이전버튼 로직
     }
@@ -85,6 +85,18 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
             }
             return@setOnItemSelectedListener true
         }
+    }
+
+    private fun initView(){
+        id = R.id.nav_frag_home
+        manager.beginTransaction().replace(
+            R.id.fv_main,
+            HomeFragment(
+                onClickDetail = { title-> showTitle(title, true) },
+                onClickBackBtn = { title-> showTitle(title, false) }
+            ),
+            HomeFragment.TAG
+        ).commit()
     }
     private fun Fragment.changeFragment(tag: String) {
         val fragment = manager.findFragmentByTag(tag)

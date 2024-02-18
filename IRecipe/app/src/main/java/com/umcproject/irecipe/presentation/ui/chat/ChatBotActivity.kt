@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.Button
+import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.umcproject.irecipe.data.remote.service.chat.AiChatRandomService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatRefriService
 import com.umcproject.irecipe.data.remote.service.chat.AiChatService
 import com.umcproject.irecipe.databinding.ActivityChatBotBinding
+import com.umcproject.irecipe.databinding.ItemChatBinding
 import com.umcproject.irecipe.domain.model.Chat
 import com.umcproject.irecipe.presentation.util.BaseActivity
 import com.umcproject.irecipe.presentation.util.Util
@@ -24,17 +26,11 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBinding.inflate(it)}) {
-    private lateinit var viewModel: ChatViewModel
-    private var refriResponseObserver: Observer<String>? = null
-    private var randomResponseObserver: Observer<String>? = null
-    private var expiryResponseObserver: Observer<String>? = null
-    private var dislikeResponseObserver: Observer<String>? = null
-    private var aiChatResponseObserver:Observer<String>? = null
-
+    private val viewModel: ChatViewModel by viewModels()
     private lateinit var chatList: MutableList<Chat>
     private lateinit var recyclerView: RecyclerView
     private lateinit var chatAdapter: ChatAdapter
-    var lastClickedButton: Button? = null
+    private var lastClickedButton: Button? = null
 
 
     @Inject
@@ -56,9 +52,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
         super.onCreate(savedInstanceState)
         binding.root.setOnClickListener { Util.touchHideKeyboard(this) }
 
-        viewModel = ViewModelProvider(this).get(ChatViewModel::class.java)
         observeChange()
-
         chatList = ArrayList()
         initView() // 어뎁터 설정
         onClickSendMessage()//질문할 내용 입력
@@ -73,7 +67,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
         recyclerView = binding.chatRecyclerView
 
         // setup recycler view
-        chatAdapter = ChatAdapter(viewModel, chatList)
+        chatAdapter = ChatAdapter(chatList)
         recyclerView.adapter = chatAdapter
 
         val llm = LinearLayoutManager(this)
@@ -83,6 +77,7 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
 
     private fun addToChat(message: String, sentBy: String) { //채팅 쓰는 쪽
         Handler(Looper.getMainLooper()).post {
+            if(chatList.isNotEmpty() && sentBy == Chat.SENT_BY_BOT) chatList.removeLast()
             chatList.add(Chat(message, sentBy))
             chatAdapter.notifyDataSetChanged()
             recyclerView.smoothScrollToPosition(chatAdapter.itemCount)
@@ -90,26 +85,23 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
     }
 
     private fun addResponse(response: String) { //채팅 응답
-        //chatList.removeAt(chatList.size - 1)
         addToChat(response, Chat.SENT_BY_BOT)
     }
 
     private fun observeChange(){
-        refriResponseObserver = Observer { response ->
-            addResponse(response)
-        }
-        randomResponseObserver = Observer { response ->
-            addResponse(response)
-        }
-        expiryResponseObserver = Observer { response ->
-            addResponse(response)
-        }
-        dislikeResponseObserver = Observer { response ->
-            addResponse(response)
-        }
-        aiChatResponseObserver = Observer{response->
-            addResponse(response)
-        }
+        viewModel.expiryResponse.observe(this@ChatBotActivity, Observer { addResponse(it) })
+
+        viewModel.chatResponse.observe(this@ChatBotActivity, Observer { addResponse(it) })
+
+        viewModel.refriResponse.observe(this@ChatBotActivity, Observer { addResponse(it) })
+
+        viewModel.randomResponse.observe(this@ChatBotActivity, Observer { addResponse(it) })
+
+        viewModel.dislikeResponse.observe(this@ChatBotActivity, Observer { addResponse(it) })
+
+        viewModel.isLoading.observe(this@ChatBotActivity, Observer {
+            if(it) addToChat("", Chat.LOADING)
+        })
     }
 
     private fun onClickQuestion(){
@@ -119,7 +111,6 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
             lastClickedButton = binding.btnChat1
 
             viewModel.resultRefri() //냉장고 답변
-            viewModel.refriResponse.observe(this, refriResponseObserver!!)
         }
         binding.btnChat2.setOnClickListener {
             val question = binding.btnChat2.text.toString()
@@ -127,7 +118,6 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
             lastClickedButton = binding.btnChat2
 
             viewModel.resultRandom() //랜덤 답변
-            viewModel.randomResponse.observe(this, randomResponseObserver!!)
         }
         binding.btnChat3.setOnClickListener {
             val question = binding.btnChat3.text.toString()
@@ -135,7 +125,6 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
             lastClickedButton = binding.btnChat3
 
             viewModel.resultExpiry() //유통기한 답변
-            viewModel.expiryResponse.observe(this, expiryResponseObserver!!)
         }
         binding.btnChat4.setOnClickListener {
             val question = binding.btnChat4.text.toString()
@@ -151,10 +140,8 @@ class ChatBotActivity: BaseActivity<ActivityChatBotBinding>({ ActivityChatBotBin
             // editText 내용 삭제
             if (lastClickedButton == binding.btnChat4) {
                 viewModel.resultDislike(question)
-                viewModel.dislikeResponse.observe(this, dislikeResponseObserver!!)
             }else{
                 viewModel.resultChat(question)
-                viewModel.chatResponse.observe(this, aiChatResponseObserver!!)
             }
             lastClickedButton = null
             binding.tvChat.text.clear()

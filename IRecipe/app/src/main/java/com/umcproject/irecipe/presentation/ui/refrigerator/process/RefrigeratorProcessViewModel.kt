@@ -64,6 +64,7 @@ class RefrigeratorProcessViewModel @Inject constructor(
                 is State.Success -> { emit(State.Success(state.data)) }
                 is State.ServerError -> {emit(State.ServerError(state.code))}
                 is State.Error -> {emit(State.Error(state.exception))}
+                else -> {}
             }
         }
     }

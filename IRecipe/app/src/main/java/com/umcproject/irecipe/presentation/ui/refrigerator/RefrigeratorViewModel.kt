@@ -6,7 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.umcproject.irecipe.data.remote.service.login.NickDuplicationService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
 import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.domain.model.Ingredient
+import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,14 +24,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RefrigeratorViewModel @Inject constructor(
-    private val refrigeratorRepository: RefrigeratorRepository
+    private val refrigeratorRepository: RefrigeratorRepository,
 ): ViewModel() {
-
     // 냉장고 재료 불러오기
     init {
         allIngredientFetch()
     }
 
+    private var searchIngredientList = emptyList<Ingredient>()
     private var normalIngredient: Refrigerator? = null
     private var coldIngredient: Refrigerator? = null
     private var frozenIngredient: Refrigerator? = null
@@ -36,6 +39,9 @@ class RefrigeratorViewModel @Inject constructor(
     private val _fetchState = MutableLiveData<Int?>(null)
     val fetchState: LiveData<Int?>
         get() = _fetchState
+
+    private val _searchState = MutableLiveData<Int?>(null)
+    val searchState: LiveData<Int?> get() = _searchState
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?>
@@ -56,9 +62,31 @@ class RefrigeratorViewModel @Inject constructor(
                     }
                     is State.ServerError -> { _fetchState.value = state.code }
                     is State.Error -> { _errorMessage.value = state.exception.message }
+                    else -> {}
                 }
             }
         }
+    }
+
+    fun searchRefrigerator(food:String){
+        viewModelScope.launch {
+            refrigeratorRepository.searchIngredient(food).collect{state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        searchIngredientList = state.data
+                        _searchState.value = 200
+                    }
+                    is State.ServerError -> { _searchState.value = state.code }
+                    is State.Error -> { _errorMessage.value = state.exception.message }
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    fun getSearchIngredientList(): List<Ingredient> {
+        return searchIngredientList
     }
 
     fun getNormalIngredient(): Refrigerator?{
