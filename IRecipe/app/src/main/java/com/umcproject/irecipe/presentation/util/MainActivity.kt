@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ActivityMainBinding
+import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
@@ -40,8 +41,11 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                     id = R.id.nav_frag_home
                     hideTitle()
                     HomeFragment(
+                        onHideTitle = { hideTitle()},
                         onClickDetail = { title-> showTitle(title, true) },
-                        onClickBackBtn = { title-> showTitle(title, false) }
+                        onClickBackBtn = { title-> showTitle(title, false) },
+                        onHideBottomBar = { hideBottomBar() },
+                        onShowBottomBar = { showBottomBar() }
                     ).changeFragment(HomeFragment.TAG)
                     hideFragment(HomeFragment.TAG)
                 }

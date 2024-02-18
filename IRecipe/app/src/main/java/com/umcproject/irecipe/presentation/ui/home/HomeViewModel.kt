@@ -18,10 +18,13 @@ class HomeViewModel @Inject constructor(
     // 유통기한은 나중에 생각
     // 랭킹가져오기
     init {
-        fetchRank()
+        fetchRank(0)
+//        fetchRankCategory(0, "한식")
     }
 
     private var postRankList = emptyList<PostRank>()
+    private var postRankCategoryList = emptyList<PostRank>()
+
     private val _fetchState = MutableLiveData<Int?>(null)
     val fetchState: LiveData<Int?>
         get() = _fetchState
@@ -29,9 +32,22 @@ class HomeViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?>
         get() = _errorMessage
-    private fun fetchRank() {
+
+
+
+    private val _cafetchState = MutableLiveData<Int>()
+    val cafetchState: LiveData<Int>
+        get() = _cafetchState
+
+    private val _caerrorMessage = MutableLiveData<String>()
+    val caerrorMessage: LiveData<String>
+        get() = _caerrorMessage
+
+
+
+    private fun fetchRank(page: Int) {
         viewModelScope.launch {
-            postRepository.fetchPostRanking().collect{ state->
+            postRepository.fetchPostRanking(page).collect{ state->
                 when(state){
                     is State.Error -> {_errorMessage.value = state.exception.message}
                     State.Loading -> {}
@@ -46,4 +62,28 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun getPostRank(): List<PostRank>{
+        return postRankList
+    }
+
+    fun fetchRankCategory(page: Int, category: String) {
+        viewModelScope.launch {
+            postRepository.fetchPostRankingCategory(page,category).collect{ state->
+                when(state){
+                    is State.Error -> {_caerrorMessage.value = state.exception.message}
+                    State.Loading -> {}
+                    is State.ServerError -> { _cafetchState.value = state.code }
+                    is State.Success -> {
+                        postRankCategoryList = state.data
+                        _cafetchState.value = 200
+
+                    }
+                }
+            }
+        }
+    }
+
+    fun getPostRankCategory(): List<PostRank>{
+        return postRankCategoryList
+    }
 }
