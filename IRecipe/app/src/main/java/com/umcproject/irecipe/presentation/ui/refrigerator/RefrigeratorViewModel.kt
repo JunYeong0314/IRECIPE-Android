@@ -32,6 +32,7 @@ class RefrigeratorViewModel @Inject constructor(
     }
 
     private var searchIngredientList = emptyList<Ingredient>()
+    private var totalIngredientList = emptyList<Ingredient>()
     private var normalIngredient: Refrigerator? = null
     private var coldIngredient: Refrigerator? = null
     private var frozenIngredient: Refrigerator? = null

@@ -149,9 +149,13 @@ class MypagePersonalFragment(
         }
         viewModel.resultAge()
 
+        //binding.tvSearch.text = viewModel.userInfo.value.allergy.toString()
         viewModel.allergyResponse.observe(viewLifecycleOwner) { allergy ->
             var allergyText =""
-            allergy.forEach { allergy-> allergyText += "$allergy " }
+            when (allergy.toString()){
+                "[2.0]" -> allergyText += "우유"
+            }
+            //allergy.forEach { allergy-> allergyText += "$allergy " }
             if(allergy.isEmpty()) binding.tvSearch.text = getString(R.string.sign_choice)
             else binding.tvSearch.text = allergyText
         }
@@ -331,6 +335,7 @@ class MypagePersonalFragment(
                 onClickAllergyList = {
                     viewModel.setAllergy(it)
                     allergyList = it
+                    Log.d(TAG, allergyList.toString() + "알러지")
                 },
                 onClickOk = {
                     allergyList.forEach { allergy-> allergyText += "$allergy " }
