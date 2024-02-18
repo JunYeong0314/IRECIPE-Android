@@ -13,6 +13,7 @@ import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
+import com.umcproject.irecipe.data.remote.service.community.PostSearchService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
@@ -49,8 +50,9 @@ object RepositoryModule {
         getPostDetailService: GetPostDetailService,
         postLikeService: PostLikeService,
         postUnLikeService: PostUnLikeService,
+        postSearchService: PostSearchService
     ): PostRepository{
-        return PostRepositoryImpl(getPostService, getPostRankingService, getPostDetailService, postLikeService, postUnLikeService)
+        return PostRepositoryImpl(getPostService, getPostRankingService, getPostDetailService, postLikeService, postUnLikeService, postSearchService)
     }
 
     @Singleton

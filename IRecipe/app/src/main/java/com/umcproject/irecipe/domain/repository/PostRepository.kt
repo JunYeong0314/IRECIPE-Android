@@ -13,4 +13,5 @@ interface PostRepository {
     fun getPostDetailInfo(postId: Int): Flow<State<PostDetail>>
     fun setLikePost(postId: Int): Flow<State<Int>>
     fun setUnLikePost(postId: Int): Flow<State<Int>>
+    fun fetchPostSearch(page: Int, keyword:String, type:String): Flow<State<List<Post>>>
 }

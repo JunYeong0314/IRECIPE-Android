@@ -40,6 +40,7 @@ class CommunityViewModel @Inject constructor(
     private var postList = emptyList<Post>() // 게시글 전체 List
     private var postDetailInfo: PostDetail? = null // 게시글 단일 정보
     private var reviewList = emptyList<Review>() // 후기 전체 List
+    private var postSearchList = emptyList<Post>() // 게시글 전체 List
 
     // 게시글 리스트 상태 LiveData
     private val _postState = MutableLiveData<Int>()
@@ -73,6 +74,15 @@ class CommunityViewModel @Inject constructor(
     private val _isReviewComplete = MutableLiveData<Boolean>()
     val isReviewComplete: LiveData<Boolean>
         get() = _isReviewComplete
+
+    // 게시글 검색 리스트 상태 LiveData
+    private val _postSearchState = MutableLiveData<Int>()
+    val postSearchState: LiveData<Int>
+        get() = _postSearchState
+
+    private val _postSearchError = MutableLiveData<String>()
+    val postSearchError: LiveData<String>
+        get() = _postSearchError
 
 
     // 게시글 전체조회
@@ -189,5 +199,31 @@ class CommunityViewModel @Inject constructor(
     private fun isReviewComplete(): Boolean{
         return setReview.content != "" && setReview.score != 0
     }
+
+    // 게시글 검색 조회
+    fun fetchSearchPost(page: Int, keyword:String, type:String){
+        viewModelScope.launch {
+            postRepository.fetchPostSearch(page, keyword, type).collect{ state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        postSearchList = state.data
+                        _postSearchState.value = 200
+                    }
+                    is State.ServerError -> {
+                        _postSearchState.value = state.code
+                    }
+                    is State.Error -> {
+                        _postSearchError.value = state.exception.message
+                    }
+                }
+            }
+        }
+    }
+
+    fun getPostSearchList(): List<Post>{
+        return postSearchList
+    }
+
 
 }

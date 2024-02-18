@@ -65,7 +65,7 @@
             android:id="@+id/iv_type_search"
             android:layout_width="wrap_content"
             android:layout_height="45dp"
-            android:layout_marginStart="200dp"
+            android:layout_marginStart="180dp"
             android:src="@drawable/bg_search_type"/>
     </LinearLayout>
 

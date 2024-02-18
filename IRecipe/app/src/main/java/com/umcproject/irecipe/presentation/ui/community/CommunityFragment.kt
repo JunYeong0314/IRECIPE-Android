@@ -1,10 +1,19 @@
 package com.umcproject.irecipe.presentation.ui.community
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.SpannableString
+import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import androidx.core.app.NotificationCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -55,8 +64,30 @@ class CommunityFragment(
         onClickPost() // 글쓰기 버튼 이벤트
 
         binding.ivTypeSearch.setOnClickListener { onClickType(it) } //검색 타입 설정
-        binding.ivComSearch.setOnClickListener{
 
+        binding.etComSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // 텍스트가 변경될 때 호출되는 메서드
+                val currentText = s.toString()
+                if(currentText == "")
+                    initView()
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        //검색하기
+        binding.ivComSearch.setOnClickListener{
+            viewModel.fetchSearchPost(0, binding.etComSearch.text.toString(), type)
+
+            // 키보드 내리기
+            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.etComSearch.windowToken, 0)
+        }
+
+        viewModel.postSearchState.observe(viewLifecycleOwner){
+            if(it == 200) searchView()
+            else if(it == 400)  Snackbar.make(requireView(), "해당하는 게시글이 없습니다.", Snackbar.LENGTH_SHORT).show()
+            else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -136,5 +167,23 @@ class CommunityFragment(
             true
         }
         popupMenu.show()
+    }
+
+    private fun searchView() {
+        val postList = viewModel.getPostSearchList()
+        val postAdapter = CommunityPostAdapter(
+            postList,
+            onClickPost = { // 게시글 클릭 콜백 함수
+                showHorizontalFragment(
+                    R.id.fv_main, requireActivity(),
+                    PostFragment(onClickBackBtn, it, viewModel, onShowBottomBar, "CommunityFragment"),
+                    PostFragment.TAG
+                )
+                onHideBottomBar()
+                onClickDetail("커뮤니티")
+            }
+        )
+        binding.rvPost.adapter = postAdapter
+        binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 }
