@@ -17,8 +17,10 @@ import com.umcproject.irecipe.databinding.FragmentMypageCenterBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 
+
 class MypageCenterFragment(
-    private val onCLickBackBtn: (String) -> Unit
+    private val onCLickBackBtn: (String) -> Unit,
+    private val currentScreen: String
 ): BaseFragment<FragmentMypageCenterBinding>() {
 
     companion object{
@@ -48,8 +50,13 @@ class MypageCenterFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-        onCLickBackBtn("마이페이지")
+        if(currentScreen =="HomeFragment"){
+            onCLickBackBtn("")
+        }else{
+            onCLickBackBtn("마이페이지")
+        }
         (context as MainActivity).binding.btmMain.visibility = View.VISIBLE
+
     }
 
     fun sendEmailToAdmin(context: MypageCenterFragment, title: String, content:String, receivers: Array<String>) {

@@ -35,7 +35,7 @@ class AdvertiseThirdFragment(
             Util.showHorizontalFragment(
                 R.id.fv_main,
                 requireActivity(),
-                MypageCenterFragment(onClickBackBtn),
+                MypageCenterFragment(onClickBackBtn, "HomeFragment"),
                 MypageCenterFragment.TAG
             )
             onClickDetail("개인정보")

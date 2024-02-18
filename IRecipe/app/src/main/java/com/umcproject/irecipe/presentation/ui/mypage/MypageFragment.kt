@@ -131,7 +131,7 @@ class MypageFragment(
 
     private fun onClickCS(){
         binding.mypageCenter.setOnClickListener{//고객센터
-            showHorizontalFragment(R.id.fv_main, requireActivity(), MypageCenterFragment(onClickBackBtn), MypageCenterFragment.TAG)
+            showHorizontalFragment(R.id.fv_main, requireActivity(), MypageCenterFragment(onClickBackBtn, "MypageFragment"), MypageCenterFragment.TAG)
             onClickDetail("고객센터")
             changeBottom()
         }

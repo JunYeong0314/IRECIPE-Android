@@ -5,7 +5,7 @@
         android:title="@string/community_type_title"/>
     <item
         android:id="@+id/menu_type_content"
-        android:title="@string/community_type_content"/>
+        android:title="@string/community_type_content" />
     <item
         android:id="@+id/menu_type_writer"
         android:title="@string/community_type_writer"/>
