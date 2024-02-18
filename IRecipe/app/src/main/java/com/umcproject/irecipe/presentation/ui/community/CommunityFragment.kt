@@ -26,6 +26,7 @@ class CommunityFragment(
 ): BaseFragment<FragmentCommunityBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
     private var page = 0
+    private var type = "제목"
 
     companion object{
         const val TAG = "CommunityFragment"
@@ -50,8 +51,13 @@ class CommunityFragment(
             Snackbar.make(requireView(), getString(R.string.error_fetch_post, it), Snackbar.LENGTH_SHORT).show()
         }
 
-        binding.llSortBtn.setOnClickListener { onClickSort(it) } // 정렬 클릭 이벤트
+        binding.tvSort.setOnClickListener { onClickSort(it) } // 정렬 클릭 이벤트
         onClickPost() // 글쓰기 버튼 이벤트
+
+        binding.ivTypeSearch.setOnClickListener { onClickType(it) } //검색 타입 설정
+        binding.ivComSearch.setOnClickListener{
+
+        }
     }
 
     private fun initView() {
@@ -104,6 +110,27 @@ class CommunityFragment(
                 R.id.menu_sort_score -> {
                     binding.tvSort.text = getString(R.string.com_sort_score)
                     viewModel.fetchPost(0, binding.tvSort.text.toString())
+                }
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
+    private fun onClickType(view: View){
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(R.menu.menu_search_type, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item->
+            when(item.itemId){
+                R.id.menu_type_title -> {
+                    type = "제목"
+                }
+                R.id.menu_type_content -> {
+                    type = "내용"
+                }
+                R.id.menu_type_writer ->{
+                    type = "작성자"
                 }
             }
             true

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_type_title"
+        android:title="@string/community_type_title"/>
+    <item
+        android:id="@+id/menu_type_content"
+        android:title="@string/community_type_content"/>
+    <item
+        android:id="@+id/menu_type_writer"
+        android:title="@string/community_type_writer"/>
+
+</menu>

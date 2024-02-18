@@ -60,6 +60,13 @@
             android:textColor="@color/white"
             android:background="@drawable/bg_button_rounded_hard"
             app:drawableEndCompat="@drawable/ic_bottom_arrow_white" />
+
+        <ImageView
+            android:id="@+id/iv_type_search"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginStart="200dp"
+            android:src="@drawable/bg_search_type"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
