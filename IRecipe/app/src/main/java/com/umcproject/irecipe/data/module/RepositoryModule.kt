@@ -18,6 +18,7 @@ import com.umcproject.irecipe.data.remote.service.community.PostSearchService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingCategoryService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorDeleteService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import com.umcproject.irecipe.domain.repository.CommentRepository
@@ -39,9 +40,10 @@ object RepositoryModule {
     fun provideRefrigeratorRepository(
         setRefrigeratorService: SetRefrigeratorService,
         getTypeIngredientService: GetTypeIngredientService,
-        refrigeratorSearchService: RefrigeratorSearchService
+        refrigeratorSearchService: RefrigeratorSearchService,
+        refrigeratorDeleteService: RefrigeratorDeleteService
     ): RefrigeratorRepository{
-        return RefrigeratorRepositoryImpl(setRefrigeratorService, getTypeIngredientService, refrigeratorSearchService)
+        return RefrigeratorRepositoryImpl(setRefrigeratorService, getTypeIngredientService, refrigeratorSearchService, refrigeratorDeleteService)
     }
 
     @Singleton

@@ -206,6 +206,8 @@ class RefrigeratorProcessFragment(
                         Snackbar.make(requireView(), "${state.exception.message}", Snackbar.LENGTH_SHORT).show()
                         Log.d("ERROR", state.exception.message.toString())
                     }
+
+                    else -> {}
                 }
             }
         }

@@ -44,9 +44,13 @@ class RefrigeratorViewModel @Inject constructor(
     private val _searchState = MutableLiveData<Int?>(null)
     val searchState: LiveData<Int?> get() = _searchState
 
+    private val _deleteState = MutableLiveData<Int?>(null)
+    val deleteState: LiveData<Int?> get() = _deleteState
+
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?>
         get() = _errorMessage
+
 
     private fun fetchRefrigerator(type: String){
         viewModelScope.launch {
@@ -81,6 +85,21 @@ class RefrigeratorViewModel @Inject constructor(
                     is State.ServerError -> { _searchState.value = state.code }
                     is State.Error -> { _errorMessage.value = state.exception.message }
                     else -> {}
+                }
+            }
+        }
+    }
+
+    fun deleteIngredient(ingredientId:Int){
+        viewModelScope.launch {
+            refrigeratorRepository.deleteIngredient(ingredientId).collect{ state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        _deleteState.value = 200
+                    }
+                    is State.ServerError -> {  _deleteState.value = state.code }
+                    is State.Error -> { _errorMessage.value = state.exception.message }
                 }
             }
         }

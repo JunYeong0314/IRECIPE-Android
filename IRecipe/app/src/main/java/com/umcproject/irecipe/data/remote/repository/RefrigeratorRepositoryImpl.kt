@@ -2,10 +2,12 @@ package com.umcproject.irecipe.data.remote.repository
 
 import com.umcproject.irecipe.data.remote.request.refrigerator.SetRefrigeratorRequest
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorDeleteService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Ingredient
+import com.umcproject.irecipe.domain.model.Ingredient2
 import com.umcproject.irecipe.domain.model.Refrigerator
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
 import kotlinx.coroutines.flow.Flow
@@ -17,9 +19,10 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class RefrigeratorRepositoryImpl(
     private val setRefrigeratorService: SetRefrigeratorService,
     private val getTypeIngredientService: GetTypeIngredientService,
-    private val refrigeratorSearchService: RefrigeratorSearchService
+    private val refrigeratorSearchService: RefrigeratorSearchService,
+    private val refrigeratorDeleteService: RefrigeratorDeleteService
 ): RefrigeratorRepository {
-    override fun setIngredient(ingredient: Ingredient): Flow<State<Int>> = flow{
+    override fun setIngredient(ingredient: Ingredient2): Flow<State<Int>> = flow{
         emit(State.Loading)
 
         val request = SetRefrigeratorRequest(
@@ -59,7 +62,8 @@ class RefrigeratorRepositoryImpl(
                     category = it.category!!,
                     expiration = it.expiryDate!!,
                     memo = it.memo!!,
-                    type = it.type!!
+                    type = it.type!!,
+                    id = it.ingredientId!!
                 )
             } ?: emptyList()
 
@@ -88,10 +92,26 @@ class RefrigeratorRepositoryImpl(
                     category = it.category!!,
                     expiration = it.expiryDate!!,
                     memo = it.memo!!,
-                    type = it.type!!
+                    type = it.type!!,
+                    id = it.ingredientId!!
                 )
             } ?: emptyList()
             emit(State.Success(ingredient))
+        }else{
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
+    }
+
+    override fun deleteIngredient(ingredientId: Int): Flow<State<Int>> = flow{
+        emit(State.Loading)
+
+        val response = refrigeratorDeleteService.refrigeratorDelete(ingredientId)
+        val statusCode = response.code()
+
+        if(statusCode == 200){
+            emit(State.Success(statusCode))
         }else{
             emit(State.ServerError(statusCode))
         }

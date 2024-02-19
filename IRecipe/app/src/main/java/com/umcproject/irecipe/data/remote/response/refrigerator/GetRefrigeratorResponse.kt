@@ -16,6 +16,8 @@ data class GetRefrigeratorResponse(
 
 data class Ingredient(
     @field:Json(name = "category")
+    val ingredientId:Int?,
+    @field:Json(name = "category")
     val category: String?,
     @field:Json(name = "expiryDate")
     val expiryDate: String?,
