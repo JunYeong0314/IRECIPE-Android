@@ -89,8 +89,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0, selectSortType)}),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postUpdateCallBack = {viewModel.fetchPost(0)}),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0, selectSortType)}, postUpdateCallBack = {viewModel.fetchPost(0, selectSortType)}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
@@ -131,15 +130,12 @@ class CommunityFragment(
                 R.id.fv_main,requireActivity(),
                 WritePostFragment(
                     onClickBackBtn,
-                    postCallBack = {
-                        initScrollPosition()
-                        viewModel.fetchPost(0, selectSortType)
-                    }),
                     null,
                     Type.ADD,
-                    postCallBack = { viewModel.fetchPost(0) },
-                    postUpdateCallBack = { viewModel.fetchPost(0) }
-                ),
+                    postCallBack = {
+                        initScrollPosition()
+                        viewModel.fetchPost(0, selectSortType) },
+                    postUpdateCallBack = { viewModel.fetchPost(0, selectSortType) }),
                 WritePostFragment.TAG
             )
             onClickDetail("커뮤니티 글쓰기")
@@ -214,8 +210,8 @@ class CommunityFragment(
                         postDeleteCallBack = {
                             initScrollPosition()
                             viewModel.fetchPost(0, selectSortType)
-                        }),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postUpdateCallBack = {viewModel.fetchPost(0)}),
+                        },postUpdateCallBack = { viewModel.fetchPost(0, selectSortType) }
+                        ),
                     PostFragment.TAG
                 )
                 onHideBottomBar()

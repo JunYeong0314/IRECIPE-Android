@@ -42,6 +42,8 @@ class HomeFragment(
     private val viewModel: HomeViewModel by viewModels()
     private val cViewModel: CommunityViewModel by viewModels()
     private var currentPage = 0
+    private var selectSortType = "기본순"
+
 
     companion object{
         const val TAG = "HomeFragment"
@@ -135,7 +137,7 @@ class HomeFragment(
     private fun onClickRankCard(postId: Int, currentScreen: String){
         showVerticalFragment(R.id.fv_main,
             requireActivity(),
-            PostFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen, postDeleteCallBack = {viewModel.fetchRank(0)}, postUpdateCallBack = {cViewModel.fetchPost(0)}),
+            PostFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen, postDeleteCallBack = {viewModel.fetchRank(0)}, postUpdateCallBack = {cViewModel.fetchPost(0, selectSortType)}),
             PostFragment.TAG
         )
         onClickDetail("이달의 레시피 랭킹")
