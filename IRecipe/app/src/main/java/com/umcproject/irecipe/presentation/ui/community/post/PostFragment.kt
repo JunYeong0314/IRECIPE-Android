@@ -36,6 +36,7 @@ class PostFragment(
     private val postDeleteCallBack: () -> Unit
 ) : BaseFragment<FragmentPostBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
+    private val postViewModel: PostViewModel by viewModels()
 
     companion object{
         const val TAG = "PostFragment"
@@ -64,6 +65,7 @@ class PostFragment(
         }
 
         onClickReview() // Q&A, 리뷰글 버튼 이벤트
+        onClickLike() // 게시글 좋아요 버튼 이벤트
         onClickSetting() // 수정, 삭제 버튼 이벤트
     }
 
@@ -99,6 +101,19 @@ class PostFragment(
             else binding.btnPostMy.visibility = View.GONE
         }
     }
+    private fun initLikes(){
+        val postInfo = viewModel.getPostInfo()
+
+        postInfo?.isLike?.let {
+            if(it) binding.ivHeart.setImageResource(R.drawable.ic_heart)
+            else binding.ivHeart.setImageResource(R.drawable.ic_heart_empty)
+            isLike = it
+        }
+        postInfo?.likes?.let {
+            binding.tvHeartCnt.text = it.toString()
+        }
+
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -123,7 +138,30 @@ class PostFragment(
     }
 
     private fun onClickLike(){
-        
+        binding.ivHeart.setOnClickListener {
+            if (isLike==true) { // 좋아요 해제
+                postViewModel.postUnLike(postId)
+                postViewModel.unlikeState.observe(viewLifecycleOwner) {state ->
+//                    state?.let {
+//                        if(state == 200) Snackbar.make(requireView(), "좃앟요 삭제됨", Snackbar.LENGTH_SHORT).show()
+//                    }
+                }
+                binding.ivHeart.setImageResource(R.drawable.ic_heart_empty)
+                binding.tvHeartCnt.text = (binding.tvHeartCnt.text.toString().toInt() - 1).toString()
+
+            } else { // 좋아요
+                postViewModel.postLike(postId)
+                postViewModel.likeState.observe(viewLifecycleOwner) {state ->
+                    state?.let {
+                        if(state == 200) Snackbar.make(requireView(), getString(R.string.confirm_set_like), Snackbar.LENGTH_SHORT).show()
+
+                    }
+                }
+                binding.ivHeart.setImageResource(R.drawable.ic_heart)
+                binding.tvHeartCnt.text = (binding.tvHeartCnt.text.toString().toInt() + 1).toString()
+            }
+            isLike = !isLike!!
+        }
     }
 
     private fun onClickSetting(){
