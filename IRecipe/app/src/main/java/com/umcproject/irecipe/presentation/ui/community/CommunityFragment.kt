@@ -1,21 +1,17 @@
 package com.umcproject.irecipe.presentation.ui.community
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
-import android.text.SpannableString
 import android.text.TextWatcher
-import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
-import androidx.core.app.NotificationCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommunityBinding
@@ -84,7 +80,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postCallBack = { viewModel.fetchPost(0) }),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
@@ -125,9 +121,11 @@ class CommunityFragment(
                 R.id.fv_main,requireActivity(),
                 WritePostFragment(
                     onClickBackBtn,
-                    postCallBack = {
-                        viewModel.fetchPost(0)
-                    }),
+                    null,
+                    null,
+                    Type.ADD,
+                    postCallBack = { viewModel.fetchPost(0) }
+                ),
                 WritePostFragment.TAG
             )
             onClickDetail("커뮤니티 글쓰기")
@@ -189,7 +187,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postCallBack = { viewModel.fetchPost(0) }),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
@@ -199,4 +197,8 @@ class CommunityFragment(
         binding.rvPost.adapter = postAdapter
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
+}
+
+enum class Type{
+    ADD, MODIFY
 }

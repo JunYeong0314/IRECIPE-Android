@@ -2,6 +2,8 @@ package com.umcproject.irecipe.presentation.ui.community.write
 
 import android.content.Context
 import android.net.Uri
+import android.nfc.Tag
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -115,7 +117,7 @@ class WritePostViewModel @Inject constructor(
         emit(State.Error(e))
     }
 
-    fun modifyToServer(context: Context, isTemporary: Boolean): Flow<State<Int>> = flow {
+    fun modifyToServer(id:Int, context: Context, isTemporary: Boolean): Flow<State<Int>> = flow {
         emit(State.Loading)
 
         var imagePart: MultipartBody.Part? = null
@@ -138,8 +140,9 @@ class WritePostViewModel @Inject constructor(
         }
         request.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
-        val response = postUpdateService.postUpdate(1, request, imagePart)
+        val response = postUpdateService.postUpdate(id, request, imagePart)
         val statusCode = response.code()
+        Log.d("momo", statusCode.toString()+"상태")
 
         if (statusCode == 200) {
             emit(State.Success(statusCode))

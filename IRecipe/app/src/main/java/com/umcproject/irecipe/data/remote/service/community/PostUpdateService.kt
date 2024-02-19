@@ -14,7 +14,7 @@ interface PostUpdateService {
     @PATCH("/post/{postId}")
     suspend fun postUpdate(
         @Path("postId") postId:Int,
-        @Part("postUpdateRequest") postUpdateRequest: PostUpdateRequest,
+        @Part("postRequestDTO") postUpdateRequest: PostUpdateRequest,
         @Part image: MultipartBody.Part?
     ): Response<PostUpdateResponse>
 }

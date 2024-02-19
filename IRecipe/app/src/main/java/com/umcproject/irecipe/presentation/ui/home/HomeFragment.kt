@@ -16,6 +16,8 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentHomeBinding
 import com.umcproject.irecipe.domain.model.Home
 import com.umcproject.irecipe.domain.model.HomeType
+import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
+import com.umcproject.irecipe.presentation.ui.community.Type
 import com.umcproject.irecipe.presentation.ui.community.post.PostFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFirstFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFourthFragment
@@ -38,6 +40,7 @@ class HomeFragment(
     private val onShowBottomBar: () -> Unit
 ): BaseFragment<FragmentHomeBinding>() {
     private val viewModel: HomeViewModel by viewModels()
+    private val cViewModel: CommunityViewModel by viewModels()
     private var currentPage = 0
 
     companion object{
@@ -132,7 +135,7 @@ class HomeFragment(
     private fun onClickRankCard(postId: Int, currentScreen: String){
         showVerticalFragment(R.id.fv_main,
             requireActivity(),
-            PostFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen, postDeleteCallBack = {viewModel.fetchRank(0)}),
+            PostFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen, postDeleteCallBack = {viewModel.fetchRank(0)}, postCallBack = { cViewModel.fetchPost(0) }),
             PostFragment.TAG
         )
         onClickDetail("이달의 레시피 랭킹")

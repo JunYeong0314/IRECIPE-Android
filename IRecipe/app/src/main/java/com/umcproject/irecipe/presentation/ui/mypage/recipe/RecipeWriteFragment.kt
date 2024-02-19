@@ -64,7 +64,7 @@ class RecipeWriteFragment(
             onClickWrite = { // 게시글 클릭 콜백 함수
                 Util.showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchWrite(0)}),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchWrite(0)}, postCallBack = {}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()

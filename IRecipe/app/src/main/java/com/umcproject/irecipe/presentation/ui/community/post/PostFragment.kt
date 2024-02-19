@@ -16,6 +16,7 @@ import com.umcproject.irecipe.domain.model.WritePost
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.ModalBottomSheetMyFragment
+import com.umcproject.irecipe.presentation.ui.community.Type
 import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
 import com.umcproject.irecipe.presentation.ui.community.write.bottomSheet.ModalBottomSheetCategoryFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
@@ -33,7 +34,8 @@ class PostFragment(
     private val postId: Int,
     private val onShowBottomBar: () -> Unit,
     private val currentScreen: String,
-    private val postDeleteCallBack: () -> Unit
+    private val postDeleteCallBack: () -> Unit,
+    private val postCallBack: () -> Unit,
 ) : BaseFragment<FragmentPostBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
     private val postViewModel: PostViewModel by viewModels()
@@ -165,11 +167,15 @@ class PostFragment(
     }
 
     private fun onClickSetting(){
+        val post  = viewModel.getPostInfo()
         binding.btnPostMy.setOnClickListener {
             val modal = ModalBottomSheetMyFragment(
+                onClickBackBtn,
                 postId,
+                post,
                 onShowBottomBar,
-                postDeleteCallBack = postDeleteCallBack
+                postDeleteCallBack = postDeleteCallBack,
+                postCallBack = postCallBack
             )
             modal.show(childFragmentManager, ModalBottomSheetMyFragment.TAG)
         }
