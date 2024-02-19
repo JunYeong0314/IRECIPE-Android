@@ -1,6 +1,7 @@
 package com.umcproject.irecipe.presentation.ui.login
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -60,6 +61,7 @@ class LoginViewModel(
                             userDataRepository.setUserData("num", result.profile?.id.toString())
                             userDataRepository.setUserData("platform", platform)
                             onClickLogin(result.profile?.id.toString())
+                            Log.d("login", result.profile?.id.toString())
                         }
                     }
 

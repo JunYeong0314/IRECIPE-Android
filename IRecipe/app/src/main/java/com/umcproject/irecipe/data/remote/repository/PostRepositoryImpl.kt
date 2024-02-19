@@ -7,6 +7,7 @@ import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.data.remote.service.community.PostLikeService
+import com.umcproject.irecipe.data.remote.service.community.PostSearchService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingCategoryService
 import com.umcproject.irecipe.domain.model.PostDetail
@@ -21,7 +22,8 @@ class PostRepositoryImpl(
     private val getPostRankingCategoryService: GetPostRankingCategoryService,
     private val getPostDetailService: GetPostDetailService,
     private val postLikeService: PostLikeService,
-    private val postUnLikeService: PostUnLikeService
+    private val postUnLikeService: PostUnLikeService,
+    private val getpostSearchService: PostSearchService
 ): PostRepository {
 
     override fun fetchPost(page: Int, criteria: String): Flow<State<List<Post>>> = flow {
@@ -179,5 +181,45 @@ class PostRepositoryImpl(
         }
     }.catch { e->
         emit(State.Error(e))
+    }
+
+    override fun fetchPostSearch(page: Int, keyword:String, type:String): Flow<State<List<Post>>> = flow {
+        emit(State.Loading)
+
+        val response = getpostSearchService.postSearch(page = page, keyword = keyword, type = mapperToType(type))
+        val statusCode = response.code()
+
+        if (statusCode == 200) {
+            val postList = response.body()?.result?.map { it ->
+                Post(
+                    postId = it?.postId ?: -1,
+                    title = it?.title ?: "",
+                    subTitle = it?.subhead ?: "",
+                    postImageUrl = it?.imageUrl,
+                    writerNick = it?.nickName ?: "",
+                    writerProfileUrl = it?.memberImage,
+                    likes = it?.likes,
+                    score = it?.score,
+                    reviewCount = it?.reviewsCount,
+                    createdAt = it?.createdAt,
+                    isLike = it?.likeOrNot
+                )
+            } ?: emptyList()
+
+            emit(State.Success(postList))
+        } else {
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
+    }
+
+    private fun mapperToType(type: String): String{
+        return when(type){
+            "제목" -> "title"
+            "내용" -> "content"
+            "작성자" -> "writer"
+            else -> ""
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.umcproject.irecipe.data.remote.repository
 import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.MyPost
+import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.repository.MemberWriteRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -12,7 +13,7 @@ class MemberWriteRepositoryImpl(
     private val memberWriteService: MemberWriteService
 ): MemberWriteRepository {
 
-    override fun fetchWrite(page: Int): Flow<State<List<MyPost>>> = flow {
+    override fun fetchWrite(page: Int): Flow<State<List<Post>>> = flow {
         emit(State.Loading)
 
         val response = memberWriteService.memberWriteService(page = page)
@@ -20,16 +21,18 @@ class MemberWriteRepositoryImpl(
 
         if (statusCode == 200) {
             val postList = response.body()?.result?.map { it ->
-                MyPost(
+                Post(
+                    postId = it?.postId,
                     title = it?.title ?: "",
                     subTitle = it?.subhead ?: "",
-                    content = it?.content ?: "",
+                    postImageUrl = it?.imageUrl ?: "",
+                    writerNick = it?.nickName ?:"",
+                    writerProfileUrl = it?.memberImage ?: "",
                     likes = it?.likes,
-                    imageUrl = it?.imageUrl ?: "",
-                    fileName = it?.fileName ?: "",
-                    category = it?.category ?: "",
-                    level = it?.level ?: "",
-                    score = it?.score,
+                    score = it?.score ,
+                    reviewCount = it?.reviewsCount,
+                    createdAt = it?.createdAt ?: "",
+                    isLike = it?.likeOrNot,
                 )
             } ?: emptyList()
 

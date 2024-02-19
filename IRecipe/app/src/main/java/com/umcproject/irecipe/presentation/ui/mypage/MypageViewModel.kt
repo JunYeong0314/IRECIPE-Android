@@ -21,6 +21,7 @@ import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.User
 import com.umcproject.irecipe.domain.repository.UserDataRepository
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
+import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.UriUtil
 import com.umcproject.irecipe.presentation.util.Util.KAKAO
 import com.umcproject.irecipe.presentation.util.Util.NAVER
@@ -69,8 +70,8 @@ class MypageViewModel @Inject constructor(
     private val _ageResponse = MutableLiveData<String>()
     val ageResponse: LiveData<String> get() = _ageResponse
 
-    private val _allergyResponse = MutableLiveData<List<String>>()
-    val allergyResponse: LiveData<List<String>> get() = _allergyResponse
+    private val _allergyResponse = MutableLiveData<List<Int>>()
+    val allergyResponse: LiveData<List<Int>> get() = _allergyResponse
 
     private val _isComplete2 = MutableLiveData(false)
     val isComplete2: LiveData<Boolean> get() = _isComplete2
@@ -179,8 +180,9 @@ class MypageViewModel @Inject constructor(
     fun resultAllergy(){
         viewModelScope.launch {
             val response = checkMemberService.checkMember()
-            Log.d(ChatBotActivity.TAG, response.body()?.result?.allergyList.toString())
-            _allergyResponse.value = (response.body()?.result?.allergyList ?: emptyList()) as List<String>?
+            Log.d(MainActivity.TAG, response.body()?.result?.allergyList.toString())
+            _allergyResponse.value = ((response.body()?.result?.allergyList ?: emptyList()) as List<Int>?)
+            Log.d(MainActivity.TAG, _allergyResponse.value.toString())
         }
     }
     fun setAllergy(allergy: List<String>){
@@ -200,11 +202,11 @@ class MypageViewModel @Inject constructor(
     fun setLastComplete(context: Context): Flow<State<Int>> = flow {
         emit(State.Loading)
 
-        Log.d(MypagePersonalFragment.TAG, _userInfo.value.age)
+        Log.d("dd", _userInfo.value.allergy.toString())
         val request = FixMemberRequest(
             activity = true,
             age = mapperToAge(_userInfo.value.age),
-            allergyList = emptyList(),
+            allergyList =  _userInfo.value.allergy,
             event = true ,
             gender = _userInfo.value.genderCode,
             imageUrl = null,

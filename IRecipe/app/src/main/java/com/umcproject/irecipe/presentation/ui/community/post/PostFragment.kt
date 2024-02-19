@@ -16,6 +16,7 @@ import com.umcproject.irecipe.domain.model.WritePost
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +25,7 @@ class PostFragment(
     private val onClickBackBtn: (String) -> Unit,
     private val postId: Int,
     private val onShowBottomBar: () -> Unit,
-    private val isToRank: Boolean
+    private val currentScreen: String
 ) : BaseFragment<FragmentPostBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
 
@@ -87,11 +88,14 @@ class PostFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-
-        if(isToRank) onClickBackBtn("")
-        else onClickBackBtn("커뮤니티")
-
-        onShowBottomBar()
+        if (currentScreen == "RecipeWriteFragment") {
+            //onClickBackBtn("레시피보관함")
+        }else if(currentScreen == "CommunityFragment"){
+            onClickBackBtn("커뮤니티")
+            onShowBottomBar()
+        }else{
+            onClickBackBtn("")
+        }
     }
 
     private fun onClickReview() {

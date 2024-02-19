@@ -14,20 +14,24 @@ data class MemberWriteResponse(
 )
 
 data class MemberWriteResult(
-    @Json(name = "category")
-    val category: String?,
-    @Json(name = "content")
-    val content: String?,
-    @Json(name = "fileName")
-    val fileName: String?,
+    @Json(name = "createdAt")
+    val createdAt: String?,
     @Json(name = "imageUrl")
     val imageUrl: String?,
-    @Json(name = "level")
-    val level: String?,
+    @Json(name = "likeOrNot")
+    val likeOrNot: Boolean?,
     @Json(name = "likes")
     val likes: Int?,
+    @Json(name = "memberImage")
+    val memberImage: String?, //Any
+    @Json(name = "nickName")
+    val nickName: String?,
+    @Json(name = "postId")
+    val postId: Int?,
+    @Json(name = "reviewsCount")
+    val reviewsCount: Int?,
     @Json(name = "score")
-    val score: Int?,
+    val score: Double?, //Int
     @Json(name = "subhead")
     val subhead: String?,
     @Json(name = "title")

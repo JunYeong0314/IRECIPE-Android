@@ -1,10 +1,19 @@
 package com.umcproject.irecipe.presentation.ui.community
 
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.SpannableString
+import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import androidx.core.app.NotificationCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -26,6 +35,7 @@ class CommunityFragment(
 ): BaseFragment<FragmentCommunityBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
     private var page = 0
+    private var type = "제목"
 
     companion object{
         const val TAG = "CommunityFragment"
@@ -51,8 +61,35 @@ class CommunityFragment(
             Snackbar.make(requireView(), getString(R.string.error_fetch_post, it), Snackbar.LENGTH_SHORT).show()
         }
 
-        binding.llSortBtn.setOnClickListener { onClickSort(it) } // 정렬 클릭 이벤트
+        binding.tvSort.setOnClickListener { onClickSort(it) } // 정렬 클릭 이벤트
         onClickPost() // 글쓰기 버튼 이벤트
+
+        binding.ivTypeSearch.setOnClickListener { onClickType(it) } //검색 타입 설정
+
+        binding.etComSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // 텍스트가 변경될 때 호출되는 메서드
+                val currentText = s.toString()
+                if(currentText == "")
+                    initView()
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+        //검색하기
+        binding.ivComSearch.setOnClickListener{
+            viewModel.fetchSearchPost(0, binding.etComSearch.text.toString(), type)
+
+            // 키보드 내리기
+            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.etComSearch.windowToken, 0)
+        }
+
+        viewModel.postSearchState.observe(viewLifecycleOwner){
+            if(it == 200) searchView()
+            else if(it == 400)  Snackbar.make(requireView(), "해당하는 게시글이 없습니다.", Snackbar.LENGTH_SHORT).show()
+            else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     private fun initView() {
@@ -62,7 +99,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, false),
+                    PostFragment(onClickBackBtn, it, viewModel, onShowBottomBar, "CommunityFragment"),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
@@ -110,5 +147,44 @@ class CommunityFragment(
             true
         }
         popupMenu.show()
+    }
+
+    private fun onClickType(view: View){
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.menuInflater.inflate(R.menu.menu_search_type, popupMenu.menu)
+
+        popupMenu.setOnMenuItemClickListener { item->
+            when(item.itemId){
+                R.id.menu_type_title -> {
+                    type = "제목"
+                }
+                R.id.menu_type_content -> {
+                    type = "내용"
+                }
+                R.id.menu_type_writer ->{
+                    type = "작성자"
+                }
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
+    private fun searchView() {
+        val postList = viewModel.getPostSearchList()
+        val postAdapter = CommunityPostAdapter(
+            postList,
+            onClickPost = { // 게시글 클릭 콜백 함수
+                showHorizontalFragment(
+                    R.id.fv_main, requireActivity(),
+                    PostFragment(onClickBackBtn, it, viewModel, onShowBottomBar, "CommunityFragment"),
+                    PostFragment.TAG
+                )
+                onHideBottomBar()
+                onClickDetail("커뮤니티")
+            }
+        )
+        binding.rvPost.adapter = postAdapter
+        binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 }

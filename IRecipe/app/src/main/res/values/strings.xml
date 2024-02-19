@@ -93,6 +93,11 @@
     <string name="food_type_cold">냉장 보관</string>
     <string name="food_type_frozen">냉동 보관</string>
 
+    <!--검색-->
+    <string name="community_type_title">제목</string>
+    <string name="community_type_content">내용</string>
+    <string name="community_type_writer">작성자</string>
+
     <!-- 커뮤니티 UI -->
     <string name="com_hint">오늘의 레시피를 검색해 보세요</string>
     <string name="com_level">난이도</string>
