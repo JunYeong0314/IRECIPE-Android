@@ -44,8 +44,8 @@ class RefrigeratorViewModel @Inject constructor(
     private val _searchState = MutableLiveData<Int?>(null)
     val searchState: LiveData<Int?> get() = _searchState
 
-    private val _deleteState = MutableLiveData<Int?>(null)
-    val deleteState: LiveData<Int?> get() = _deleteState
+    private val _deleteState = MutableLiveData<Int>()
+    val deleteState: LiveData<Int> get() = _deleteState
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?>

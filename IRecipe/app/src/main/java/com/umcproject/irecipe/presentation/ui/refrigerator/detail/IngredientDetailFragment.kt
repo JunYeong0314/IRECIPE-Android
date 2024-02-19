@@ -28,7 +28,8 @@ class IngredientDetailFragment(
     private val ingredient: Ingredient,
     private val onClickBackBtn: (String) -> Unit,
     private val currentFragment: String,
-    private val onIngredientCallBack: () -> Unit
+    private val onIngredientCallBack: () -> Unit,
+    private val workCallBack: () -> Unit
 ): BaseFragment<FragmentIngredientDetailBinding>() {
     private val viewModel: RefrigeratorViewModel by viewModels()
 
@@ -45,25 +46,34 @@ class IngredientDetailFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setIngredientInfo() // 초기 정보 설정
-        binding.btnConfirm.setOnClickListener {
-            viewModel.deleteState.observe(viewLifecycleOwner){
-            if(it == 200){
-                Util.popFragment(requireActivity())
+        viewModel.deleteState.observe(viewLifecycleOwner) {
+            if (it == 200) {
                 onIngredientCallBack()
-                Snackbar.make(requireView(), "삭제에 성공하였습니다!", Snackbar.LENGTH_SHORT).show()
-            }else{
-                Snackbar.make(requireView(), "게시글을 찾지 못했습니다.", Snackbar.LENGTH_SHORT).show()
+                popFragment(requireActivity())
+                Snackbar.make(requireView(), "음식을 삭제했습니다.", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(requireView(), "삭제 요청이 실패했습니다.", Snackbar.LENGTH_SHORT).show()
             }
         }
+        setIngredientInfo() // 초기 정보 설정
+        onClickDeleteIngredient() // 재료 삭제
+        onClickModifyBtn() // 수정하기 함수
+    }
 
-            viewModel.deleteIngredient(ingredient.id)} // 확인 클릭 이벤트
+    private fun onClickDeleteIngredient(){
+        binding.btnDelete.setOnClickListener {
+            viewModel.deleteIngredient(ingredient.id)
+        }
+    }
+
+    private fun onClickModifyBtn(){
         binding.btnModify.setOnClickListener {
             showVerticalFragment(
                 R.id.fv_main, requireActivity(),
-                RefrigeratorProcessFragment(onClickBackBtn, Type.MODIFY, ingredient, workCallBack = { viewModel.allIngredientFetch() }),
+                RefrigeratorProcessFragment(onClickBackBtn, Type.MODIFY, ingredient, workCallBack = workCallBack),
                 RefrigeratorProcessFragment.TAG
-            )}
+            )
+        }
     }
 
     private fun setIngredientInfo(){

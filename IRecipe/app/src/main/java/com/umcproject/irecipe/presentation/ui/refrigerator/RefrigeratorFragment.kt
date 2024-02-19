@@ -49,7 +49,6 @@ class RefrigeratorFragment(
         // 냉장고 재료 fetch
         viewModel.fetchState.observe(viewLifecycleOwner) { state ->
             state?.let {
-                Log.d(TAG, state.toString())
                 if(state == 200) initView()
                 else Snackbar.make(requireView(), getString(R.string.error_server_refrigerator, state), Snackbar.LENGTH_SHORT).show()
             }
@@ -79,7 +78,15 @@ class RefrigeratorFragment(
             refList = refList,
             onClickDetail = { goDetailPage(it) },
             onClickIngredient = {
-                showVerticalFragment(R.id.fv_main, requireActivity(), IngredientDetailFragment(it, onClickBackBtn, TAG, onIngredientCallBack = { viewModel.allIngredientFetch() }), IngredientDetailFragment.TAG)
+                showVerticalFragment(
+                    R.id.fv_main,
+                    requireActivity(),
+                    IngredientDetailFragment(
+                        it, onClickBackBtn, TAG,
+                        onIngredientCallBack = { viewModel.allIngredientFetch() },
+                        workCallBack = { viewModel.allIngredientFetch() }
+                    ),
+                    IngredientDetailFragment.TAG)
                 onClickDetail("나의 냉장고")
             })
         binding.rvTitle.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

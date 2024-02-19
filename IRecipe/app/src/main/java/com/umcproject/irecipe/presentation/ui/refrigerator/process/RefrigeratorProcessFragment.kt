@@ -78,7 +78,7 @@ class RefrigeratorProcessFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-        onClickBackBtn(getString(R.string.bottom_refrigerator))
+        if(processType == Type.ADD) onClickBackBtn(getString(R.string.bottom_refrigerator))
     }
 
     private fun setFoodName(){
@@ -186,7 +186,7 @@ class RefrigeratorProcessFragment(
         binding.tvComplete.setOnClickListener {
             when(processType){
                 Type.ADD -> { addAsync() }
-                Type.MODIFY -> { modifyAsync()}
+                Type.MODIFY -> { modifyAsync() }
             }
         }
     }
@@ -207,8 +207,6 @@ class RefrigeratorProcessFragment(
                         Snackbar.make(requireView(), "${state.exception.message}", Snackbar.LENGTH_SHORT).show()
                         Log.d("ERROR", state.exception.message.toString())
                     }
-
-                    else -> {}
                 }
             }
         }
@@ -237,18 +235,13 @@ class RefrigeratorProcessFragment(
                 when(state){
                     is State.Loading -> {}
                     is State.Success -> {
-                        popFragment(requireActivity())
-                        popFragment(requireActivity()) //화면 2번 뒤로
                         workCallBack()
-                        Snackbar.make(requireView(), "음식을 수정했어요!", Snackbar.LENGTH_SHORT).show()
+                        popFragment(requireActivity())
+                        popFragment(requireActivity())
+                        Snackbar.make(requireView(), "음식정보 수정완료!", Snackbar.LENGTH_SHORT).show()
                     }
                     is State.ServerError -> { Snackbar.make(requireView(), getString(R.string.error_add_ingredient, state.code), Snackbar.LENGTH_SHORT).show() }
-                    is State.Error -> {
-                        Snackbar.make(requireView(), "${state.exception.message}", Snackbar.LENGTH_SHORT).show()
-                        Log.d("ERROR", state.exception.message.toString())
-                    }
-
-                    else -> {}
+                    is State.Error -> { Snackbar.make(requireView(), "${state.exception.message}", Snackbar.LENGTH_SHORT).show() }
                 }
             }
         }

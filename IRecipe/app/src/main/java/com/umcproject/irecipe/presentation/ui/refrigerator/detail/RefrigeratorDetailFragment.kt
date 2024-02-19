@@ -42,7 +42,14 @@ class RefrigeratorDetailFragment(
         binding.rvIngredientDetail.adapter = RefrigeratorDetailAdapter(
             ingredientList,
             onClickIngredient = {
-                showVerticalFragment(R.id.fv_main, requireActivity(), IngredientDetailFragment(it, onClickBackBtn, TAG, onIngredientCallBack = {}), IngredientDetailFragment.TAG)
+                showVerticalFragment(
+                    R.id.fv_main, requireActivity(),
+                    IngredientDetailFragment(
+                        it, onClickBackBtn, TAG,
+                        onIngredientCallBack = {},
+                        workCallBack = {}
+                    ),
+                    IngredientDetailFragment.TAG)
             }
         )
     }
