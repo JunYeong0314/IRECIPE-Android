@@ -6,6 +6,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,7 +64,7 @@ class HomeFragment(
         viewModel.errorMessage.observe(viewLifecycleOwner){ Snackbar.make(requireView(),getString(R.string.error_fetch_post, it),Snackbar.LENGTH_SHORT).show() }
 
 
-        advertiseView() // 광고 배너
+        advertiseView(this@HomeFragment) // 광고 배너
     }
 
     private fun initView() {
@@ -85,8 +86,8 @@ class HomeFragment(
         binding.rvHome.adapter = homeAdapter
     }
 
-    private fun advertiseView(){ //광고배너 화면
-        val advertiseAdapter = AdvertiseVpAdapter(this)
+    private fun advertiseView(fragment: Fragment){ //광고배너 화면
+        val advertiseAdapter = AdvertiseVpAdapter(fragment)
         advertiseAdapter.addFragment(AdvertiseFirstFragment())
         advertiseAdapter.addFragment(AdvertiseSecondFragment())
         advertiseAdapter.addFragment(AdvertiseThirdFragment(onClickDetail, onClickBackBtn))
