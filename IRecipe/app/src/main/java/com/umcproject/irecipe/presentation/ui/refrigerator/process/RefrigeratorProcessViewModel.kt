@@ -68,4 +68,16 @@ class RefrigeratorProcessViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateIngredient(ingrdientId:Int) = flow<State<Int>>{
+        refrigeratorRepository.updateIngredient(ingrdientId,ingredient = ingredientInfo.value).collect{ state->
+            when(state){
+                is State.Loading -> {}
+                is State.Success -> { emit(State.Success(state.data)) }
+                is State.ServerError -> {emit(State.ServerError(state.code))}
+                is State.Error -> {emit(State.Error(state.exception))}
+                else -> {}
+            }
+        }
+    }
 }

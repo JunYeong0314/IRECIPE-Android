@@ -122,7 +122,7 @@ class RefrigeratorRepositoryImpl(
         emit(State.Error(e))
     }
 
-    override fun updateIngredient(ingredientId: Int, ingredient: Ingredient): Flow<State<Int>> = flow{
+    override fun updateIngredient(ingredientId: Int, ingredient: Ingredient2): Flow<State<Int>> = flow{
         emit(State.Loading)
 
         val request = RefrigeratorUpdateRequest(

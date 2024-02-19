@@ -18,6 +18,7 @@ import com.umcproject.irecipe.databinding.FragmentRefrigeratorProcessBinding
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Ingredient
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
+import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.Type
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util
@@ -231,7 +232,26 @@ class RefrigeratorProcessFragment(
     }
     
     private fun modifyAsync(){
-        
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.updateIngredient(ingredient!!.id).collect{ state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        popFragment(requireActivity())
+                        popFragment(requireActivity()) //화면 2번 뒤로
+                        workCallBack()
+                        Snackbar.make(requireView(), "음식을 수정했어요!", Snackbar.LENGTH_SHORT).show()
+                    }
+                    is State.ServerError -> { Snackbar.make(requireView(), getString(R.string.error_add_ingredient, state.code), Snackbar.LENGTH_SHORT).show() }
+                    is State.Error -> {
+                        Snackbar.make(requireView(), "${state.exception.message}", Snackbar.LENGTH_SHORT).show()
+                        Log.d("ERROR", state.exception.message.toString())
+                    }
+
+                    else -> {}
+                }
+            }
+        }
     }
 
 }

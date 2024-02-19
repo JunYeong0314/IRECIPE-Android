@@ -11,5 +11,5 @@ interface RefrigeratorRepository {
     fun fetchIngredientType(type: String): Flow<State<Refrigerator>> // type에 따른 재료 불러오기
     fun searchIngredient(food:String): Flow<State<List<Ingredient>>> // 검색해서 type에 따른 재료 불러오기
     fun deleteIngredient(ingredientId:Int): Flow<State<Int>> //냉장고 재료 삭제
-    fun updateIngredient(ingredientId:Int, ingredient: Ingredient): Flow<State<Int>>
+    fun updateIngredient(ingredientId:Int, ingredient: Ingredient2): Flow<State<Int>>
 }
