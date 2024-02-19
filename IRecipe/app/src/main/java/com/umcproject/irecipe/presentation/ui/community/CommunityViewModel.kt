@@ -2,6 +2,7 @@ package com.umcproject.irecipe.presentation.ui.community
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,11 +35,11 @@ class CommunityViewModel @Inject constructor(
     private val setReviewService: SetReviewService,
     private val commentRepository: CommentRepository
 ): ViewModel() {
-    private var postList = emptyList<Post>() // 게시글 전체 List
+    private var postList = mutableListOf<Post>() // 게시글 전체 List
     private var postDetailInfo: PostDetail? = null // 게시글 단일 정보
-    private var reviewList = emptyList<Review>() // 후기 전체 List
+    private var reviewList = mutableListOf<Review>() // 후기 전체 List
     private var postSearchList = emptyList<Post>() // 게시글 전체 List
-    private var sort = "기본순"
+    private var currentSortType = "기본순"
 
     // 게시글 리스트 상태 LiveData
     private val _postState = MutableLiveData<Int>()
@@ -89,14 +90,19 @@ class CommunityViewModel @Inject constructor(
 
 
     // 게시글 전체조회
-    fun fetchPost(page: Int){
+    fun fetchPost(page: Int, sort: String){
         viewModelScope.launch {
             postRepository.fetchPost(page, sort).collect{ state->
                 when(state){
                     is State.Loading -> {}
                     is State.Success -> {
-                        postList = state.data
-                        _postState.value = 200
+                        if(currentSortType != sort) postList.clear()
+
+                        if(state.data.isNotEmpty()){
+                            currentSortType = sort
+                            postList.addAll(state.data)
+                            _postState.value = 200
+                        }
                     }
                     is State.ServerError -> {
                         _postState.value = state.code
@@ -134,17 +140,22 @@ class CommunityViewModel @Inject constructor(
         return postDetailInfo
     }
 
-    fun fetchReview(postId: Int){
+    fun fetchReview(postId: Int, page: Int){
         viewModelScope.launch {
-            commentRepository.fetchReview(postId, 0).collect{ state->
+            commentRepository.fetchReview(postId, page).collect{ state->
                 when(state){
                     is State.Loading -> {}
                     is State.Success -> {
-                        reviewList = state.data
-                        _reviewState.value = 200
+                        if(state.data.isNotEmpty()){
+                            reviewList.addAll(state.data)
+                            _reviewState.value = 200
+                        }
                     }
                     is State.ServerError -> { _reviewState.value = state.code }
-                    is State.Error -> { _reviewError.value = state.exception.message }
+                    is State.Error -> {
+                        _reviewError.value = state.exception.message
+                        Log.d("ERROR", state.exception.message.toString())
+                    }
                 }
             }
         }
@@ -241,8 +252,5 @@ class CommunityViewModel @Inject constructor(
         }
     }
 
-    fun setSort(sortType: String){
-        sort = sortType
-    }
 
 }

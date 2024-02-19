@@ -62,6 +62,8 @@ class HomeViewModel @Inject constructor(
 
     fun fetchRankCategory(page: Int, category: String) {
         if(category == "ALL"){
+            if(currentCategory != category) postRankList.clear()
+            currentCategory = category
             fetchRank(page)
         }else{
             viewModelScope.launch {

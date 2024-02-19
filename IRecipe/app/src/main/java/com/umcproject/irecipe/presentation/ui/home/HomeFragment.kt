@@ -77,7 +77,7 @@ class HomeFragment(
             onClickRankDetail = {
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    RankDetailFragment(viewModel, onClickRankCard = { onClickRankCard(it, RankDetailFragment.TAG) }, onClickBackBtn = onClickBackBtn),
+                    RankDetailFragment(onClickRankCard = { onClickRankCard(it, RankDetailFragment.TAG) }, onClickBackBtn = onClickBackBtn),
                     RankDetailFragment.TAG)
                 onClickDetail("이달의 레시피 랭킹")
             }
