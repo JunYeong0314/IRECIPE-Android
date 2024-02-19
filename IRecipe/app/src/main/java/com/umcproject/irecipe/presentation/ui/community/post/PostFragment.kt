@@ -24,11 +24,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class PostFragment(
     private val onClickBackBtn: (String) -> Unit,
     private val postId: Int,
-    private val viewModel: CommunityViewModel,
     private val onShowBottomBar: () -> Unit,
     private val currentScreen: String
 ) : BaseFragment<FragmentPostBinding>() {
-    init { viewModel.getPostInfoFetch(postId) }
+    private val viewModel: CommunityViewModel by viewModels()
+
     companion object{
         const val TAG = "PostFragment"
     }
@@ -43,6 +43,7 @@ class PostFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getPostInfoFetch(postId)
 
         // 게시글 단일 조회 성공인 경우
         viewModel.postDetailState.observe(viewLifecycleOwner){
@@ -89,9 +90,11 @@ class PostFragment(
         super.onDestroy()
         if (currentScreen == "RecipeWriteFragment") {
             //onClickBackBtn("레시피보관함")
-        }else{
+        }else if(currentScreen == "CommunityFragment"){
             onClickBackBtn("커뮤니티")
             onShowBottomBar()
+        }else{
+            onClickBackBtn("")
         }
     }
 

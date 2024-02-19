@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ActivityMainBinding
+import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
@@ -41,7 +42,9 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                     hideTitle()
                     HomeFragment(
                         onClickDetail = { title-> showTitle(title, true) },
-                        onClickBackBtn = { title-> showTitle(title, false) }
+                        onClickBackBtn = { title-> showTitle(title, false) },
+                        onHideBottomBar = { hideBottomBar() },
+                        onShowBottomBar = { showBottomBar() }
                     ).changeFragment(HomeFragment.TAG)
                     hideFragment(HomeFragment.TAG)
                 }
@@ -63,7 +66,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
                     showTitle(getString(R.string.title_community), false)
                     CommunityFragment(
                         onClickDetail = { title-> showTitle(title, true) }, // 상세페이지 들어갔을때
-                        onClickBackBtn = { title-> showTitle(title, false) }, // 상세페이지 나왔을 때
+                        onClickBackBtn = { title-> showTitle(title, false) }, // 상세페이지 나갔을 때
                         onHideBottomBar = { hideBottomBar() },
                         onShowBottomBar = { showBottomBar() }
                     ).changeFragment(CommunityFragment.TAG)
@@ -91,7 +94,9 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
             R.id.fv_main,
             HomeFragment(
                 onClickDetail = { title-> showTitle(title, true) },
-                onClickBackBtn = { title-> showTitle(title, false) }
+                onClickBackBtn = { title-> showTitle(title, false) },
+                onHideBottomBar = { hideBottomBar() },
+                onShowBottomBar = { showBottomBar() }
             ),
             HomeFragment.TAG
         ).commit()
@@ -116,8 +121,11 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
         if(isBackBtn) binding.ibtnBack.visibility = View.VISIBLE
         else binding.ibtnBack.visibility = View.GONE
 
-        binding.flTitle.visibility = View.VISIBLE
-        binding.tvTitle.text = title
+        if(title.isBlank()) hideTitle()
+        else{
+            binding.flTitle.visibility = View.VISIBLE
+            binding.tvTitle.text = title
+        }
     }
 
     private fun hideTitle() {

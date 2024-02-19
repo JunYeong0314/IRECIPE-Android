@@ -3,7 +3,7 @@ package com.umcproject.irecipe.data.remote.response.community.postDetail
 
 import com.squareup.moshi.Json
 
-data class getPostDetailResponse(
+data class GetPostDetailResponse(
     @field:Json(name = "code")
     val code: String?,
     @field:Json(name = "isSuccess")
@@ -38,6 +38,8 @@ data class Result(
     val status: String?,
     @field:Json(name = "subhead")
     val subhead: String?,
+    @field:Json(name = "myPost")
+    val myPost: Boolean?,
     @field:Json(name = "title")
     val title: String?,
     @field:Json(name = "writerImage")

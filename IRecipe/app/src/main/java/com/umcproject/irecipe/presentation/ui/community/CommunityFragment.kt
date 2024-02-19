@@ -48,6 +48,7 @@ class CommunityFragment(
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchPost(0, "기본순")
 
         // 게시글 fetch
         viewModel.postState.observe(viewLifecycleOwner){

@@ -33,10 +33,6 @@ class CommunityViewModel @Inject constructor(
     private val setReviewService: SetReviewService,
     private val commentRepository: CommentRepository
 ): ViewModel() {
-    init {
-        fetchPost(0, "기본순")
-    }
-
     private var postList = emptyList<Post>() // 게시글 전체 List
     private var postDetailInfo: PostDetail? = null // 게시글 단일 정보
     private var reviewList = emptyList<Review>() // 후기 전체 List

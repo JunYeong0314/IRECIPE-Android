@@ -1,10 +1,9 @@
-package com.umcproject.irecipe.data.remote.response.home
+package com.umcproject.irecipe.data.remote.response.home.categoryRank
 
 
 import com.squareup.moshi.Json
-import com.umcproject.irecipe.data.remote.response.home.categoryRank.Result
 
-data class GetPostRankingResponse(
+data class GetPostRankingCategoryResponse(
     @field:Json(name = "code")
     val code: String?,
     @field:Json(name = "isSuccess")
@@ -37,7 +36,7 @@ data class Post(
     @field:Json(name = "postId")
     val postId: Int?,
     @field:Json(name = "scores")
-    val scores: Double?,
+    val scores: Double,
     @field:Json(name = "scoresInOneMonth")
     val scoresInOneMonth: Double?,
     @field:Json(name = "title")

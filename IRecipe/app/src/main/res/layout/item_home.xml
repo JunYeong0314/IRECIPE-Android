@@ -4,33 +4,37 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/tv_home_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/home_title_ranking"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-    <ImageButton
-        android:id="@+id/ibtn_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_right"
-        android:backgroundTint="@color/transparent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_home"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_home_title"
-        android:layout_marginTop="15dp"
-        android:orientation="horizontal" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rv_content">
+        <TextView
+            android:id="@+id/tv_home_title"
+            android:layout_width="0dp"
+            android:layout_weight="0.9"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:text="@string/home_title_ranking"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <ImageButton
+            android:id="@+id/ibtn_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_right"
+            android:backgroundTint="@color/transparent" />
+    </LinearLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_content"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_title"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
