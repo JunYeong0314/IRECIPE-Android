@@ -15,7 +15,6 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentHomeBinding
 import com.umcproject.irecipe.domain.model.Home
 import com.umcproject.irecipe.domain.model.HomeType
-import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.post.PostFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFirstFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFourthFragment
@@ -24,8 +23,6 @@ import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseThirdFragm
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseVpAdapter
 import com.umcproject.irecipe.presentation.ui.home.detail.RankDetailFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
-import com.umcproject.irecipe.presentation.util.MainActivity
-import com.umcproject.irecipe.presentation.util.Util
 import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -75,15 +72,14 @@ class HomeFragment(
         )
         val homeAdapter = HomeAdapter(
             homeList = homeList,
-            onClickRankCard = { onClickRankCard(it) },
+            onClickRankCard = { onClickRankCard(it, TAG) },
             onClickRankDetail = {
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    RankDetailFragment(viewModel, onClickRankCard = { onClickRankCard(it) }, onClickBackBtn = onClickBackBtn),
+                    RankDetailFragment(viewModel, onClickRankCard = { onClickRankCard(it, RankDetailFragment.TAG) }, onClickBackBtn = onClickBackBtn),
                     RankDetailFragment.TAG)
                 onClickDetail("이달의 레시피 랭킹")
-            },
-            context = requireContext()
+            }
         )
         binding.rvHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHome.adapter = homeAdapter
@@ -132,9 +128,9 @@ class HomeFragment(
         }, DELAY_MS, PERIOD_MS)
     }
 
-    private fun onClickRankCard(postId: Int){
-        showVerticalFragment(R.id.fv_main, requireActivity(), PostFragment(onClickBackBtn, postId, onShowBottomBar, true), PostFragment.TAG)
-        onClickDetail("")
+    private fun onClickRankCard(postId: Int, currentScreen: String){
+        showVerticalFragment(R.id.fv_main, requireActivity(), PostFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen), PostFragment.TAG)
+        onClickDetail("이달의 레시피 랭킹")
         onHideBottomBar()
     }
 

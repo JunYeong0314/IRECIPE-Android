@@ -39,7 +39,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
             when(it.itemId){
                 R.id.nav_frag_home -> {
                     id = R.id.nav_frag_home
-                    hideTitle()
+                    showTitle(getString(R.string.title_home), false)
                     HomeFragment(
                         onClickDetail = { title-> showTitle(title, true) },
                         onClickBackBtn = { title-> showTitle(title, false) },
@@ -121,15 +121,8 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
         if(isBackBtn) binding.ibtnBack.visibility = View.VISIBLE
         else binding.ibtnBack.visibility = View.GONE
 
-        if(title.isBlank()) hideTitle()
-        else{
-            binding.flTitle.visibility = View.VISIBLE
-            binding.tvTitle.text = title
-        }
-    }
-
-    private fun hideTitle() {
-        binding.flTitle.visibility = View.GONE
+        binding.flTitle.visibility = View.VISIBLE
+        binding.tvTitle.text = title
     }
 
     private fun onClickBackBtn(){

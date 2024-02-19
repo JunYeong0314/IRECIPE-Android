@@ -54,7 +54,7 @@ object RepositoryModule {
         postUnLikeService: PostUnLikeService,
         postSearchService: PostSearchService
     ): PostRepository{
-        return PostRepositoryImpl(getPostService, getPostRankingService, getPostRankingCategoryService, getPostDetailService, postLikeService, postUnLikeService)
+        return PostRepositoryImpl(getPostService, getPostRankingService, getPostRankingCategoryService, getPostDetailService, postLikeService, postUnLikeService, postSearchService)
     }
 
     @Singleton

@@ -112,7 +112,7 @@ class RankDetailFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-        onClickBackBtn("")
+        onClickBackBtn("아이레시피")
     }
 
 }

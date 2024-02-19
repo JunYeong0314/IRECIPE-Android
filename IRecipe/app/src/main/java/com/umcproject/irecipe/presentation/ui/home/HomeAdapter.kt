@@ -13,8 +13,7 @@ import com.umcproject.irecipe.domain.model.PostRank
 class HomeAdapter(
     private val homeList: List<Home>,
     private val onClickRankCard: (Int) -> Unit,
-    private val onClickRankDetail: () -> Unit,
-    private val context: Context
+    private val onClickRankDetail: () -> Unit
 ): RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -13,8 +13,12 @@ import com.google.gson.Gson
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentPostBinding
 import com.umcproject.irecipe.domain.model.WritePost
+import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
+import com.umcproject.irecipe.presentation.ui.home.HomeFragment
+import com.umcproject.irecipe.presentation.ui.home.detail.RankDetailFragment
+import com.umcproject.irecipe.presentation.ui.mypage.recipe.RecipeWriteFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
@@ -88,14 +92,18 @@ class PostFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-        if (currentScreen == "RecipeWriteFragment") {
-            //onClickBackBtn("레시피보관함")
-        }else if(currentScreen == "CommunityFragment"){
-            onClickBackBtn("커뮤니티")
-            onShowBottomBar()
-        }else{
-            onClickBackBtn("")
+        when (currentScreen) {
+            RecipeWriteFragment.TAG -> {
+                //onClickBackBtn("레시피보관함")
+            }
+            CommunityFragment.TAG -> {
+                onClickBackBtn("커뮤니티")
+            }
+            HomeFragment.TAG -> {
+                onClickBackBtn("아이레시피")
+            }
         }
+        onShowBottomBar()
     }
 
     private fun onClickReview() {
