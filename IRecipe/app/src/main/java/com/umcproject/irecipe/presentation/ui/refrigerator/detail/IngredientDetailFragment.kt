@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentIngredientDetailBinding
 import com.umcproject.irecipe.domain.model.Ingredient
+import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.Type
 import com.umcproject.irecipe.presentation.ui.refrigerator.process.RefrigeratorProcessFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
@@ -18,7 +19,8 @@ import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 class IngredientDetailFragment(
     private val ingredient: Ingredient,
-    private val onClickBackBtn: (String) -> Unit
+    private val onClickBackBtn: (String) -> Unit,
+    private val currentFragment: String
 ): BaseFragment<FragmentIngredientDetailBinding>() {
 
     companion object{
@@ -53,5 +55,10 @@ class IngredientDetailFragment(
 
         val photo = getEngResourceId(ingredient.category)
         photo?.let { binding.civImage.setImageResource(it) }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(currentFragment == RefrigeratorFragment.TAG) onClickBackBtn("나의 냉장고")
     }
 }

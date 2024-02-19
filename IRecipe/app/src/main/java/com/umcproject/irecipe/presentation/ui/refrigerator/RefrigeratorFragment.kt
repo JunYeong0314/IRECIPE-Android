@@ -79,7 +79,8 @@ class RefrigeratorFragment(
             refList = refList,
             onClickDetail = { goDetailPage(it) },
             onClickIngredient = {
-                showVerticalFragment(R.id.fv_main, requireActivity(), IngredientDetailFragment(it, onClickBackBtn), IngredientDetailFragment.TAG)
+                showVerticalFragment(R.id.fv_main, requireActivity(), IngredientDetailFragment(it, onClickBackBtn, TAG), IngredientDetailFragment.TAG)
+                onClickDetail("나의 냉장고")
             })
         binding.rvTitle.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvTitle.adapter = titleAdapter
