@@ -58,7 +58,7 @@ object RepositoryModule {
         postLikeService: PostLikeService,
         postUnLikeService: PostUnLikeService,
         postSearchService: PostSearchService,
-        postDeleteService: PostDeleteService
+        postDeleteService: PostDeleteService,
     ): PostRepository{
         return PostRepositoryImpl(getPostService, getPostRankingService, getPostRankingCategoryService, getPostDetailService, postLikeService, postUnLikeService, postSearchService, postDeleteService)
     }

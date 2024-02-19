@@ -5,7 +5,9 @@ import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.umcproject.irecipe.data.remote.request.community.PostUpdateRequest
 import com.umcproject.irecipe.data.remote.request.community.WritePostRequest
+import com.umcproject.irecipe.data.remote.service.community.PostUpdateService
 import com.umcproject.irecipe.data.remote.service.community.WritePostService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.WritePost
@@ -26,11 +28,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WritePostViewModel @Inject constructor(
-    private val writePostService: WritePostService
+    private val writePostService: WritePostService,
+    private val postUpdateService: PostUpdateService
 ): ViewModel() {
     private val _writePostInfo = MutableStateFlow(WritePost())
     val writePostInfo: StateFlow<WritePost>
         get() = _writePostInfo.asStateFlow()
+
+    private val _updatePostInfo = MutableStateFlow(WritePost())
+    val updatePostInfo: StateFlow<WritePost> get() = _writePostInfo.asStateFlow()
 
     private val _isComplete = MutableLiveData<Boolean>()
     val isComplete: LiveData<Boolean>
@@ -98,6 +104,41 @@ class WritePostViewModel @Inject constructor(
         request.toString().toRequestBody("application/json".toMediaTypeOrNull())
 
         val response = writePostService.newPostService(request,imagePart)
+        val statusCode = response.code()
+
+        if (statusCode == 200) {
+            emit(State.Success(statusCode))
+        } else {
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
+    }
+
+    fun modifyToServer(context: Context, isTemporary: Boolean): Flow<State<Int>> = flow {
+        emit(State.Loading)
+
+        var imagePart: MultipartBody.Part? = null
+        val status = if (isTemporary) "TEMP" else "POST" // 임시저장 or 등록
+
+        val request = PostUpdateRequest(
+            category = mapperToCategory(_writePostInfo.value.category),
+            content = _writePostInfo.value.content,
+            level = mapperToLevel(_writePostInfo.value.level),
+            status = status,
+            subhead = _writePostInfo.value.subtitle,
+            title = _writePostInfo.value.title,
+            oldUrl = _writePostInfo.value.postImgUri.toString()
+        )
+
+        _writePostInfo.value.postImgUri?.let { uri ->
+            val file = toFile(context, uri)
+            val image = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            imagePart = MultipartBody.Part.createFormData(name = "file", "post"+file.name, image)
+        }
+        request.toString().toRequestBody("application/json".toMediaTypeOrNull())
+
+        val response = postUpdateService.postUpdate(1, request, imagePart)
         val statusCode = response.code()
 
         if (statusCode == 200) {

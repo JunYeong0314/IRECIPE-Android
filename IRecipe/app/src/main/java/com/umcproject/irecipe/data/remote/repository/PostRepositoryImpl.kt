@@ -1,5 +1,7 @@
 package com.umcproject.irecipe.data.remote.repository
 
+import com.umcproject.irecipe.data.remote.request.community.PostUpdateRequest
+import com.umcproject.irecipe.data.remote.request.refrigerator.RefrigeratorUpdateRequest
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
 import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
@@ -17,6 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
+
 class PostRepositoryImpl(
     private val getPostService: GetPostService,
     private val getPostRankingService: GetPostRankingService,
@@ -25,7 +28,7 @@ class PostRepositoryImpl(
     private val postLikeService: PostLikeService,
     private val postUnLikeService: PostUnLikeService,
     private val getpostSearchService: PostSearchService,
-    private val postDeleteService: PostDeleteService
+    private val postDeleteService: PostDeleteService,
 ): PostRepository {
 
     override fun fetchPost(page: Int, criteria: String): Flow<State<List<Post>>> = flow {
@@ -240,4 +243,5 @@ class PostRepositoryImpl(
     }.catch { e->
         emit(State.Error(e))
     }
+
 }

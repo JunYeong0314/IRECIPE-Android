@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.umcproject.irecipe.data.remote.request.comment.SetReviewRequest
 import com.umcproject.irecipe.data.remote.service.comment.SetReviewService
-import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostDetail
@@ -32,7 +31,7 @@ import javax.inject.Inject
 class CommunityViewModel @Inject constructor(
     private val postRepository: PostRepository,
     private val setReviewService: SetReviewService,
-    private val commentRepository: CommentRepository
+    private val commentRepository: CommentRepository,
 ): ViewModel() {
     private var postList = emptyList<Post>() // 게시글 전체 List
     private var postDetailInfo: PostDetail? = null // 게시글 단일 정보
