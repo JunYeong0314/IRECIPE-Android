@@ -35,6 +35,7 @@ import com.umcproject.irecipe.data.remote.service.refrigerator.GetRefrigeratorSe
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorDeleteService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorUpdateService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import dagger.Module
 import dagger.Provides
@@ -277,5 +278,11 @@ class ApiModule {
     @Singleton
     fun provideRefrigeratorDeleteService(retrofit: Retrofit):RefrigeratorDeleteService{
         return retrofit.create(RefrigeratorDeleteService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRefrigeratorUpdateService(retrofit: Retrofit):RefrigeratorUpdateService{
+        return retrofit.create(RefrigeratorUpdateService::class.java)
     }
 }

@@ -1,9 +1,11 @@
 package com.umcproject.irecipe.data.remote.repository
 
+import com.umcproject.irecipe.data.remote.request.refrigerator.RefrigeratorUpdateRequest
 import com.umcproject.irecipe.data.remote.request.refrigerator.SetRefrigeratorRequest
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorDeleteService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorUpdateService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Ingredient
@@ -20,7 +22,8 @@ class RefrigeratorRepositoryImpl(
     private val setRefrigeratorService: SetRefrigeratorService,
     private val getTypeIngredientService: GetTypeIngredientService,
     private val refrigeratorSearchService: RefrigeratorSearchService,
-    private val refrigeratorDeleteService: RefrigeratorDeleteService
+    private val refrigeratorDeleteService: RefrigeratorDeleteService,
+    private val refrigeratorUpdateService: RefrigeratorUpdateService
 ): RefrigeratorRepository {
     override fun setIngredient(ingredient: Ingredient2): Flow<State<Int>> = flow{
         emit(State.Loading)
@@ -108,6 +111,30 @@ class RefrigeratorRepositoryImpl(
         emit(State.Loading)
 
         val response = refrigeratorDeleteService.refrigeratorDelete(ingredientId)
+        val statusCode = response.code()
+
+        if(statusCode == 200){
+            emit(State.Success(statusCode))
+        }else{
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
+    }
+
+    override fun updateIngredient(ingredientId: Int, ingredient: Ingredient2): Flow<State<Int>> = flow{
+        emit(State.Loading)
+
+        val request = RefrigeratorUpdateRequest(
+            name = ingredient.name,
+            type = ingredient.type,
+            memo = ingredient.memo,
+            expiryDate = ingredient.expiration,
+            category = ingredient.category
+        )
+        request.toString().toRequestBody("application/json".toMediaTypeOrNull())
+
+        val response = refrigeratorUpdateService.refrigeratorUpadate(ingredientId, request)
         val statusCode = response.code()
 
         if(statusCode == 200){
