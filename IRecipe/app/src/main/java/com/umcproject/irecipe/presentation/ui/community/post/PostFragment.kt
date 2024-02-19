@@ -15,7 +15,9 @@ import com.umcproject.irecipe.databinding.FragmentPostBinding
 import com.umcproject.irecipe.domain.model.WritePost
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
+import com.umcproject.irecipe.presentation.ui.community.ModalBottomSheetMyFragment
 import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
+import com.umcproject.irecipe.presentation.ui.community.write.bottomSheet.ModalBottomSheetCategoryFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.home.detail.RankDetailFragment
 import com.umcproject.irecipe.presentation.ui.mypage.recipe.RecipeWriteFragment
@@ -87,6 +89,16 @@ class PostFragment(
             if(it) binding.ivHeart.setImageResource(R.drawable.ic_heart)
             else binding.ivHeart.setImageResource(R.drawable.ic_heart_empty)
             isLike = it
+        }
+
+        postInfo?.myPost?.let {
+            if(it) binding.btnPostMy.visibility = View.VISIBLE
+            else binding.btnPostMy.visibility = View.GONE
+        }
+
+        binding.btnPostMy.setOnClickListener {
+            val modal = ModalBottomSheetMyFragment()
+            modal.show(childFragmentManager, ModalBottomSheetMyFragment.TAG)
         }
     }
 

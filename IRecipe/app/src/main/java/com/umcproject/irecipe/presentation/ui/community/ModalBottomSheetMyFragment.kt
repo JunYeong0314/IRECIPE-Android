@@ -32,7 +32,7 @@ class ModalBottomSheetMyFragment : BottomSheetDialogFragment() {
             val modal = ModalBottomSheetDeleteFragment()
             modal.show(childFragmentManager, ModalBottomSheetDeleteFragment.TAG)
         }
-//        binding.llPostModify.setOnClickListener {  } 피그마 구현 후 | 바로 편집하기인지?
+//        binding.llPostModify.setOnClickListener {  }
     }
 
     companion object {

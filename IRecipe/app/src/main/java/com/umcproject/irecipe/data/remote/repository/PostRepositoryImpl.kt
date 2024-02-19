@@ -79,7 +79,8 @@ class PostRepositoryImpl(
                 isLike = post?.likeOrNot,
                 content = post?.content,
                 level = post?.level,
-                category = post?.category
+                category = post?.category,
+                myPost = post?.myPost
             )
 
             emit(State.Success(postInfo))
