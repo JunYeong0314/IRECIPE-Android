@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.umcproject.irecipe.domain.State
-import com.umcproject.irecipe.domain.model.Ingredient
+import com.umcproject.irecipe.domain.model.Ingredient2
 import com.umcproject.irecipe.domain.repository.RefrigeratorRepository
 import com.umcproject.irecipe.presentation.util.Util.mapperToEngIngredientCategory
 import com.umcproject.irecipe.presentation.util.Util.mapperToEngIngredientType
@@ -20,8 +20,8 @@ import javax.inject.Inject
 class RefrigeratorProcessViewModel @Inject constructor(
     private val refrigeratorRepository: RefrigeratorRepository,
 ): ViewModel() {
-    private val _ingredientInfo = MutableStateFlow<Ingredient>(Ingredient())
-    private val ingredientInfo: StateFlow<Ingredient>
+    private val _ingredientInfo = MutableStateFlow(Ingredient2())
+    private val ingredientInfo: StateFlow<Ingredient2>
         get() = _ingredientInfo.asStateFlow()
 
     private val _isComplete = MutableLiveData<Boolean>(false)
