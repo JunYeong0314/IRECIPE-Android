@@ -19,6 +19,7 @@ import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.comment.GetQAService
 import com.umcproject.irecipe.data.remote.service.comment.SetQAService
 import com.umcproject.irecipe.data.remote.service.comment.SetReviewService
+import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.data.remote.service.community.PostSearchService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingCategoryService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
@@ -263,5 +264,11 @@ class ApiModule {
     @Singleton
     fun provideGetPostRankingCategoryService(retrofit: Retrofit) : GetPostRankingCategoryService {
         return retrofit.create(GetPostRankingCategoryService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePostDeleteService(retrofit: Retrofit): PostDeleteService{
+        return retrofit.create(PostDeleteService::class.java)
     }
 }

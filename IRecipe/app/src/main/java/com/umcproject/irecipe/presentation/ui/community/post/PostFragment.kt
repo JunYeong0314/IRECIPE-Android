@@ -31,7 +31,8 @@ class PostFragment(
     private val onClickBackBtn: (String) -> Unit,
     private val postId: Int,
     private val onShowBottomBar: () -> Unit,
-    private val currentScreen: String
+    private val currentScreen: String,
+    //private val onPostCallBack: () -> Unit
 ) : BaseFragment<FragmentPostBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
 
@@ -97,7 +98,7 @@ class PostFragment(
         }
 
         binding.btnPostMy.setOnClickListener {
-            val modal = ModalBottomSheetMyFragment()
+            val modal = ModalBottomSheetMyFragment(onClickBackBtn, postId, onShowBottomBar, PostFragment.TAG)
             modal.show(childFragmentManager, ModalBottomSheetMyFragment.TAG)
         }
     }

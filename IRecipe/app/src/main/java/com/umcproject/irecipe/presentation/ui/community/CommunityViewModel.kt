@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.umcproject.irecipe.data.remote.request.comment.SetReviewRequest
 import com.umcproject.irecipe.data.remote.service.comment.SetReviewService
+import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostDetail
@@ -73,12 +74,17 @@ class CommunityViewModel @Inject constructor(
 
     // 게시글 검색 리스트 상태 LiveData
     private val _postSearchState = MutableLiveData<Int>()
-    val postSearchState: LiveData<Int>
-        get() = _postSearchState
+    val postSearchState: LiveData<Int> get() = _postSearchState
 
     private val _postSearchError = MutableLiveData<String>()
-    val postSearchError: LiveData<String>
-        get() = _postSearchError
+    val postSearchError: LiveData<String> get() = _postSearchError
+
+    // 게시글 삭제 상태 LiveData
+    private val _postDeleteState = MutableLiveData<Int>()
+    val postDeleteState: LiveData<Int> get() = _postDeleteState
+
+    private val _postDeleteError = MutableLiveData<String>()
+    val postDeleteError: LiveData<String> get() = _postDeleteError
 
 
     // 게시글 전체조회
@@ -221,5 +227,19 @@ class CommunityViewModel @Inject constructor(
         return postSearchList
     }
 
+    fun deletePost(postId: Int){
+        viewModelScope.launch {
+            postRepository.deletePost(postId).collect{ state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        _postDeleteState.value = 200
+                    }
+                    is State.ServerError -> { _postDeleteState.value = state.code }
+                    is State.Error -> { _postDeleteError.value = state.exception.message }
+                }
+            }
+        }
+    }
 
 }

@@ -15,4 +15,5 @@ interface PostRepository {
     fun setUnLikePost(postId: Int): Flow<State<Int>>
     fun fetchPostSearch(page: Int, keyword:String, type:String): Flow<State<List<Post>>>
     fun fetchPostRankingCategory(page: Int, category: String): Flow<State<List<PostRank>>>
+    fun deletePost(postId: Int): Flow<State<Int>>
 }
