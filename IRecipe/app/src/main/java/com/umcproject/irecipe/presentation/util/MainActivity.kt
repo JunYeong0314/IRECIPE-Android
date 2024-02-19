@@ -17,9 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.inflate(it)}) {
+    private var id=0 // 채팅 Activity 이동 후 태그 기록
     companion object{
         const val TAG = "MainActivity"
-        var id = R.id.nav_frag_home // 채팅 Activity 이동 후 태그 기록
     }
     private val tagList = listOf(
         HomeFragment.TAG, RefrigeratorFragment.TAG,
@@ -29,7 +29,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        initView()
+        initFragment()
         initBottomNav() // 바텀바 설정
         onClickBackBtn() // 이전버튼 로직
     }
@@ -88,19 +88,16 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
         }
     }
 
-    private fun initView(){
-        id = R.id.nav_frag_home
-        manager.beginTransaction().replace(
-            R.id.fv_main,
-            HomeFragment(
+    private fun initFragment(){
+        val transaction = manager.beginTransaction()
+            .add(R.id.fv_main, HomeFragment(
                 onClickDetail = { title-> showTitle(title, true) },
                 onClickBackBtn = { title-> showTitle(title, false) },
                 onHideBottomBar = { hideBottomBar() },
-                onShowBottomBar = { showBottomBar() }
-            ),
-            HomeFragment.TAG
-        ).commit()
+                onShowBottomBar = { showBottomBar() }))
+        transaction.commit()
     }
+
     private fun Fragment.changeFragment(tag: String) {
         val fragment = manager.findFragmentByTag(tag)
 
