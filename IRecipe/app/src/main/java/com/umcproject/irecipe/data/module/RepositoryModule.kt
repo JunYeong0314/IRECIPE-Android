@@ -9,6 +9,7 @@ import com.umcproject.irecipe.data.remote.service.comment.GetQAService
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
 import com.umcproject.irecipe.data.remote.service.comment.GetReviewService
+import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
@@ -52,9 +53,10 @@ object RepositoryModule {
         getPostDetailService: GetPostDetailService,
         postLikeService: PostLikeService,
         postUnLikeService: PostUnLikeService,
-        postSearchService: PostSearchService
+        postSearchService: PostSearchService,
+        postDeleteService: PostDeleteService
     ): PostRepository{
-        return PostRepositoryImpl(getPostService, getPostRankingService, getPostRankingCategoryService, getPostDetailService, postLikeService, postUnLikeService, postSearchService)
+        return PostRepositoryImpl(getPostService, getPostRankingService, getPostRankingCategoryService, getPostDetailService, postLikeService, postUnLikeService, postSearchService, postDeleteService)
     }
 
     @Singleton

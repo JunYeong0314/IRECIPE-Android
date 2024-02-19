@@ -13,5 +13,6 @@ data class PostDetail(
     val score: Double?,
     val reviewCount: Int?,
     val createdAt: String?,
-    val isLike: Boolean?
+    val isLike: Boolean?,
+    val myPost: Boolean?
 )

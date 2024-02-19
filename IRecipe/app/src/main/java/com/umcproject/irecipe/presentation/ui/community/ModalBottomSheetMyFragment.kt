@@ -8,9 +8,18 @@ import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentModalBottomSheetMyBinding
+import com.umcproject.irecipe.presentation.ui.community.post.PostFragment
+import com.umcproject.irecipe.presentation.ui.home.HomeFragment
+import com.umcproject.irecipe.presentation.ui.mypage.recipe.RecipeWriteFragment
 
 
-class ModalBottomSheetMyFragment : BottomSheetDialogFragment() {
+class ModalBottomSheetMyFragment(
+    private val onClickBackBtn: (String) -> Unit,
+    private val postId: Int,
+    private val onShowBottomBar: () -> Unit,
+    private val currentScreen: String,
+    //private val onPostCallBack: () -> Unit
+) : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentModalBottomSheetMyBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,10 +38,10 @@ class ModalBottomSheetMyFragment : BottomSheetDialogFragment() {
 
     private fun initView() {
         binding.llPostDelete.setOnClickListener {
-            val modal = ModalBottomSheetDeleteFragment()
+            val modal = ModalBottomSheetDeleteFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen)
             modal.show(childFragmentManager, ModalBottomSheetDeleteFragment.TAG)
         }
-//        binding.llPostModify.setOnClickListener {  } 피그마 구현 후 | 바로 편집하기인지?
+//        binding.llPostModify.setOnClickListener {  }
     }
 
     companion object {

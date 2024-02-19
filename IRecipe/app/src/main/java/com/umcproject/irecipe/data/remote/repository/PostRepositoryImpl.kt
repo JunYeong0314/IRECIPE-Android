@@ -2,6 +2,7 @@ package com.umcproject.irecipe.data.remote.repository
 
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
+import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
@@ -23,7 +24,8 @@ class PostRepositoryImpl(
     private val getPostDetailService: GetPostDetailService,
     private val postLikeService: PostLikeService,
     private val postUnLikeService: PostUnLikeService,
-    private val getpostSearchService: PostSearchService
+    private val getpostSearchService: PostSearchService,
+    private val postDeleteService: PostDeleteService
 ): PostRepository {
 
     override fun fetchPost(page: Int, criteria: String): Flow<State<List<Post>>> = flow {
@@ -79,7 +81,8 @@ class PostRepositoryImpl(
                 isLike = post?.likeOrNot,
                 content = post?.content,
                 level = post?.level,
-                category = post?.category
+                category = post?.category,
+                myPost = post?.myPost
             )
 
             emit(State.Success(postInfo))
@@ -221,5 +224,20 @@ class PostRepositoryImpl(
             "작성자" -> "writer"
             else -> ""
         }
+    }
+
+    override fun deletePost(postId: Int): Flow<State<Int>> = flow{
+        emit(State.Loading)
+
+        val response = postDeleteService.postDelete(postId)
+        val statusCode = response.code()
+
+        if(statusCode == 200){
+            emit(State.Success(statusCode))
+        }else{
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
     }
 }

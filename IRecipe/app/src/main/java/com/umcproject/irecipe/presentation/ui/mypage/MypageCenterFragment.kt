@@ -51,7 +51,7 @@ class MypageCenterFragment(
     override fun onDestroy() {
         super.onDestroy()
         if(currentScreen =="HomeFragment"){
-            onCLickBackBtn("")
+            onCLickBackBtn("아이레시피")
         }else{
             onCLickBackBtn("마이페이지")
         }
