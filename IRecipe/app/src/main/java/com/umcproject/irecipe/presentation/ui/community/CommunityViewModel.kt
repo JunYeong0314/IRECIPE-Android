@@ -38,6 +38,7 @@ class CommunityViewModel @Inject constructor(
     private var postDetailInfo: PostDetail? = null // 게시글 단일 정보
     private var reviewList = emptyList<Review>() // 후기 전체 List
     private var postSearchList = emptyList<Post>() // 게시글 전체 List
+    private var sort = "기본순"
 
     // 게시글 리스트 상태 LiveData
     private val _postState = MutableLiveData<Int>()
@@ -88,9 +89,9 @@ class CommunityViewModel @Inject constructor(
 
 
     // 게시글 전체조회
-    fun fetchPost(page: Int, criteria: String){
+    fun fetchPost(page: Int){
         viewModelScope.launch {
-            postRepository.fetchPost(page, criteria).collect{ state->
+            postRepository.fetchPost(page, sort).collect{ state->
                 when(state){
                     is State.Loading -> {}
                     is State.Success -> {
@@ -232,14 +233,16 @@ class CommunityViewModel @Inject constructor(
             postRepository.deletePost(postId).collect{ state->
                 when(state){
                     is State.Loading -> {}
-                    is State.Success -> {
-                        _postDeleteState.value = 200
-                    }
+                    is State.Success -> { _postDeleteState.value = 200 }
                     is State.ServerError -> { _postDeleteState.value = state.code }
                     is State.Error -> { _postDeleteError.value = state.exception.message }
                 }
             }
         }
+    }
+
+    fun setSort(sortType: String){
+        sort = sortType
     }
 
 }

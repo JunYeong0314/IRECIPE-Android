@@ -130,7 +130,11 @@ class HomeFragment(
     }
 
     private fun onClickRankCard(postId: Int, currentScreen: String){
-        showVerticalFragment(R.id.fv_main, requireActivity(), PostFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen), PostFragment.TAG)
+        showVerticalFragment(R.id.fv_main,
+            requireActivity(),
+            PostFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen, postDeleteCallBack = {viewModel.fetchRank(0)}),
+            PostFragment.TAG
+        )
         onClickDetail("이달의 레시피 랭킹")
         onHideBottomBar()
     }

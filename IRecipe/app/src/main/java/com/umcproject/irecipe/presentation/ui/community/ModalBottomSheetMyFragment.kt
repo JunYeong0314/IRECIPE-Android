@@ -14,11 +14,9 @@ import com.umcproject.irecipe.presentation.ui.mypage.recipe.RecipeWriteFragment
 
 
 class ModalBottomSheetMyFragment(
-    private val onClickBackBtn: (String) -> Unit,
     private val postId: Int,
     private val onShowBottomBar: () -> Unit,
-    private val currentScreen: String,
-    //private val onPostCallBack: () -> Unit
+    private val postDeleteCallBack: () -> Unit
 ) : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentModalBottomSheetMyBinding
 
@@ -38,7 +36,7 @@ class ModalBottomSheetMyFragment(
 
     private fun initView() {
         binding.llPostDelete.setOnClickListener {
-            val modal = ModalBottomSheetDeleteFragment(onClickBackBtn, postId, onShowBottomBar, currentScreen)
+            val modal = ModalBottomSheetDeleteFragment(postId, onShowBottomBar, postDeleteCallBack)
             modal.show(childFragmentManager, ModalBottomSheetDeleteFragment.TAG)
         }
 //        binding.llPostModify.setOnClickListener {  }

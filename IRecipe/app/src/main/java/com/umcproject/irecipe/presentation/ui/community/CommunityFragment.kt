@@ -48,7 +48,7 @@ class CommunityFragment(
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchPost(0, "기본순")
+        viewModel.fetchPost(0)
 
         // 게시글 fetch
         viewModel.postState.observe(viewLifecycleOwner){
@@ -66,30 +66,15 @@ class CommunityFragment(
 
         binding.ivTypeSearch.setOnClickListener { onClickType(it) } //검색 타입 설정
 
-        binding.etComSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // 텍스트가 변경될 때 호출되는 메서드
-                val currentText = s.toString()
-                if(currentText == "")
-                    initView()
-            }
-            override fun afterTextChanged(s: Editable?) {}
-        })
-        //검색하기
-        binding.ivComSearch.setOnClickListener{
-            viewModel.fetchSearchPost(0, binding.etComSearch.text.toString(), type)
-
-            // 키보드 내리기
-            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(binding.etComSearch.windowToken, 0)
-        }
-
+        // 검색 상태관리
         viewModel.postSearchState.observe(viewLifecycleOwner){
             if(it == 200) searchView()
             else if(it == 400)  Snackbar.make(requireView(), "해당하는 게시글이 없습니다.", Snackbar.LENGTH_SHORT).show()
             else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
         }
+
+        observeSearchText()
+        onClickSearch()
     }
 
     private fun initView() {
@@ -99,7 +84,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
@@ -110,6 +95,30 @@ class CommunityFragment(
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
+    private fun observeSearchText(){
+        binding.etComSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // 텍스트가 변경될 때 호출되는 메서드
+                val currentText = s.toString()
+                if(currentText == "")
+                    initView()
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+    }
+
+    private fun onClickSearch(){
+        //검색하기
+        binding.ivComSearch.setOnClickListener{
+            viewModel.fetchSearchPost(0, binding.etComSearch.text.toString(), type)
+
+            // 키보드 내리기
+            val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(binding.etComSearch.windowToken, 0)
+        }
+    }
+
     private fun onClickPost(){
         binding.llWritePost.setOnClickListener {
             showVerticalFragment(
@@ -117,7 +126,7 @@ class CommunityFragment(
                 WritePostFragment(
                     onClickBackBtn,
                     postCallBack = {
-                        viewModel.fetchPost(0, binding.tvSort.text.toString())
+                        viewModel.fetchPost(0)
                     }),
                 WritePostFragment.TAG
             )
@@ -133,15 +142,18 @@ class CommunityFragment(
             when(item.itemId) {
                 R.id.menu_sort_basic -> {
                     binding.tvSort.text = getString(R.string.com_sort_basic)
-                    viewModel.fetchPost(0, binding.tvSort.text.toString())
+                    viewModel.setSort(binding.tvSort.text.toString())
+                    viewModel.fetchPost(0)
                 }
                 R.id.menu_sort_like -> {
                     binding.tvSort.text = getString(R.string.com_sort_like)
-                    viewModel.fetchPost(0, binding.tvSort.text.toString())
+                    viewModel.setSort(binding.tvSort.text.toString())
+                    viewModel.fetchPost(0)
                 }
                 R.id.menu_sort_score -> {
                     binding.tvSort.text = getString(R.string.com_sort_score)
-                    viewModel.fetchPost(0, binding.tvSort.text.toString())
+                    viewModel.setSort(binding.tvSort.text.toString())
+                    viewModel.fetchPost(0)
                 }
             }
             true
@@ -177,7 +189,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()

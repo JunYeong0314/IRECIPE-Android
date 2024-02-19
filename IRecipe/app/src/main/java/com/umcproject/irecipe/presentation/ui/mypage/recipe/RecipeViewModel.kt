@@ -22,9 +22,6 @@ class RecipeViewModel @Inject constructor(
     private val memberWriteRepository: MemberWriteRepository,
     private val memberLikeRepository: MemberLikeRepository,
 ): ViewModel() {
-    init {
-        fetchWrite(0)
-    }
 
     private var myWriteList = emptyList<Post>()
 

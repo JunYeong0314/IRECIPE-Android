@@ -23,6 +23,7 @@ import com.umcproject.irecipe.presentation.ui.home.detail.RankDetailFragment
 import com.umcproject.irecipe.presentation.ui.mypage.recipe.RecipeWriteFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
+import com.umcproject.irecipe.presentation.util.Util.popFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +33,7 @@ class PostFragment(
     private val postId: Int,
     private val onShowBottomBar: () -> Unit,
     private val currentScreen: String,
-    //private val onPostCallBack: () -> Unit
+    private val postDeleteCallBack: () -> Unit
 ) : BaseFragment<FragmentPostBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
 
@@ -63,6 +64,7 @@ class PostFragment(
         }
 
         onClickReview() // Q&A, 리뷰글 버튼 이벤트
+        onClickSetting() // 수정, 삭제 버튼 이벤트
     }
 
     private fun initView(){
@@ -96,11 +98,6 @@ class PostFragment(
             if(it) binding.btnPostMy.visibility = View.VISIBLE
             else binding.btnPostMy.visibility = View.GONE
         }
-
-        binding.btnPostMy.setOnClickListener {
-            val modal = ModalBottomSheetMyFragment(onClickBackBtn, postId, onShowBottomBar, PostFragment.TAG)
-            modal.show(childFragmentManager, ModalBottomSheetMyFragment.TAG)
-        }
     }
 
     override fun onDestroy() {
@@ -127,6 +124,17 @@ class PostFragment(
 
     private fun onClickLike(){
         
+    }
+
+    private fun onClickSetting(){
+        binding.btnPostMy.setOnClickListener {
+            val modal = ModalBottomSheetMyFragment(
+                postId,
+                onShowBottomBar,
+                postDeleteCallBack = postDeleteCallBack
+            )
+            modal.show(childFragmentManager, ModalBottomSheetMyFragment.TAG)
+        }
     }
 
     private fun mapperToCategory(category: String): String {

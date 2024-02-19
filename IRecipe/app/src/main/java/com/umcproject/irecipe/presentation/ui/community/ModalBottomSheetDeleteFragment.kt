@@ -19,11 +19,9 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class ModalBottomSheetDeleteFragment(
-    private val onClickBackBtn: (String) -> Unit,
     private val postId: Int,
     private val onShowBottomBar: () -> Unit,
-    private val currentScreen: String,
-    //private val onPostCallBack: () -> Unit
+    private val postDeleteCallBack: () -> Unit
 ) : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentModalBottomSheetDeleteBinding
     private val viewModel: CommunityViewModel by viewModels()
@@ -53,9 +51,9 @@ class ModalBottomSheetDeleteFragment(
         binding.btnDelete.setOnClickListener {
             viewModel.postDeleteState.observe(viewLifecycleOwner){
                 if(it == 200){
-                    Util.popFragment(requireActivity())
                     Snackbar.make(requireView(), "삭제에 성공하였습니다!", Snackbar.LENGTH_SHORT).show()
-                    //onPostCallBack()
+                    postDeleteCallBack()
+                    Util.popFragment(requireActivity())
                 }else{
                     Snackbar.make(requireView(), "게시글을 찾지 못했습니다.", Snackbar.LENGTH_SHORT).show()
                 }

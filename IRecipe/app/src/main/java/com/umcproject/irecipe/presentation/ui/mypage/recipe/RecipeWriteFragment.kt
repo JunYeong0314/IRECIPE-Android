@@ -37,6 +37,7 @@ class RecipeWriteFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchWrite(0)
 
         viewModel.myWriteState.observe(viewLifecycleOwner){
             val postList = viewModel.getMyWriteList()
@@ -50,7 +51,6 @@ class RecipeWriteFragment(
         }
 
         viewModel.myWriteError.observe(viewLifecycleOwner){
-            Log.d(TAG, "hihi")
             Snackbar.make(requireView(), getString(R.string.error_fetch_post, it), Snackbar.LENGTH_SHORT).show()
         }
     }
@@ -64,7 +64,7 @@ class RecipeWriteFragment(
             onClickWrite = { // 게시글 클릭 콜백 함수
                 Util.showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchWrite(0)}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
