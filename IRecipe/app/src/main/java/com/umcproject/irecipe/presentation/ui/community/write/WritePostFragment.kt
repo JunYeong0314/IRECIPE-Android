@@ -38,9 +38,9 @@ import kotlinx.coroutines.launch
 class WritePostFragment(
     private val onCLickBackBtn: (String) -> Unit,
     private val postId:Int?,
-    private val post: PostDetail?,
     private val processType: Type,
-    private val postCallBack: () -> Unit
+    private val postCallBack: () -> Unit,
+    private val postUpdateCallBack: () -> Unit
 ) : BaseFragment<FragmentWritePostBinding>() {
     private val viewModel: WritePostViewModel by viewModels()
     private val cViewModel: CommunityViewModel by viewModels()
@@ -74,40 +74,7 @@ class WritePostFragment(
         })
 
         if(processType == Type.MODIFY) {
-            cViewModel.getPostInfoFetch(postId!!)
-
-            cViewModel.postDetailState.observe(viewLifecycleOwner){
-                if(it == 200) {
-                    val postInfo = cViewModel.getPostInfo()
-
-                    postInfo?.let { post->
-                        binding.etTitle.setText(post?.title)
-                        binding.etSubtitle.setText(post?.subTitle)
-                        binding.etContent.setText(post?.content)
-                        binding.tvCategory.text = mapperToCategory(post?.category.toString())
-                        binding.tvLevel.text = mapperToLevel(post?.level.toString())
-                        //val uri = Uri.parse(post.postImageUrl)
-                        postInfo?.postImageUrl?.let {
-                            binding.cvImage.visibility = View.VISIBLE
-                            binding.ivImage.load(it)
-                        }
-
-                        setClickedTextColor(binding.tvCategory)
-                        setClickedTextColor(binding.tvLevel)
-
-                        viewModel.setTitle(binding.etTitle.text.toString())
-                        viewModel.setSubtitle(binding.etSubtitle.text.toString())
-                        viewModel.setContent(binding.etContent.text.toString())
-                        viewModel.setCategory(mapperToCategory(post?.category.toString()))
-                        viewModel.setLevel(mapperToLevel(post?.level.toString()))
-                        //viewModel.setPhotoUri(uri = uri)
-
-                        onClickPhoto()
-                        Log.d("momo", post.title.toString()+"plz")
-                    }
-                }
-                else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
-            }
+            getModifyInfo()
         }
 
         onClickCategory() // 카테고리 설정
@@ -248,10 +215,7 @@ class WritePostFragment(
                     binding.tvCategory.text = mapperToCategory(post?.category.toString())
                     binding.tvLevel.text = mapperToLevel(post?.level.toString())
                     //val uri = Uri.parse(post.postImageUrl)
-                    postInfo?.postImageUrl?.let {
-                        binding.cvImage.visibility = View.VISIBLE
-                        binding.ivImage.load(it)
-                    }
+
 
                     setClickedTextColor(binding.tvCategory)
                     setClickedTextColor(binding.tvLevel)
@@ -261,7 +225,14 @@ class WritePostFragment(
                     viewModel.setContent(binding.etContent.text.toString())
                     viewModel.setCategory(mapperToCategory(post?.category.toString()))
                     viewModel.setLevel(mapperToLevel(post?.level.toString()))
-                    //viewModel.setPhotoUri(uri = uri)
+                    if (post.postImageUrl != null && post.postImageUrl.isNotBlank()) {
+                        binding.cvImage.visibility = View.VISIBLE
+                        binding.ivImage.load(it)
+                        val uri = Uri.parse(post.postImageUrl)
+                        binding.ivImage.setImageURI(uri)
+                    } else {
+
+                    }
 
                     onClickPhoto()
                     Log.d("momo", post.title.toString()+"plz")
@@ -299,7 +270,7 @@ class WritePostFragment(
                 when(state){
                     is State.Loading -> {}
                     is State.Success -> {
-                        postCallBack()
+                        postUpdateCallBack()
                         popFragment(requireActivity())
                         popFragment(requireActivity())
                         Snackbar.make(requireView(), "게시글 수정완료!", Snackbar.LENGTH_SHORT).show()

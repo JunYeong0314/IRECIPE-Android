@@ -80,7 +80,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postCallBack = { viewModel.fetchPost(0) }),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postUpdateCallBack = {viewModel.fetchPost(0)}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
@@ -122,9 +122,9 @@ class CommunityFragment(
                 WritePostFragment(
                     onClickBackBtn,
                     null,
-                    null,
                     Type.ADD,
-                    postCallBack = { viewModel.fetchPost(0) }
+                    postCallBack = { viewModel.fetchPost(0) },
+                    postUpdateCallBack = { viewModel.fetchPost(0) }
                 ),
                 WritePostFragment.TAG
             )
@@ -187,7 +187,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postCallBack = { viewModel.fetchPost(0) }),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postUpdateCallBack = {viewModel.fetchPost(0)}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()

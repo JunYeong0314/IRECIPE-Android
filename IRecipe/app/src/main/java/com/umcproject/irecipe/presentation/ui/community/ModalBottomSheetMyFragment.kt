@@ -21,11 +21,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class ModalBottomSheetMyFragment(
     private val onClickBackBtn: (String) -> Unit,
     private val postId: Int,
-    private val post: PostDetail?,
     private val onShowBottomBar: () -> Unit,
     private val postDeleteCallBack: () -> Unit,
-    private val postCallBack: () -> Unit,
-    ) : BottomSheetDialogFragment() {
+    private val postUpdateCallBack: () -> Unit
+) : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentModalBottomSheetMyBinding
     //private val viewModel: CommunityViewModel by viewModels()
 
@@ -54,9 +53,9 @@ class ModalBottomSheetMyFragment(
                 WritePostFragment(
                     onClickBackBtn,
                     postId,
-                    post,
                     Type.MODIFY,
-                    postCallBack = { postCallBack}
+                    postCallBack = { },
+                    postUpdateCallBack = {postUpdateCallBack}
                 ),
                 WritePostFragment.TAG
             )

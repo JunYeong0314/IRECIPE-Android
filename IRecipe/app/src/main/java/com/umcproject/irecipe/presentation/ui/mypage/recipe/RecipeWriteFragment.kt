@@ -25,6 +25,8 @@ class RecipeWriteFragment(
     private val onShowBottomBar: () -> Unit
 ): BaseFragment<FragmentMypageWirteBinding>() {
     private val viewModel: RecipeViewModel by viewModels()
+    private val cViewModel: CommunityViewModel by viewModels()
+
     companion object{
         const val TAG = "RecipeWriteFragment"
     }
@@ -64,7 +66,7 @@ class RecipeWriteFragment(
             onClickWrite = { // 게시글 클릭 콜백 함수
                 Util.showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchWrite(0)}, postCallBack = {}),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchWrite(0)}, postUpdateCallBack = {cViewModel.fetchPost(0)}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
