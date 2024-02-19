@@ -47,7 +47,7 @@ class RefrigeratorSearchFragment(
                 Util.showVerticalFragment(
                     R.id.fv_main,
                     requireActivity(),
-                    IngredientDetailFragment(it, onClickBackBtn, TAG),
+                    IngredientDetailFragment(it, onClickBackBtn, TAG, onIngredientCallBack = {}),
                     IngredientDetailFragment.TAG
                 )
             }

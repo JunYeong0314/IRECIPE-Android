@@ -9,6 +9,7 @@ import com.umcproject.irecipe.data.remote.service.comment.GetQAService
 import com.umcproject.irecipe.data.remote.service.community.GetPostDetailService
 import com.umcproject.irecipe.data.remote.service.community.GetPostService
 import com.umcproject.irecipe.data.remote.service.comment.GetReviewService
+import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
 import com.umcproject.irecipe.data.remote.service.mypage.MemberWriteService
@@ -17,6 +18,7 @@ import com.umcproject.irecipe.data.remote.service.community.PostSearchService
 import com.umcproject.irecipe.data.remote.service.community.PostUnLikeService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingCategoryService
 import com.umcproject.irecipe.data.remote.service.refrigerator.GetTypeIngredientService
+import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorDeleteService
 import com.umcproject.irecipe.data.remote.service.refrigerator.RefrigeratorSearchService
 import com.umcproject.irecipe.data.remote.service.refrigerator.SetRefrigeratorService
 import com.umcproject.irecipe.domain.repository.CommentRepository
@@ -38,9 +40,10 @@ object RepositoryModule {
     fun provideRefrigeratorRepository(
         setRefrigeratorService: SetRefrigeratorService,
         getTypeIngredientService: GetTypeIngredientService,
-        refrigeratorSearchService: RefrigeratorSearchService
+        refrigeratorSearchService: RefrigeratorSearchService,
+        refrigeratorDeleteService: RefrigeratorDeleteService
     ): RefrigeratorRepository{
-        return RefrigeratorRepositoryImpl(setRefrigeratorService, getTypeIngredientService, refrigeratorSearchService)
+        return RefrigeratorRepositoryImpl(setRefrigeratorService, getTypeIngredientService, refrigeratorSearchService, refrigeratorDeleteService)
     }
 
     @Singleton
@@ -52,9 +55,10 @@ object RepositoryModule {
         getPostDetailService: GetPostDetailService,
         postLikeService: PostLikeService,
         postUnLikeService: PostUnLikeService,
-        postSearchService: PostSearchService
+        postSearchService: PostSearchService,
+        postDeleteService: PostDeleteService
     ): PostRepository{
-        return PostRepositoryImpl(getPostService, getPostRankingService, getPostRankingCategoryService, getPostDetailService, postLikeService, postUnLikeService, postSearchService)
+        return PostRepositoryImpl(getPostService, getPostRankingService, getPostRankingCategoryService, getPostDetailService, postLikeService, postUnLikeService, postSearchService, postDeleteService)
     }
 
     @Singleton

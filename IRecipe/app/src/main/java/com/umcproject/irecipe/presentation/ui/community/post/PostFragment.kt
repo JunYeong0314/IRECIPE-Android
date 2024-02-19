@@ -15,12 +15,15 @@ import com.umcproject.irecipe.databinding.FragmentPostBinding
 import com.umcproject.irecipe.domain.model.WritePost
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
+import com.umcproject.irecipe.presentation.ui.community.ModalBottomSheetMyFragment
 import com.umcproject.irecipe.presentation.ui.community.comment.CommentFragment
+import com.umcproject.irecipe.presentation.ui.community.write.bottomSheet.ModalBottomSheetCategoryFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.home.detail.RankDetailFragment
 import com.umcproject.irecipe.presentation.ui.mypage.recipe.RecipeWriteFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.MainActivity
+import com.umcproject.irecipe.presentation.util.Util.popFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +32,8 @@ class PostFragment(
     private val onClickBackBtn: (String) -> Unit,
     private val postId: Int,
     private val onShowBottomBar: () -> Unit,
-    private val currentScreen: String
+    private val currentScreen: String,
+    private val postDeleteCallBack: () -> Unit
 ) : BaseFragment<FragmentPostBinding>() {
     private val viewModel: CommunityViewModel by viewModels()
     private val postViewModel: PostViewModel by viewModels()
@@ -62,6 +66,7 @@ class PostFragment(
 
         onClickReview() // Q&A, 리뷰글 버튼 이벤트
         onClickLike() // 게시글 좋아요 버튼 이벤트
+        onClickSetting() // 수정, 삭제 버튼 이벤트
     }
 
     private fun initView(){
@@ -89,6 +94,11 @@ class PostFragment(
             if(it) binding.ivHeart.setImageResource(R.drawable.ic_heart)
             else binding.ivHeart.setImageResource(R.drawable.ic_heart_empty)
             isLike = it
+        }
+
+        postInfo?.myPost?.let {
+            if(it) binding.btnPostMy.visibility = View.VISIBLE
+            else binding.btnPostMy.visibility = View.GONE
         }
     }
     private fun initLikes(){
@@ -151,6 +161,17 @@ class PostFragment(
                 binding.tvHeartCnt.text = (binding.tvHeartCnt.text.toString().toInt() + 1).toString()
             }
             isLike = !isLike!!
+        }
+    }
+
+    private fun onClickSetting(){
+        binding.btnPostMy.setOnClickListener {
+            val modal = ModalBottomSheetMyFragment(
+                postId,
+                onShowBottomBar,
+                postDeleteCallBack = postDeleteCallBack
+            )
+            modal.show(childFragmentManager, ModalBottomSheetMyFragment.TAG)
         }
     }
 

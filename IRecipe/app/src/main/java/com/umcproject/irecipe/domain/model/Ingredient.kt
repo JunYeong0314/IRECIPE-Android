@@ -8,6 +8,7 @@ data class Ingredient(
     val expiration: String = "",
     val type: String = "",
     val memo: String = "",
+    val id:Int
 )
 
 
