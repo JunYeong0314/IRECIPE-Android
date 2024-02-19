@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:backgroundTint="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_btn"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_empty"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home_empty_recipe"
+            android:textColor="@color/gray_1"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <HorizontalScrollView
+        android:id="@+id/sv_btn"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:scrollbars="none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rv_rank_detail">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_all"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:text="@string/home_detail_all"
+                android:textSize="13sp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/btn_community_post_select_color"
+                android:background="@drawable/btn_community_post_select"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_korean"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:text="@string/modal_korean"
+                android:textSize="13sp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/btn_community_post_select_color"
+                android:background="@drawable/btn_community_post_select"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_chinese"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:text="@string/modal_chinese"
+                android:textSize="13sp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/btn_community_post_select_color"
+                android:background="@drawable/btn_community_post_select"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_japanese"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:text="@string/modal_japanese"
+                android:textSize="13sp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/btn_community_post_select_color"
+                android:background="@drawable/btn_community_post_select"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_western"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:text="@string/modal_western"
+                android:textSize="13sp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/btn_community_post_select_color"
+                android:background="@drawable/btn_community_post_select"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_unusual"
+                android:layout_width="66dp"
+                android:layout_height="30dp"
+                android:text="@string/modal_unusual"
+                android:textSize="13sp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/btn_community_post_select_color"
+                android:background="@drawable/btn_community_post_select"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_simple"
+                android:layout_width="66dp"
+                android:layout_height="30dp"
+                android:text="@string/modal_simple"
+                android:textSize="13sp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/btn_community_post_select_color"
+                android:background="@drawable/btn_community_post_select"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_high"
+                android:layout_width="66dp"
+                android:layout_height="30dp"
+                android:text="@string/modal_high"
+                android:textSize="13sp"
+                android:layout_marginHorizontal="4dp"
+                android:textColor="@color/btn_community_post_select_color"
+                android:background="@drawable/btn_community_post_select"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_rank_detail"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_btn"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

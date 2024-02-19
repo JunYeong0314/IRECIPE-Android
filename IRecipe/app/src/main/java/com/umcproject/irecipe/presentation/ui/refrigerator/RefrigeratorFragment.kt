@@ -54,20 +54,17 @@ class RefrigeratorFragment(
                 else Snackbar.make(requireView(), getString(R.string.error_server_refrigerator, state), Snackbar.LENGTH_SHORT).show()
             }
         }
-
-        // error 감지
         viewModel.errorMessage.observe(viewLifecycleOwner) {error ->
             error?.let{ Snackbar.make(requireView(), getString(R.string.error_refrigerator, error), Snackbar.LENGTH_SHORT).show() }
         }
+
         goAddFoodPage() // 음식추가 버튼 이벤트
 
         binding.ivSearch.setOnClickListener{
             viewModel.searchRefrigerator(binding.etSearch.text.toString())
-
             // 키보드 내리기
             val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.hideSoftInputFromWindow(binding.etSearch.windowToken, 0)
-
             //글자 지우기
             binding.etSearch.text.clear()
         }

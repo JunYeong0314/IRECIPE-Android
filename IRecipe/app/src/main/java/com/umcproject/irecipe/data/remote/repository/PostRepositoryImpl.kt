@@ -129,53 +129,47 @@ class PostRepositoryImpl(
     }
 
     override fun fetchPostRanking(page: Int): Flow<State<List<PostRank>>> = flow {
-        println("fetchPostRanking - Start fetching post ranking for page: $page")
         emit(State.Loading)
 
         val response = getPostRankingService.getPostRanking(page)
-        println("fetchPostRanking - Response received with code: ${response.code()}")
-
         val statusCode = response.code()
 
         if (statusCode == 200) {
             val responseBody = response.body()?.result?.postList?.mapNotNull{ post ->
                 post?.let {
                     PostRank(
-                        it?.postId ?: -1,
-                        title = it?.title ?: "",
-                        imageUrl = it?.imageUrl,
-                        likes = it?.likes,
-                        score = it?.scores,
-                        scoresInOneMonth = it?.scoresInOneMonth
+                        postId = it.postId,
+                        title = it.title,
+                        imageUrl = it.imageUrl,
+                        likes = it.likes,
+                        score = it.scores,
+                        scoresInOneMonth = it.scoresInOneMonth
                     )
                 }
             } ?: emptyList()
-            println("fetchPostRanking - Success: $responseBody")
             emit(State.Success(responseBody))
         } else {
-            println("fetchPostRanking - Server error with status code: $statusCode")
             emit(State.ServerError(statusCode))
         }
     }.catch { e->
-        println("fetchPostRanking - Error occurred: $e")
         emit(State.Error(e))
     }
     override fun fetchPostRankingCategory(page: Int, category: String): Flow<State<List<PostRank>>> = flow {
         emit(State.Loading)
 
-        val response = getPostRankingCategoryService.getPostRankingCategory(mapperToCategory(category), page)
+        val response = getPostRankingCategoryService.getPostRankingCategory(category, page)
         val statusCode = response.code()
 
         if (statusCode == 200) {
             val responseBody = response.body()?.result?.postList?.mapNotNull{ post ->
                 post?.let {
                     PostRank(
-                        it?.postId ?: -1,
-                        title = it?.title ?: "",
-                        imageUrl = it?.imageUrl,
-                        likes = it?.likes,
-                        score = it?.scores,
-                        scoresInOneMonth = it?.scoresInOneMonth
+                        postId = it.postId,
+                        title = it.title,
+                        imageUrl = it.imageUrl,
+                        likes = it.likes,
+                        score = it.scores,
+                        scoresInOneMonth = it.scoresInOneMonth
                     )
                 }
             } ?: emptyList()
@@ -185,18 +179,5 @@ class PostRepositoryImpl(
         }
     }.catch { e->
         emit(State.Error(e))
-    }
-
-    private fun mapperToCategory(category: String): String{
-        return when(category){
-            "양식" -> "WESTERN"
-            "한식" -> "KOREAN"
-            "중식" -> "CHINESE"
-            "일식" -> "JAPANESE"
-            "이색음식" -> "UNIQUE"
-            "간편요리" -> "SIMPLE"
-            "고급요리" -> "ADVANCED"
-            else -> ""
-        }
     }
 }

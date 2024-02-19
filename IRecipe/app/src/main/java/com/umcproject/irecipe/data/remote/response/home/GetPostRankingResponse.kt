@@ -2,8 +2,9 @@ package com.umcproject.irecipe.data.remote.response.home
 
 
 import com.squareup.moshi.Json
+import com.umcproject.irecipe.data.remote.response.home.categoryRank.Result
 
-data class GetPostRanking(
+data class GetPostRankingResponse(
     @field:Json(name = "code")
     val code: String?,
     @field:Json(name = "isSuccess")
@@ -12,20 +13,6 @@ data class GetPostRanking(
     val message: String?,
     @field:Json(name = "result")
     val result: Result?
-)
-data class Post(
-    @field:Json(name = "imageUrl")
-    val imageUrl: String?,
-    @field:Json(name = "likes")
-    val likes: Int?,
-    @field:Json(name = "postId")
-    val postId: Int?,
-    @field:Json(name = "scores")
-    val scores: Double?,
-    @field:Json(name = "scoresInOneMonth")
-    val scoresInOneMonth: Double?,
-    @field:Json(name = "title")
-    val title: String?
 )
 data class Result(
     @field:Json(name = "isFirst")
@@ -40,4 +27,19 @@ data class Result(
     val totalElements: Int?,
     @field:Json(name = "totalPage")
     val totalPage: Int?
+)
+
+data class Post(
+    @field:Json(name = "imageUrl")
+    val imageUrl: String?,
+    @field:Json(name = "likes")
+    val likes: Int?,
+    @field:Json(name = "postId")
+    val postId: Int?,
+    @field:Json(name = "scores")
+    val scores: Double?,
+    @field:Json(name = "scoresInOneMonth")
+    val scoresInOneMonth: Double?,
+    @field:Json(name = "title")
+    val title: String?
 )

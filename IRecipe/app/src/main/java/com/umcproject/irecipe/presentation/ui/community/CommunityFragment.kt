@@ -38,6 +38,7 @@ class CommunityFragment(
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchPost(0, "기본순")
 
         // 게시글 fetch
         viewModel.postState.observe(viewLifecycleOwner){
@@ -61,7 +62,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, viewModel, onShowBottomBar),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, false),
                     PostFragment.TAG
                 )
                 onHideBottomBar()

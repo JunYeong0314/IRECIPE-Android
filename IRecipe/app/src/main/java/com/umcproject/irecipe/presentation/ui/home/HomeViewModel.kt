@@ -1,5 +1,6 @@
 package com.umcproject.irecipe.presentation.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,47 +16,40 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val postRepository: PostRepository
 ):ViewModel() {
-    // 유통기한은 나중에 생각
-    // 랭킹가져오기
-    init {
-        fetchRank(0)
-//        fetchRankCategory(0, "한식")
-    }
+    private var postRankList = mutableListOf<PostRank>()
+    private var currentCategory = "ALL"
 
-    private var postRankList = emptyList<PostRank>()
-    private var postRankCategoryList = emptyList<PostRank>()
-
-    private val _fetchState = MutableLiveData<Int?>(null)
-    val fetchState: LiveData<Int?>
-        get() = _fetchState
+    private val _rankState = MutableLiveData<Int>()
+    val rankState: LiveData<Int>
+        get() = _rankState
 
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?>
         get() = _errorMessage
 
+    private val _firstRankList = MutableLiveData<List<PostRank>?>()
+    val firstRankList: LiveData<List<PostRank>?>
+        get() = _firstRankList
 
+    private val _isEmptyList = MutableLiveData<Boolean>()
+    val isEmptyList: LiveData<Boolean>
+        get() = _isEmptyList
 
-    private val _cafetchState = MutableLiveData<Int>()
-    val cafetchState: LiveData<Int>
-        get() = _cafetchState
-
-    private val _caerrorMessage = MutableLiveData<String>()
-    val caerrorMessage: LiveData<String>
-        get() = _caerrorMessage
-
-
-
-    private fun fetchRank(page: Int) {
+    fun fetchRank(page: Int) {
         viewModelScope.launch {
             postRepository.fetchPostRanking(page).collect{ state->
                 when(state){
                     is State.Error -> {_errorMessage.value = state.exception.message}
-                    State.Loading -> {}
-                    is State.ServerError -> { _fetchState.value = state.code }
+                    is State.Loading -> {}
+                    is State.ServerError -> { _rankState.value = state.code }
                     is State.Success -> {
-                        postRankList = state.data
-                        _fetchState.value = 200
-
+                        if(state.data.isNotEmpty()) {
+                            postRankList.addAll(state.data)
+                            _rankState.value = 200
+                        }
+                        if(_firstRankList.value.isNullOrEmpty()){
+                            _firstRankList.value = state.data
+                        }
                     }
                 }
             }
@@ -67,23 +61,30 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchRankCategory(page: Int, category: String) {
-        viewModelScope.launch {
-            postRepository.fetchPostRankingCategory(page,category).collect{ state->
-                when(state){
-                    is State.Error -> {_caerrorMessage.value = state.exception.message}
-                    State.Loading -> {}
-                    is State.ServerError -> { _cafetchState.value = state.code }
-                    is State.Success -> {
-                        postRankCategoryList = state.data
-                        _cafetchState.value = 200
+        if(category == "ALL"){
+            fetchRank(page)
+        }else{
+            viewModelScope.launch {
+                postRepository.fetchPostRankingCategory(page,category).collect{ state->
+                    when(state){
+                        is State.Error -> { _errorMessage.value = state.exception.message }
+                        is State.Loading -> {}
+                        is State.ServerError -> { _rankState.value = state.code }
+                        is State.Success -> {
+                            if(currentCategory != category) postRankList.clear()
 
+                            if(state.data.isNotEmpty()){
+                                currentCategory = category
+                                postRankList.addAll(state.data)
+                                _rankState.value = 200
+                            }
+
+                            if(state.data.isEmpty() && postRankList.isEmpty()) _isEmptyList.value = true
+                        }
                     }
                 }
             }
         }
     }
 
-    fun getPostRankCategory(): List<PostRank>{
-        return postRankCategoryList
-    }
 }
