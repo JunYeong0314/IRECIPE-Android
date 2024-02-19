@@ -1,16 +1,22 @@
 package com.umcproject.irecipe.presentation.ui.community
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
+import androidx.core.app.NotificationCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
@@ -32,6 +38,8 @@ class CommunityFragment(
     private val viewModel: CommunityViewModel by viewModels()
     private var page = 0
     private var type = "제목"
+    private var scrollPosition = 0
+    private var selectSortType = "기본순"
 
     companion object{
         const val TAG = "CommunityFragment"
@@ -44,7 +52,7 @@ class CommunityFragment(
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchPost(0)
+        viewModel.fetchPost(0, selectSortType)
 
         // 게시글 fetch
         viewModel.postState.observe(viewLifecycleOwner){
@@ -69,6 +77,7 @@ class CommunityFragment(
             else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
         }
 
+        scrollListener() // 스크롤 감지
         observeSearchText()
         onClickSearch()
     }
@@ -80,6 +89,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0, selectSortType)}),
                     PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postUpdateCallBack = {viewModel.fetchPost(0)}),
                     PostFragment.TAG
                 )
@@ -121,6 +131,10 @@ class CommunityFragment(
                 R.id.fv_main,requireActivity(),
                 WritePostFragment(
                     onClickBackBtn,
+                    postCallBack = {
+                        initScrollPosition()
+                        viewModel.fetchPost(0, selectSortType)
+                    }),
                     null,
                     Type.ADD,
                     postCallBack = { viewModel.fetchPost(0) },
@@ -139,24 +153,32 @@ class CommunityFragment(
         popupMenu.setOnMenuItemClickListener { item->
             when(item.itemId) {
                 R.id.menu_sort_basic -> {
+                    initScrollPosition()
+                    selectSortType = getString(R.string.com_sort_basic)
                     binding.tvSort.text = getString(R.string.com_sort_basic)
-                    viewModel.setSort(binding.tvSort.text.toString())
-                    viewModel.fetchPost(0)
+                    viewModel.fetchPost(page, selectSortType)
                 }
                 R.id.menu_sort_like -> {
+                    initScrollPosition()
+                    selectSortType = getString(R.string.com_sort_like)
                     binding.tvSort.text = getString(R.string.com_sort_like)
-                    viewModel.setSort(binding.tvSort.text.toString())
-                    viewModel.fetchPost(0)
+                    viewModel.fetchPost(page, selectSortType)
                 }
                 R.id.menu_sort_score -> {
+                    initScrollPosition()
+                    selectSortType = getString(R.string.com_sort_score)
                     binding.tvSort.text = getString(R.string.com_sort_score)
-                    viewModel.setSort(binding.tvSort.text.toString())
-                    viewModel.fetchPost(0)
+                    viewModel.fetchPost(page, selectSortType)
                 }
             }
             true
         }
         popupMenu.show()
+    }
+
+    private fun initScrollPosition(){
+        page = 0
+        scrollPosition = 0
     }
 
     private fun onClickType(view: View){
@@ -187,6 +209,12 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
+                    PostFragment(
+                        onClickBackBtn, it, onShowBottomBar, TAG,
+                        postDeleteCallBack = {
+                            initScrollPosition()
+                            viewModel.fetchPost(0, selectSortType)
+                        }),
                     PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0)}, postUpdateCallBack = {viewModel.fetchPost(0)}),
                     PostFragment.TAG
                 )
@@ -196,6 +224,24 @@ class CommunityFragment(
         )
         binding.rvPost.adapter = postAdapter
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    }
+
+    private fun scrollListener(){
+        binding.rvPost.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+
+                if(lastVisibleItemPosition == totalItemCount-1){
+                    page++
+                    scrollPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                    viewModel.fetchPost(page, selectSortType)
+                }
+            }
+        })
     }
 }
 

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommentReviewBinding
@@ -20,11 +21,12 @@ class ReviewFragment(
     private val viewModel: CommunityViewModel,
     private val postId: Int
 ): BaseFragment<FragmentCommentReviewBinding>() {
+    private var page = 0
+    private var scrollPosition = 0
+
     companion object{
         const val TAG = "ReviewFragment"
     }
-
-    init { viewModel.fetchReview(postId) }
 
     override fun getFragmentBinding(
         inflater: LayoutInflater,
@@ -35,6 +37,7 @@ class ReviewFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchReview(postId, page)
 
         // 리뷰 요청 State 감지
         viewModel.reviewState.observe(viewLifecycleOwner){
@@ -51,12 +54,14 @@ class ReviewFragment(
         viewModel.postDetailError.observe(viewLifecycleOwner){ Snackbar.make(requireView(), getString(R.string.error_fetch_post, it), Snackbar.LENGTH_SHORT).show() }
 
         onClickSetReview() // 후기작성 클릭 이벤트
+        scrollListener() // 스크롤 감지
     }
 
     private fun initView(){
         val reviewAdapter = ReviewAdapter(reviewList = viewModel.getReview().reversed())
         binding.rvReview.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvReview.adapter = reviewAdapter
+        binding.rvReview.scrollToPosition(scrollPosition)
 
         initScore() // 점수 text 설정
     }
@@ -81,12 +86,31 @@ class ReviewFragment(
                     viewModel = viewModel,
                     postId = postId,
                     reviewCallBack = {
-                        viewModel.fetchReview(postId)
+                        page = 0
+                        viewModel.fetchReview(postId, page)
                         viewModel.getPostInfoFetch(postId)
                     }
                 ),
                 WriteCommentFragment.TAG
             )
         }
+    }
+
+    private fun scrollListener(){
+        binding.rvReview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val lastVisibleItemPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                val totalItemCount = layoutManager.itemCount
+
+                if(lastVisibleItemPosition == totalItemCount-1){
+                    page++
+                    scrollPosition = layoutManager.findLastCompletelyVisibleItemPosition()
+                    viewModel.fetchReview(postId, page)
+                }
+            }
+        })
     }
 }

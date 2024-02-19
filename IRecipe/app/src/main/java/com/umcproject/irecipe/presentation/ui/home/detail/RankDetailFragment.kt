@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,18 +15,17 @@ import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.presentation.ui.home.HomeViewModel
 import com.umcproject.irecipe.presentation.ui.home.RankAdapter
 import com.umcproject.irecipe.presentation.util.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RankDetailFragment(
-    private val viewModel: HomeViewModel,
     private val onClickRankCard: (Int) -> Unit,
     private val onClickBackBtn: (String) -> Unit
 ) : BaseFragment<FragmentRankDetailBinding>() {
+    private val viewModel: HomeViewModel by viewModels()
     private var selectBtn: String = "ALL"
     private var rankPage = 0
     private var scrollPosition = 0
-
-    init { viewModel.fetchRank(0) }
 
     companion object{
         const val TAG = "RankDetailFragment"
@@ -40,7 +40,7 @@ class RankDetailFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnAll.isSelected = true
+        initBtn() // 초기 버튼 설정
 
         viewModel.rankState.observe(viewLifecycleOwner) {
             if (it == 200) initView()
@@ -61,6 +61,11 @@ class RankDetailFragment(
             layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
             scrollToPosition(scrollPosition)
         }
+    }
+
+    private fun initBtn(){
+        binding.btnAll.isSelected = true
+        viewModel.fetchRankCategory(0, selectBtn)
     }
 
     private fun onClickBtn(){
@@ -86,6 +91,7 @@ class RankDetailFragment(
                     else -> ""
                 }
 
+                scrollPosition = 0
                 rankPage = 0
                 viewModel.fetchRankCategory(rankPage, selectBtn)
             }
