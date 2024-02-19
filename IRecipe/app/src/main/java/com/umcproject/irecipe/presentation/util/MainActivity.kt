@@ -89,6 +89,7 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
     }
 
     private fun initFragment(){
+        id = R.id.nav_frag_home
         val transaction = manager.beginTransaction()
             .add(R.id.fv_main, HomeFragment(
                 onClickDetail = { title-> showTitle(title, true) },
