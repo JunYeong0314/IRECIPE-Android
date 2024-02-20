@@ -145,6 +145,7 @@ class PostFragment(
             if (isLike==true) { // 좋아요 해제
                 postViewModel.postUnLike(postId)
                 postViewModel.unlikeState.observe(viewLifecycleOwner) {state ->
+                    postDeleteCallBack()
 //                    state?.let {
 //                        if(state == 200) Snackbar.make(requireView(), "좃앟요 삭제됨", Snackbar.LENGTH_SHORT).show()
 //                    }
@@ -156,7 +157,10 @@ class PostFragment(
                 postViewModel.postLike(postId)
                 postViewModel.likeState.observe(viewLifecycleOwner) {state ->
                     state?.let {
-                        if(state == 200) Snackbar.make(requireView(), getString(R.string.confirm_set_like), Snackbar.LENGTH_SHORT).show()
+                        if(state == 200) {
+                            postDeleteCallBack()
+                            Snackbar.make(requireView(), getString(R.string.confirm_set_like), Snackbar.LENGTH_SHORT).show()
+                        }
 
                     }
                 }
