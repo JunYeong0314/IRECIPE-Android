@@ -55,7 +55,7 @@ class ModalBottomSheetMyFragment(
                     postId,
                     Type.MODIFY,
                     postCallBack = { },
-                    postUpdateCallBack = {postUpdateCallBack}
+                    postUpdateCallBack = postDeleteCallBack
                 ),
                 WritePostFragment.TAG
             )
