@@ -7,14 +7,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.umcproject.irecipe.data.remote.request.comment.SetQARequest
 import com.umcproject.irecipe.data.remote.request.comment.SetReviewRequest
+import com.umcproject.irecipe.data.remote.service.comment.SetQAService
 import com.umcproject.irecipe.data.remote.service.comment.SetReviewService
-import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostDetail
+import com.umcproject.irecipe.domain.model.QA
 import com.umcproject.irecipe.domain.model.Review
-import com.umcproject.irecipe.domain.model.SetReview
+import com.umcproject.irecipe.domain.model.SetWrite
 import com.umcproject.irecipe.domain.repository.CommentRepository
 import com.umcproject.irecipe.domain.repository.PostRepository
 import com.umcproject.irecipe.presentation.util.UriUtil
@@ -33,13 +35,15 @@ import javax.inject.Inject
 class CommunityViewModel @Inject constructor(
     private val postRepository: PostRepository,
     private val setReviewService: SetReviewService,
-    private val commentRepository: CommentRepository
+    private val commentRepository: CommentRepository,
+    private val setQAService: SetQAService
 ): ViewModel() {
     private var postList = mutableListOf<Post>() // 게시글 전체 List
     private var postDetailInfo: PostDetail? = null // 게시글 단일 정보
     private var reviewList = mutableListOf<Review>() // 후기 전체 List
     private var postSearchList = emptyList<Post>() // 게시글 전체 List
     private var currentSortType = "기본순"
+    private var qaList = listOf<QA>() // QA 전체 List
 
     // 게시글 리스트 상태 LiveData
     private val _postState = MutableLiveData<Int>()
@@ -68,7 +72,7 @@ class CommunityViewModel @Inject constructor(
     val reviewError: LiveData<String>
         get() = _reviewError
 
-    private val setReview = SetReview()
+    private val setWrite = SetWrite()
 
     private val _isReviewComplete = MutableLiveData<Boolean>()
     val isReviewComplete: LiveData<Boolean>
@@ -87,6 +91,10 @@ class CommunityViewModel @Inject constructor(
 
     private val _postDeleteError = MutableLiveData<String>()
     val postDeleteError: LiveData<String> get() = _postDeleteError
+
+    private val _qaState = MutableLiveData<Int>()
+    val qaState: LiveData<Int> get() = _qaState
+
 
 
     // 게시글 전체조회
@@ -147,6 +155,7 @@ class CommunityViewModel @Inject constructor(
                     is State.Loading -> {}
                     is State.Success -> {
                         if(state.data.isNotEmpty()){
+                            reviewList.clear()
                             reviewList.addAll(state.data)
                             _reviewState.value = 200
                         }
@@ -166,16 +175,16 @@ class CommunityViewModel @Inject constructor(
     }
 
     fun setScore(score: Int){
-        setReview.score = score
+        setWrite.score = score
         _isReviewComplete.value = isReviewComplete()
     }
 
-    fun setReviewImage(uri: Uri?){
-        setReview.imageUri = uri
+    fun setImage(uri: Uri?){
+        setWrite.imageUri = uri
     }
 
-    fun setReviewContent(content: String){
-        setReview.content = content
+    fun setContent(content: String){
+        setWrite.content = content
         _isReviewComplete.value = isReviewComplete()
     }
 
@@ -183,11 +192,11 @@ class CommunityViewModel @Inject constructor(
         var imagePart: MultipartBody.Part? = null
 
         val request = SetReviewRequest(
-            context = setReview.content,
-            score = setReview.score
+            context = setWrite.content,
+            score = setWrite.score
         )
 
-        setReview.imageUri?.let { uri->
+        setWrite.imageUri?.let { uri->
             val file = UriUtil.toFile(context, uri)
             val image = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
             imagePart = MultipartBody.Part.createFormData(name = "file", file.name, image)
@@ -211,7 +220,7 @@ class CommunityViewModel @Inject constructor(
     }
 
     private fun isReviewComplete(): Boolean{
-        return setReview.content != "" && setReview.score != 0
+        return setWrite.content != "" && setWrite.score != 0
     }
 
     // 게시글 검색 조회
@@ -252,5 +261,73 @@ class CommunityViewModel @Inject constructor(
         }
     }
 
+    fun setQA(context: Context, postId: Int): Flow<State<Int>> = flow{
+        var imagePart: MultipartBody.Part? = null
+
+        val request = SetQARequest(
+            content = setWrite.content,
+            parentId = 0
+        )
+
+        setWrite.imageUri?.let { uri->
+            val file = UriUtil.toFile(context, uri)
+            val image = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            imagePart = MultipartBody.Part.createFormData(name = "file", file.name, image)
+        }
+        request.toString().toRequestBody("application/json".toMediaTypeOrNull())
+
+        val response = setQAService.setQA(postId, setQARequest = request, image = imagePart)
+        val statusCode = response.code()
+
+        if(statusCode == 200){
+            emit(State.Success(statusCode))
+        }else{
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
+    }
+
+    fun setReplyQA(postId: Int, parentId: Int, content: String): Flow<State<Int>> = flow{
+        val request = SetQARequest(
+            content = content,
+            parentId = parentId
+        )
+        request.toString().toRequestBody("application/json".toMediaTypeOrNull())
+
+        val response = setQAService.setQA(postId, setQARequest = request, image = null)
+        val statusCode = response.code()
+
+        if(statusCode == 200){
+            emit(State.Success(statusCode))
+        }else{
+            emit(State.ServerError(statusCode))
+        }
+    }.catch { e->
+        emit(State.Error(e))
+    }
+
+    fun fetchQA(postId: Int){
+        viewModelScope.launch {
+            commentRepository.fetchQA(postId).collect{ state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        if(state.data.isNotEmpty()){
+                            qaList = state.data
+                            _qaState.value = 200
+                        }
+                    }
+                    is State.ServerError -> { _qaState.value = state.code }
+                    is State.Error -> {
+                        _qaState.value = -1
+                        Log.d("ERROR", state.exception.message.toString())
+                    }
+                }
+            }
+        }
+    }
+
+    fun getQAList() = qaList
 
 }

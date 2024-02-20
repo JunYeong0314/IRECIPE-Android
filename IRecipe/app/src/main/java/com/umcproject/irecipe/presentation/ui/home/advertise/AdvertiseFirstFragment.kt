@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.umcproject.irecipe.databinding.FragmentAdvertiseFirstBinding
-import com.umcproject.irecipe.databinding.FragmentChatBotBinding
 import com.umcproject.irecipe.presentation.util.BaseFragment
 
 class AdvertiseFirstFragment(): BaseFragment<FragmentAdvertiseFirstBinding>() {

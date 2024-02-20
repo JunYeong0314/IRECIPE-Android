@@ -93,7 +93,7 @@ object Util {
         }
     }
 
-    fun mapperToKorIngredientCategory(category: String): String{
+    fun mapperToKorIngredientCategory(category: String?): String{
         return when (category) {
             "MEAT" -> "육류"
             "VEGETABLE" -> "채소류"
@@ -108,7 +108,7 @@ object Util {
         }
     }
 
-    fun mapperToKorIngredientType(type: String): String{
+    fun mapperToKorIngredientType(type: String?): String{
         return when(type) {
             "AMBIENT" -> "실온 보관"
             "FROZEN" -> "냉동 보관"
@@ -117,7 +117,7 @@ object Util {
         }
     }
 
-    fun getEngResourceId(category: String): Int?{
+    fun getEngResourceId(category: String?): Int?{
         return when (category) {
             "MEAT" -> R.drawable.ic_meat
             "VEGETABLE" -> R.drawable.ic_vecetable

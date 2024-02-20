@@ -3,6 +3,7 @@ package com.umcproject.irecipe.presentation.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
@@ -40,6 +41,7 @@ class LoginActivity: BaseActivity<ActivityLoginBinding>({ ActivityLoginBinding.i
         onClickLogin(viewModel)
 
         viewModel.isMember.observe(this@LoginActivity, Observer { isMember->
+            binding.lottieBaseLoading.visibility = View.GONE
             isMember?.let {
                 if(it) {
                     val intent = Intent(this@LoginActivity, MainActivity::class.java)

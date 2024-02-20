@@ -83,7 +83,6 @@ class RefrigeratorFragment(
                     requireActivity(),
                     IngredientDetailFragment(
                         it, onClickBackBtn, TAG,
-                        onIngredientCallBack = { viewModel.allIngredientFetch() },
                         workCallBack = { viewModel.allIngredientFetch() }
                     ),
                     IngredientDetailFragment.TAG)
@@ -95,7 +94,7 @@ class RefrigeratorFragment(
 
     private fun goDetailPage(ref: Refrigerator){
         onClickDetail(mapperToTitle(ref.type))
-        showHorizontalFragment(R.id.fv_main, requireActivity(), RefrigeratorDetailFragment(ref.ingredient, onClickBackBtn), RefrigeratorDetailFragment.TAG)
+        showHorizontalFragment(R.id.fv_main, requireActivity(), RefrigeratorDetailFragment(ref, onClickBackBtn), RefrigeratorDetailFragment.TAG)
     }
 
     private fun goAddFoodPage(){

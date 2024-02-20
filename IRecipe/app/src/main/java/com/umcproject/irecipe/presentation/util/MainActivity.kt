@@ -6,13 +6,13 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.ActivityMainBinding
-import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import com.umcproject.irecipe.presentation.ui.community.CommunityFragment
 import com.umcproject.irecipe.presentation.ui.home.HomeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.MypageFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
 import com.umcproject.irecipe.presentation.util.Util.popFragment
+import com.umcproject.irecipe.presentation.util.factory.MainFragmentFactory
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,9 +27,10 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
     )
     private val manager = supportFragmentManager
     override fun onCreate(savedInstanceState: Bundle?) {
+        setFragmentFactory()
         super.onCreate(savedInstanceState)
 
-        initFragment()
+        showTitle(getString(R.string.title_home), false)
         initBottomNav() // 바텀바 설정
         onClickBackBtn() // 이전버튼 로직
     }
@@ -100,10 +101,19 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
     }
 
     private fun Fragment.changeFragment(tag: String) {
-        val fragment = manager.findFragmentByTag(tag)
+        val findFragment = manager.findFragmentByTag(tag)
+        val fragment: Fragment =
+            when(tag){
+                HomeFragment.TAG -> { manager.fragmentFactory.instantiate(classLoader, HomeFragment::class.java.name) }
+                RefrigeratorFragment.TAG -> { manager.fragmentFactory.instantiate(classLoader, RefrigeratorFragment::class.java.name) }
+                CommunityFragment.TAG -> { manager.fragmentFactory.instantiate(classLoader, CommunityFragment::class.java.name) }
+                MypageFragment.TAG -> { manager.fragmentFactory.instantiate(classLoader, MypageFragment::class.java.name) }
+                else -> { return }
+            }
 
-        if(fragment != null) manager.beginTransaction().show(fragment).commit()
-        else manager.beginTransaction().add(R.id.fv_main, this, tag).commit()
+        if(findFragment != null) manager.beginTransaction().show(findFragment).commit()
+        else manager.beginTransaction().add(R.id.fv_main, fragment, tag).commit()
+
     }
 
     private fun hideFragment(currentTag: String){
@@ -135,9 +145,23 @@ class MainActivity: BaseActivity<ActivityMainBinding>({ActivityMainBinding.infla
         binding.btmMain.visibility = View.VISIBLE
     }
 
+    private fun setFragmentFactory(){
+        manager.fragmentFactory = MainFragmentFactory(
+            onClickDetail = { title-> showTitle(title, true) },
+            onClickBackBtn = { title-> showTitle(title, false) },
+            onHideBottomBar = { hideBottomBar() },
+            onShowBottomBar = { showBottomBar() }
+        )
+    }
+
     override fun onResume() {
         super.onResume()
+        if(id != 0){
+            binding.btmMain.selectedItemId = id // 채팅 이전화면 활성화
+        }else{
+            initFragment()
+        }
 
-        binding.btmMain.selectedItemId = id // 채팅 이전화면 활성화
     }
+
 }

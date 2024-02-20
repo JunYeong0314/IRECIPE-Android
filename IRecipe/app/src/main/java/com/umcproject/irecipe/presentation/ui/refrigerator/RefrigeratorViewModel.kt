@@ -32,29 +32,35 @@ class RefrigeratorViewModel @Inject constructor(
     }
 
     private var searchIngredientList = emptyList<Ingredient>()
-    private var totalIngredientList = emptyList<Ingredient>()
     private var normalIngredient: Refrigerator? = null
     private var coldIngredient: Refrigerator? = null
     private var frozenIngredient: Refrigerator? = null
+    private var normalIngredientList = mutableListOf<Ingredient>()
+    private var coldIngredientList = mutableListOf<Ingredient>()
+    private var frozenIngredientList = mutableListOf<Ingredient>()
 
-    private val _fetchState = MutableLiveData<Int?>(null)
-    val fetchState: LiveData<Int?>
+    private val _fetchState = MutableLiveData<Int>()
+    val fetchState: LiveData<Int>
         get() = _fetchState
 
-    private val _searchState = MutableLiveData<Int?>(null)
-    val searchState: LiveData<Int?> get() = _searchState
+    private val _detailState = MutableLiveData<Int>()
+    val detailState: LiveData<Int>
+        get() = _detailState
+
+    private val _searchState = MutableLiveData<Int>()
+    val searchState: LiveData<Int> get() = _searchState
 
     private val _deleteState = MutableLiveData<Int>()
     val deleteState: LiveData<Int> get() = _deleteState
 
-    private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?>
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String>
         get() = _errorMessage
 
 
-    private fun fetchRefrigerator(type: String){
+    private fun fetchRefrigerator(type: String, page: Int){
         viewModelScope.launch {
-            refrigeratorRepository.fetchIngredientType(type).collectLatest{ state->
+            refrigeratorRepository.fetchIngredientType(type, page).collectLatest{ state->
                 when(state){
                     is State.Loading -> {}
                     is State.Success -> {
@@ -64,10 +70,21 @@ class RefrigeratorViewModel @Inject constructor(
                             "FROZEN" -> frozenIngredient = state.data
                         }
                         _fetchState.value = 200
+
+                        if(state.data.ingredient.isNotEmpty()){
+                            when(type){
+                                "AMBIENT" -> normalIngredientList.addAll(state.data.ingredient)
+                                "REFRIGERATED" -> coldIngredientList.addAll(state.data.ingredient)
+                                "FROZEN" -> frozenIngredientList.addAll(state.data.ingredient)
+                            }
+                            _detailState.value = 200
+                        }
                     }
-                    is State.ServerError -> { _fetchState.value = state.code }
+                    is State.ServerError -> {
+                        _fetchState.value = state.code
+                        _detailState.value = state.code
+                    }
                     is State.Error -> { _errorMessage.value = state.exception.message }
-                    else -> {}
                 }
             }
         }
@@ -84,22 +101,23 @@ class RefrigeratorViewModel @Inject constructor(
                     }
                     is State.ServerError -> { _searchState.value = state.code }
                     is State.Error -> { _errorMessage.value = state.exception.message }
-                    else -> {}
                 }
             }
         }
     }
 
-    fun deleteIngredient(ingredientId:Int){
+    fun deleteIngredient(ingredientId: Int?){
         viewModelScope.launch {
-            refrigeratorRepository.deleteIngredient(ingredientId).collect{ state->
-                when(state){
-                    is State.Loading -> {}
-                    is State.Success -> {
-                        _deleteState.value = 200
+            ingredientId?.let {
+                refrigeratorRepository.deleteIngredient(ingredientId).collect{ state->
+                    when(state){
+                        is State.Loading -> {}
+                        is State.Success -> {
+                            _deleteState.value = 200
+                        }
+                        is State.ServerError -> {  _deleteState.value = state.code }
+                        is State.Error -> { _errorMessage.value = state.exception.message }
                     }
-                    is State.ServerError -> {  _deleteState.value = state.code }
-                    is State.Error -> { _errorMessage.value = state.exception.message }
                 }
             }
         }
@@ -121,9 +139,23 @@ class RefrigeratorViewModel @Inject constructor(
         return frozenIngredient
     }
 
-    fun allIngredientFetch(){
-        fetchRefrigerator("AMBIENT")
-        fetchRefrigerator("REFRIGERATED")
-        fetchRefrigerator("FROZEN")
+    fun getNormalIngredientList(): List<Ingredient>{
+        return normalIngredientList
     }
+
+    fun getColdIngredientList(): List<Ingredient>{
+        return coldIngredientList
+    }
+
+    fun getFrozenIngredientList(): List<Ingredient>{
+        return frozenIngredientList
+    }
+
+    fun allIngredientFetch(){
+        fetchRefrigerator("AMBIENT", 0)
+        fetchRefrigerator("REFRIGERATED", 0)
+        fetchRefrigerator("FROZEN", 0)
+    }
+
+    fun fetchType(type: String, page: Int) = fetchRefrigerator(type, page)
 }

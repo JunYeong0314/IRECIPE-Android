@@ -136,6 +136,7 @@ class RefrigeratorProcessFragment(
                 R.id.menu_category_dairy -> { setCategoryText(getString(R.string.food_category_dairy)) }
                 R.id.menu_category_crustacean-> { setCategoryText(getString(R.string.food_category_crustacean)) }
                 R.id.menu_category_sauce-> { setCategoryText(getString(R.string.food_category_sauce)) }
+                R.id.menu_category_processed -> { setCategoryText(getString(R.string.food_category_processed)) }
             }
             true
         }
@@ -231,7 +232,7 @@ class RefrigeratorProcessFragment(
     
     private fun modifyAsync(){
         CoroutineScope(Dispatchers.Main).launch {
-            viewModel.updateIngredient(ingredient!!.id).collect{ state->
+            viewModel.updateIngredient(ingredient?.id).collect{ state->
                 when(state){
                     is State.Loading -> {}
                     is State.Success -> {

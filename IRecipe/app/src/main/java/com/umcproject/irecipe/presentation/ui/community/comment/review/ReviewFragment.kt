@@ -13,16 +13,20 @@ import com.umcproject.irecipe.databinding.FragmentCommentReviewBinding
 import com.umcproject.irecipe.domain.model.PostDetail
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.comment.WriteCommentFragment
+import com.umcproject.irecipe.presentation.ui.community.comment.WriteType
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
 
 class ReviewFragment(
     private val viewModel: CommunityViewModel,
-    private val postId: Int
+    private val postId: Int,
+    private val isMyPost: Boolean
 ): BaseFragment<FragmentCommentReviewBinding>() {
     private var page = 0
     private var scrollPosition = 0
+
+    init { viewModel.fetchReview(postId, 0) }
 
     companion object{
         const val TAG = "ReviewFragment"
@@ -37,7 +41,7 @@ class ReviewFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchReview(postId, page)
+        if(isMyPost) binding.llWriteReview.visibility = View.GONE
 
         // 리뷰 요청 State 감지
         viewModel.reviewState.observe(viewLifecycleOwner){
@@ -89,7 +93,9 @@ class ReviewFragment(
                         page = 0
                         viewModel.fetchReview(postId, page)
                         viewModel.getPostInfoFetch(postId)
-                    }
+                    },
+                    qaCallBack = {},
+                    type = WriteType.REVIEW
                 ),
                 WriteCommentFragment.TAG
             )

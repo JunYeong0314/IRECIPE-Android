@@ -19,10 +19,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="150dp"
             android:layout_height="135dp">
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/iv_recipe"
                 android:layout_width="150dp"
                 android:layout_height="135dp"
+                app:shapeAppearance="@style/ShapeAppearanceOverlay.App.CornerSize10Percent"
                 android:src="@drawable/img_recipe_item"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"

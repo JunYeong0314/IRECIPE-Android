@@ -23,7 +23,7 @@ data class Result(
     @field:Json(name = "imageUrl")
     val imageUrl: String?,
     @field:Json(name = "memberId")
-    val memberId: Int?,
+    val memberId: String?,
     @field:Json(name = "memberImage")
     val memberImage: String?,
     @field:Json(name = "memberNickName")

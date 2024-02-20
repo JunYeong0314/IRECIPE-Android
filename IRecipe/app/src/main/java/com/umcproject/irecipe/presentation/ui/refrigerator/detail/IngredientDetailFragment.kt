@@ -10,6 +10,8 @@ import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentIngredientDetailBinding
 import com.umcproject.irecipe.domain.model.Ingredient
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
+import com.umcproject.irecipe.presentation.ui.home.HomeFragment
+import com.umcproject.irecipe.presentation.ui.home.detail.IngredientExpirationDetailFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorFragment
 import com.umcproject.irecipe.presentation.ui.refrigerator.RefrigeratorViewModel
 import com.umcproject.irecipe.presentation.ui.refrigerator.Type
@@ -28,7 +30,6 @@ class IngredientDetailFragment(
     private val ingredient: Ingredient,
     private val onClickBackBtn: (String) -> Unit,
     private val currentFragment: String,
-    private val onIngredientCallBack: () -> Unit,
     private val workCallBack: () -> Unit
 ): BaseFragment<FragmentIngredientDetailBinding>() {
     private val viewModel: RefrigeratorViewModel by viewModels()
@@ -48,7 +49,7 @@ class IngredientDetailFragment(
 
         viewModel.deleteState.observe(viewLifecycleOwner) {
             if (it == 200) {
-                onIngredientCallBack()
+                workCallBack()
                 popFragment(requireActivity())
                 Snackbar.make(requireView(), "음식을 삭제했습니다.", Snackbar.LENGTH_SHORT).show()
             } else {
@@ -89,6 +90,9 @@ class IngredientDetailFragment(
 
     override fun onDestroy() {
         super.onDestroy()
-        if(currentFragment == RefrigeratorFragment.TAG) onClickBackBtn("나의 냉장고")
+        when(currentFragment){
+            RefrigeratorFragment.TAG -> {onClickBackBtn("나의 냉장고")}
+            HomeFragment.TAG -> {onClickBackBtn("아이레시피")}
+        }
     }
 }
