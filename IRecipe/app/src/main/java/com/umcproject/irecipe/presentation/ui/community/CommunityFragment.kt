@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat.getColor
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentCommunityBinding
@@ -88,7 +89,7 @@ class CommunityFragment(
             onClickPost = { // 게시글 클릭 콜백 함수
                 showHorizontalFragment(
                     R.id.fv_main, requireActivity(),
-                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0, selectSortType)}),
+                    PostFragment(onClickBackBtn, it, onShowBottomBar, TAG, postDeleteCallBack = {viewModel.fetchPost(0, selectSortType)}, postUpdateCallBack = {viewModel.fetchPost(0, selectSortType)}),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
@@ -129,10 +130,12 @@ class CommunityFragment(
                 R.id.fv_main,requireActivity(),
                 WritePostFragment(
                     onClickBackBtn,
+                    null,
+                    Type.ADD,
                     postCallBack = {
                         initScrollPosition()
-                        viewModel.fetchPost(0, selectSortType)
-                    }),
+                        viewModel.fetchPost(0, selectSortType) },
+                    postUpdateCallBack = { viewModel.fetchPost(0, selectSortType) }),
                 WritePostFragment.TAG
             )
             onClickDetail("커뮤니티 글쓰기")
@@ -207,7 +210,8 @@ class CommunityFragment(
                         postDeleteCallBack = {
                             initScrollPosition()
                             viewModel.fetchPost(0, selectSortType)
-                        }),
+                        },postUpdateCallBack = { viewModel.fetchPost(0, selectSortType) }
+                        ),
                     PostFragment.TAG
                 )
                 onHideBottomBar()
@@ -235,4 +239,8 @@ class CommunityFragment(
             }
         })
     }
+}
+
+enum class Type{
+    ADD, MODIFY
 }

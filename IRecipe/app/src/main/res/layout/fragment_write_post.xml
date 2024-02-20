@@ -163,7 +163,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         app:cardCornerRadius="12dp"
         android:visibility="gone"
         android:layout_marginTop="14dp"

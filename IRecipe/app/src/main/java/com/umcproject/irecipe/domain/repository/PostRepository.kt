@@ -1,10 +1,12 @@
 package com.umcproject.irecipe.domain.repository
 
 import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.domain.model.MyPost
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.model.PostRank
 import com.umcproject.irecipe.domain.model.PostDetail
 import com.umcproject.irecipe.domain.model.Review
+import com.umcproject.irecipe.domain.model.UpdatePost
 import kotlinx.coroutines.flow.Flow
 
 interface PostRepository {

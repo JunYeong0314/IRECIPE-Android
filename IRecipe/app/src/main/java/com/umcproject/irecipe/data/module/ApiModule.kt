@@ -21,6 +21,7 @@ import com.umcproject.irecipe.data.remote.service.comment.SetQAService
 import com.umcproject.irecipe.data.remote.service.comment.SetReviewService
 import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.data.remote.service.community.PostSearchService
+import com.umcproject.irecipe.data.remote.service.community.PostUpdateService
 import com.umcproject.irecipe.data.remote.service.home.GetExpirationIngredientService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingCategoryService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
@@ -46,7 +47,6 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -287,6 +287,12 @@ class ApiModule {
         return retrofit.create(RefrigeratorUpdateService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun providePostUpdateService(retrofit: Retrofit):PostUpdateService{
+        return retrofit.create(PostUpdateService::class.java)
+    }
+    
     @Provides
     @Singleton
     fun provideExpirationIngredientService(retrofit: Retrofit): GetExpirationIngredientService{

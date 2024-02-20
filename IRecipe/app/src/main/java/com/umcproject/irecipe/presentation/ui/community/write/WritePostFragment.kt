@@ -2,9 +2,11 @@ package com.umcproject.irecipe.presentation.ui.community.write
 
 import android.app.AlertDialog
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +16,14 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentWritePostBinding
 import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.domain.model.PostDetail
+import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
+import com.umcproject.irecipe.presentation.ui.community.Type
 import com.umcproject.irecipe.presentation.ui.community.write.bottomSheet.ModalBottomSheetCategoryFragment
 import com.umcproject.irecipe.presentation.ui.community.write.bottomSheet.ModalBottomSheetLevelFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
@@ -31,9 +37,13 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class WritePostFragment(
     private val onCLickBackBtn: (String) -> Unit,
-    private val postCallBack: () -> Unit
+    private val postId:Int?,
+    private val processType: Type,
+    private val postCallBack: () -> Unit,
+    private val postUpdateCallBack: () -> Unit
 ) : BaseFragment<FragmentWritePostBinding>() {
     private val viewModel: WritePostViewModel by viewModels()
+    private val cViewModel: CommunityViewModel by viewModels()
 
     // 이미지 콜백 변수
     private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -62,6 +72,10 @@ class WritePostFragment(
         viewModel.isComplete.observe(viewLifecycleOwner, Observer {
             binding.btnPost.isEnabled = it
         })
+
+        if(processType == Type.MODIFY) {
+            getModifyInfo()
+        }
 
         onClickCategory() // 카테고리 설정
         onClickLevel() // 난이도 설정
@@ -175,24 +189,9 @@ class WritePostFragment(
 
     private fun onClickWritePost(){
         binding.btnPost.setOnClickListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                viewModel.postToServer(requireContext(), false).collect{ state->
-                    when(state){
-                        is State.Loading -> {}
-                        is State.Success -> {
-                            postCallBack()
-                            popFragment(requireActivity())
-                        }
-                        is State.ServerError -> {
-                            Snackbar.make(requireView(), getString(R.string.error_write_post, state.code), Snackbar.LENGTH_SHORT).show()
-                        }
-                        is State.Error -> {
-                            Snackbar.make(requireView(), "Error: ${state.exception.message}", Snackbar.LENGTH_SHORT).show()
-                        }
-
-                        else -> {}
-                    }
-                }
+            when(processType){
+                Type.ADD -> { addAsync() }
+                Type.MODIFY -> { modifyAsync() }
             }
         }
     }
@@ -200,5 +199,107 @@ class WritePostFragment(
     private fun setClickedTextColor(textView: TextView){
         textView.setTextColor(Color.WHITE)
         textView.setBackgroundResource(R.drawable.bg_button_rounded_hard)
+    }
+
+    private fun getModifyInfo(){
+        cViewModel.getPostInfoFetch(postId!!)
+
+        cViewModel.postDetailState.observe(viewLifecycleOwner){
+            if(it == 200) {
+                val postInfo = cViewModel.getPostInfo()
+
+                postInfo?.let { post->
+                    binding.etTitle.setText(post?.title)
+                    binding.etSubtitle.setText(post?.subTitle)
+                    binding.etContent.setText(post?.content)
+                    binding.tvCategory.text = mapperToCategory(post?.category.toString())
+                    binding.tvLevel.text = mapperToLevel(post?.level.toString())
+                    //val uri = Uri.parse(post.postImageUrl)
+
+
+                    setClickedTextColor(binding.tvCategory)
+                    setClickedTextColor(binding.tvLevel)
+
+                    viewModel.setTitle(binding.etTitle.text.toString())
+                    viewModel.setSubtitle(binding.etSubtitle.text.toString())
+                    viewModel.setContent(binding.etContent.text.toString())
+                    viewModel.setCategory(mapperToCategory(post?.category.toString()))
+                    viewModel.setLevel(mapperToLevel(post?.level.toString()))
+                    if (post.postImageUrl != null && post.postImageUrl.isNotBlank()) {
+                        binding.cvImage.visibility = View.VISIBLE
+                        binding.ivImage.load(it)
+                        val uri = Uri.parse(post.postImageUrl)
+                        binding.ivImage.setImageURI(uri)
+                    } else {
+
+                    }
+
+                    onClickPhoto()
+                    Log.d("momo", post.title.toString()+"plz")
+                }
+            }
+            else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun addAsync(){
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.postToServer(requireContext(), false).collect{ state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        postCallBack()
+                        popFragment(requireActivity())
+                    }
+                    is State.ServerError -> {
+                        Snackbar.make(requireView(), getString(R.string.error_write_post, state.code), Snackbar.LENGTH_SHORT).show()
+                    }
+                    is State.Error -> {
+                        Snackbar.make(requireView(), "Error: ${state.exception.message}", Snackbar.LENGTH_SHORT).show()
+                    }
+
+                    else -> {}
+                }
+            }
+        }
+    }
+
+    private fun modifyAsync(){
+        CoroutineScope(Dispatchers.Main).launch {
+            viewModel.modifyToServer(postId!!, requireContext(), false).collect{ state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> {
+                        postUpdateCallBack()
+                        popFragment(requireActivity())
+                        popFragment(requireActivity())
+                        Snackbar.make(requireView(), "게시글 수정완료!", Snackbar.LENGTH_SHORT).show()
+                    }
+                    is State.ServerError -> { Snackbar.make(requireView(), getString(R.string.error_write_post, state.code), Snackbar.LENGTH_SHORT).show() }
+                    is State.Error -> { Snackbar.make(requireView(), "${state.exception.message}", Snackbar.LENGTH_SHORT).show() }
+                }
+            }
+        }
+    }
+
+    private fun mapperToCategory(category: String): String {
+        return when (category) {
+            "KOREAN" -> "한식"
+            "WESTERN" -> "양식"
+            "JAPANESE" -> "일식"
+            "CHINESE" -> "중식"
+            "UNIQUE" -> "이색음식"
+            "SIMPLE" -> "간편요리"
+            "ADVANCED" -> "고급요리"
+            else -> "ERROR"
+        }
+    }
+    private fun mapperToLevel(level: String): String {
+        return when (level) {
+            "DIFFICULT" -> "상"
+            "MID" -> "중"
+            "EASY" -> "하"
+            else -> "ERROR"
+        }
     }
 }
