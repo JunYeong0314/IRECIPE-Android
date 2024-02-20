@@ -150,13 +150,25 @@ class MypagePersonalFragment(
         viewModel.resultAge()
 
         //binding.tvSearch.text = viewModel.userInfo.value.allergy.toString()
-        viewModel.allergyResponse.observe(viewLifecycleOwner) { allergy ->
-            var allergyText =""
-            when (allergy.toString()){
-                "[2.0]" -> allergyText += "우유"
+        viewModel.allergyResponse.observe(viewLifecycleOwner) {allergyList ->
+            var allergyText = ""
+
+            for (allergy in allergyList) {
+                Log.d("hihi", allergy.toString())
+                when (allergy) {
+                    1 -> allergyText += "난류"
+                    2 -> allergyText += "우유"
+                    3 -> allergyText += "견과류"
+                    4 -> allergyText += "밀"
+                    5 -> allergyText += "참깨"
+                    6 -> allergyText += "콩(대두)"
+                    7 -> allergyText += "과일 및 채소"
+                    8 -> allergyText += "해산물 및 조개류"
+                }
             }
+
             //allergy.forEach { allergy-> allergyText += "$allergy " }
-            if(allergy.isEmpty()) binding.tvSearch.text = getString(R.string.sign_choice)
+            if(allergyList.isEmpty()) binding.tvSearch.text = getString(R.string.sign_choice)
             else binding.tvSearch.text = allergyText
         }
         viewModel.resultAllergy()
