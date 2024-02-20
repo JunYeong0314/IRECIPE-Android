@@ -51,6 +51,8 @@ class RecipeViewModel @Inject constructor(
                     is State.Error -> {
                         _myWriteError.value = state.exception.message
                     }
+
+                    else -> {}
                 }
             }
         }
@@ -75,6 +77,8 @@ class RecipeViewModel @Inject constructor(
                     is State.Error -> {
                         _myLikeError.value = state.exception.message
                     }
+
+                    else -> {}
                 }
             }
         }
