@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -98,6 +99,7 @@ class CommunityFragment(
         )
         binding.rvPost.adapter = postAdapter
         binding.rvPost.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        binding.rvPost.scrollToPosition(scrollPosition)
     }
 
     private fun observeSearchText(){

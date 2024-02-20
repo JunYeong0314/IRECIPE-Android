@@ -105,6 +105,7 @@ class CommunityViewModel @Inject constructor(
                     is State.Loading -> {}
                     is State.Success -> {
                         if(currentSortType != sort) postList.clear()
+                        if(page == 0) postList.clear()
 
                         if(state.data.isNotEmpty()){
                             currentSortType = sort

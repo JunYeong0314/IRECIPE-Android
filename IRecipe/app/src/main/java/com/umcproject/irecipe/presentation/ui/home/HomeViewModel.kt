@@ -127,7 +127,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun checkInitData(): Boolean{
-        return firstExpirationIngredientList.isNotEmpty() && firstRankList.isNotEmpty()
+        return firstExpirationIngredientList.isNotEmpty() || firstRankList.isNotEmpty()
     }
 
 }
