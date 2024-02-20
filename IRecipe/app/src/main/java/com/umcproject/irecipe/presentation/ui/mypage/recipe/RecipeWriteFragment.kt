@@ -50,7 +50,7 @@ class RecipeWriteFragment(
                 binding.rvRecipeWrite.visibility = View.VISIBLE
             }
             if(it == 200) initView()
-            else Snackbar.make(requireView(), getString(R.string.error_server_fetch_post, it), Snackbar.LENGTH_SHORT).show()
+            else Snackbar.make(requireView(), "작성한 글이 없습니다!", Snackbar.LENGTH_SHORT).show()
         }
 
         viewModel.myWriteError.observe(viewLifecycleOwner){
