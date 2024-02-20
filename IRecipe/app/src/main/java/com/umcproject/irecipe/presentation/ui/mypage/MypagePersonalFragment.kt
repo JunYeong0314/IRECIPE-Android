@@ -158,12 +158,13 @@ class MypagePersonalFragment(
                 when (allergy) {
                     1 -> allergyText += "난류"
                     2 -> allergyText += "우유"
-                    3 -> allergyText += "견과류"
-                    4 -> allergyText += "밀"
-                    5 -> allergyText += "참깨"
-                    6 -> allergyText += "콩(대두)"
-                    7 -> allergyText += "과일 및 채소"
-                    8 -> allergyText += "해산물 및 조개류"
+                    3 -> allergyText += "땅콩"
+                    4 -> allergyText += "견과류"
+                    5 -> allergyText += "밀"
+                    6 -> allergyText += "참깨"
+                    7 -> allergyText += "콩(대두)"
+                    8 -> allergyText += "과일 및 채소"
+                    9 -> allergyText += "해산물 및 조개류"
                 }
             }
 
