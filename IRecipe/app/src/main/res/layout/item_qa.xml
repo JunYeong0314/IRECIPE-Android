@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/ll_review"
+        android:id="@+id/ll_writer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -43,11 +43,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:textSize="18sp"
             android:text="content" />
+
+        <Button
+            android:id="@+id/btn_reply"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="end"
+            android:text="답변입력"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:id="@+id/ll_et_reply"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <EditText
+                android:id="@+id/et_reply"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:background="@drawable/bg_button_outline"
+                android:hint="답변을 입력하세요"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="8dp"
+                android:inputType="textMultiLine"/>
+            <Button
+                android:id="@+id/btn_reply_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:enabled="false"
+                android:text="입력완료"
+                android:textStyle="bold"/>
+        </LinearLayout>
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/fl_writer"
+        android:id="@+id/fl_other"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_bubble_reply"
@@ -62,7 +100,7 @@
             android:orientation="vertical"
             android:layout_margin="12dp">
             <LinearLayout
-                android:id="@+id/ll_writer"
+                android:id="@+id/ll_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

@@ -30,7 +30,7 @@ class RefrigeratorDetailAdapter(
     }
 
     inner class ViewHolder(val binding: ItemIngredientBinding): RecyclerView.ViewHolder(binding.root){
-        fun setIngredientInfo(name: String, category: String){
+        fun setIngredientInfo(name: String?, category: String?){
             binding.tvName.text = name
 
             val photo = getEngResourceId(category)

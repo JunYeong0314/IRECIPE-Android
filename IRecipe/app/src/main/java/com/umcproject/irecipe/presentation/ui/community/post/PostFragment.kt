@@ -66,7 +66,6 @@ class PostFragment(
             Snackbar.make(requireView(), getString(R.string.error_fetch_post, it), Snackbar.LENGTH_SHORT).show()
         }
 
-        onClickReview() // Q&A, 리뷰글 버튼 이벤트
         onClickLike() // 게시글 좋아요 버튼 이벤트
         onClickSetting() // 수정, 삭제 버튼 이벤트
     }
@@ -101,6 +100,8 @@ class PostFragment(
         postInfo?.myPost?.let {
             if(it) binding.btnPostMy.visibility = View.VISIBLE
             else binding.btnPostMy.visibility = View.GONE
+
+            onClickReview(it)
         }
     }
     private fun initLikes(){
@@ -133,9 +134,9 @@ class PostFragment(
         onShowBottomBar()
     }
 
-    private fun onClickReview() {
+    private fun onClickReview(isMyPost: Boolean) {
         binding.llReview.setOnClickListener {
-            showVerticalFragment(R.id.fv_main, requireActivity(), CommentFragment(viewModel, postId), CommentFragment.TAG)
+            showVerticalFragment(R.id.fv_main, requireActivity(), CommentFragment(viewModel, postId, isMyPost), CommentFragment.TAG)
         }
     }
 

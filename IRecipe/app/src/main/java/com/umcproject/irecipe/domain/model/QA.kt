@@ -4,20 +4,20 @@ import android.net.Uri
 import java.util.Date
 
 data class QA(
+    val qnaId: Int?,
     val writer: Writer?,
-    val otherUser: OtherUser,
+    val otherUser: List<OtherUser>?,
 )
 
 data class OtherUser(
     val nick: String?,
-    val profileUrl: String?,
     val createdAt: String?,
     val content: String?
 )
 
 data class Writer(
     val nick: String?,
-    val profileUrl: String?,
+    val imageUrl: String?,
     val createdAt: String?,
     val content: String?
 )

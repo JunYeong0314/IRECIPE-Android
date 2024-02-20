@@ -18,13 +18,16 @@ import com.umcproject.irecipe.domain.model.Home
 import com.umcproject.irecipe.domain.model.HomeType
 import com.umcproject.irecipe.presentation.ui.community.CommunityViewModel
 import com.umcproject.irecipe.presentation.ui.community.Type
+import com.umcproject.irecipe.domain.model.Ingredient
 import com.umcproject.irecipe.presentation.ui.community.post.PostFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFirstFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseFourthFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseSecondFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseThirdFragment
 import com.umcproject.irecipe.presentation.ui.home.advertise.AdvertiseVpAdapter
+import com.umcproject.irecipe.presentation.ui.home.detail.IngredientExpirationDetailFragment
 import com.umcproject.irecipe.presentation.ui.home.detail.RankDetailFragment
+import com.umcproject.irecipe.presentation.ui.refrigerator.detail.IngredientDetailFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
 import com.umcproject.irecipe.presentation.util.Util.showHorizontalFragment
 import com.umcproject.irecipe.presentation.util.Util.showVerticalFragment
@@ -62,11 +65,19 @@ class HomeFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchRank(0)
+        viewModel.fetchRank(0) // 레시피 랭킹 fetch
+        viewModel.fetchExpirationIngredient(0) // 유통기한 임박재료 fetch
 
         // 레시피 랭킹 state
-        viewModel.firstRankList.observe(viewLifecycleOwner) { if(!it.isNullOrEmpty()) initView() }
         viewModel.errorMessage.observe(viewLifecycleOwner){ Snackbar.make(requireView(),getString(R.string.error_fetch_post, it),Snackbar.LENGTH_SHORT).show() }
+
+        // 유통기한 임박 재료 state
+        viewModel.expirationIngredientState.observe(viewLifecycleOwner){
+            Snackbar.make(requireView(), getString(R.string.error_server_expiration_ingredient), Snackbar.LENGTH_SHORT).show()
+        }
+
+        // 레시피 랭킹, 유통기한 임박재료 observe
+        viewModel.isInitData.observe(viewLifecycleOwner){ if(it) initView() }
 
 
         advertiseView(this@HomeFragment) // 광고 배너
@@ -74,18 +85,18 @@ class HomeFragment(
 
     private fun initView() {
         val homeList = listOf<Home>(
-            Home(HomeType.RANK ,viewModel.firstRankList.value, null)
+            Home(HomeType.RANK ,viewModel.getFirstRankPost(), null),
+            Home(HomeType.EXPIRATION, null, viewModel.getFirstExpirationIngredient())
         )
         val homeAdapter = HomeAdapter(
             homeList = homeList,
             onClickRankCard = { onClickRankCard(it, TAG) },
             onClickRankDetail = {
-                showHorizontalFragment(
-                    R.id.fv_main, requireActivity(),
-                    RankDetailFragment(onClickRankCard = { onClickRankCard(it, RankDetailFragment.TAG) }, onClickBackBtn = onClickBackBtn),
-                    RankDetailFragment.TAG)
+                onClickRankCardDetail()
                 onClickDetail("이달의 레시피 랭킹")
-            }
+            },
+            onClickIngredient = { onClickIngredientCard(it, TAG)},
+            onClickIngredientDetail = { onClickIngredientDetail(it) }
         )
         binding.rvHome.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHome.adapter = homeAdapter
@@ -142,6 +153,33 @@ class HomeFragment(
         )
         onClickDetail("이달의 레시피 랭킹")
         onHideBottomBar()
+    }
+
+    private fun onClickRankCardDetail(){
+        showHorizontalFragment(
+            R.id.fv_main, requireActivity(),
+            RankDetailFragment(onClickRankCard = { onClickRankCard(it, RankDetailFragment.TAG) }, onClickBackBtn = onClickBackBtn),
+            RankDetailFragment.TAG
+        )
+    }
+
+    private fun onClickIngredientCard(ingredient: Ingredient, currentScreen: String){
+        showVerticalFragment(
+            R.id.fv_main, requireActivity(),
+            IngredientDetailFragment(
+                ingredient, onClickBackBtn, currentScreen, workCallBack = { viewModel.fetchExpirationIngredient(0) }
+            ),
+            IngredientDetailFragment.TAG
+        )
+        onClickDetail("유통기한 임박 재료")
+    }
+
+    private fun onClickIngredientDetail(ingredientList: List<Ingredient>){
+        showHorizontalFragment(R.id.fv_main, requireActivity(),
+            IngredientExpirationDetailFragment(ingredientList, onClickBackBtn, onClickIngredient = {onClickIngredientCard(it, IngredientExpirationDetailFragment.TAG)}),
+            IngredientExpirationDetailFragment.TAG
+        )
+        onClickDetail("유통기한 임박 재료")
     }
 
 }

@@ -28,28 +28,28 @@ class RefrigeratorProcessViewModel @Inject constructor(
     val isComplete: LiveData<Boolean>
         get() = _isComplete
 
-    fun setName(name: String){
-        _ingredientInfo.update { it.copy(name = name) }
+    fun setName(name: String?){
+        name?.let { _ingredientInfo.update { it.copy(name = name) } }
         isComplete()
     }
 
-    fun setExpiration(expiration: String){
-        _ingredientInfo.update { it.copy(expiration = expiration) }
+    fun setExpiration(expiration: String?){
+        expiration?.let { _ingredientInfo.update { it.copy(expiration = expiration) } }
         isComplete()
     }
 
-    fun setType(type: String){
-        _ingredientInfo.update { it.copy(type = mapperToEngIngredientType(type)) }
+    fun setType(type: String?){
+        type?.let { _ingredientInfo.update { it.copy(type = mapperToEngIngredientType(type)) } }
         isComplete()
     }
 
-    fun setCategory(category: String){
-        _ingredientInfo.update { it.copy(category = mapperToEngIngredientCategory(category)) }
+    fun setCategory(category: String?){
+        category?.let { _ingredientInfo.update { it.copy(category = mapperToEngIngredientCategory(category)) } }
         isComplete()
     }
 
-    fun setMemo(memo: String){
-        _ingredientInfo.update { it.copy(memo = memo) }
+    fun setMemo(memo: String?){
+        memo?.let { _ingredientInfo.update { it.copy(memo = memo) } }
     }
 
     private fun isComplete(){
@@ -64,19 +64,19 @@ class RefrigeratorProcessViewModel @Inject constructor(
                 is State.Success -> { emit(State.Success(state.data)) }
                 is State.ServerError -> {emit(State.ServerError(state.code))}
                 is State.Error -> {emit(State.Error(state.exception))}
-                else -> {}
             }
         }
     }
 
-    fun updateIngredient(ingrdientId:Int) = flow<State<Int>>{
-        refrigeratorRepository.updateIngredient(ingrdientId,ingredient = ingredientInfo.value).collect{ state->
-            when(state){
-                is State.Loading -> {}
-                is State.Success -> { emit(State.Success(state.data)) }
-                is State.ServerError -> {emit(State.ServerError(state.code))}
-                is State.Error -> {emit(State.Error(state.exception))}
-                else -> {}
+    fun updateIngredient(ingredientId: Int?) = flow<State<Int>>{
+        ingredientId?.let {
+            refrigeratorRepository.updateIngredient(ingredientId,ingredient = ingredientInfo.value).collect{ state->
+                when(state){
+                    is State.Loading -> {}
+                    is State.Success -> { emit(State.Success(state.data)) }
+                    is State.ServerError -> {emit(State.ServerError(state.code))}
+                    is State.Error -> {emit(State.Error(state.exception))}
+                }
             }
         }
     }

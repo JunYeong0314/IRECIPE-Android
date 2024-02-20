@@ -22,12 +22,15 @@ import com.umcproject.irecipe.presentation.util.Util
 import com.umcproject.irecipe.presentation.util.Util.popFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class WriteCommentFragment(
     private val viewModel: CommunityViewModel,
     private val postId: Int,
-    private val reviewCallBack: () -> Unit
+    private val reviewCallBack: () -> Unit,
+    private val qaCallBack: () -> Unit,
+    private val type: WriteType
 ): BaseFragment<FragmentCommentWriteBinding>() {
 
     // 이미지 콜백 변수
@@ -35,7 +38,7 @@ class WriteCommentFragment(
         if (uri != null) {
             binding.cvImage.visibility = View.VISIBLE
             binding.ivImage.setImageURI(uri)
-            viewModel.setReviewImage(uri = uri)
+            viewModel.setImage(uri = uri)
         }
     }
 
@@ -53,7 +56,7 @@ class WriteCommentFragment(
         super.onViewCreated(view, savedInstanceState)
 
         // 별점, 후기에 따른 완료 버튼 state 설정
-        viewModel.isReviewComplete.observe(viewLifecycleOwner) { binding.btnComplete.isEnabled = it }
+        if(type == WriteType.REVIEW){ viewModel.isReviewComplete.observe(viewLifecycleOwner) { binding.btnComplete.isEnabled = it } }
 
         initView()
         scoreObserve() // 점수 감지 함수
@@ -63,7 +66,7 @@ class WriteCommentFragment(
     }
 
     private fun initView(){
-        binding.rbRating.visibility = View.VISIBLE
+        if(type == WriteType.REVIEW) binding.rbRating.visibility = View.VISIBLE
 
         viewModel.getPostInfo()?.let { post->
             binding.tvTitle.text = post.title
@@ -76,7 +79,7 @@ class WriteCommentFragment(
 
     private fun scoreObserve(){
         binding.rbRating.setOnRatingBarChangeListener{ _, rating, fromUser ->
-            if(fromUser) viewModel.setScore(rating.toInt())
+            if(fromUser && type == WriteType.REVIEW) viewModel.setScore(rating.toInt())
         }
     }
 
@@ -85,8 +88,10 @@ class WriteCommentFragment(
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(content: Editable?) {
-                if(content.isNullOrEmpty()) viewModel.setReviewContent("")
-                else viewModel.setReviewContent(binding.etContent.text.toString())
+                if(content.isNullOrEmpty()) viewModel.setContent("")
+                else viewModel.setContent(binding.etContent.text.toString())
+
+                binding.btnComplete.isEnabled = !(content.isNullOrEmpty() && type == WriteType.QA)
             }
         })
     }
@@ -109,7 +114,7 @@ class WriteCommentFragment(
                 when(which){
                     0 -> { pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)) }
                     1 -> {
-                        viewModel.setReviewImage(null)
+                        viewModel.setImage(null)
                         binding.cvImage.visibility = View.GONE
                     }
                     2 -> {}
@@ -121,17 +126,33 @@ class WriteCommentFragment(
     private fun onClickComplete(){
         binding.btnComplete.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
-                viewModel.setReview(requireContext(), postId).collect{ state->
-                    when(state){
-                        is State.Loading -> {}
-                        is State.Success -> {
-                            Snackbar.make(requireView(), getString(R.string.confirm_add_review), Snackbar.LENGTH_SHORT).show()
-                            reviewCallBack()
-                            popFragment(requireActivity())
+                if(type == WriteType.REVIEW){
+                    viewModel.setReview(requireContext(), postId).collect{ state->
+                        when(state){
+                            is State.Loading -> {}
+                            is State.Success -> {
+                                Snackbar.make(requireView(), getString(R.string.confirm_add_review), Snackbar.LENGTH_SHORT).show()
+                                reviewCallBack()
+                                popFragment(requireActivity())
+                            }
+                            is State.ServerError -> { Snackbar.make(requireView(), getString(R.string.error_server_review, state.code), Snackbar.LENGTH_SHORT).show() }
+                            is State.Error -> { Snackbar.make(requireView(), getString(R.string.error_review, state.exception.message), Snackbar.LENGTH_SHORT).show() }
                         }
-                        is State.ServerError -> { Snackbar.make(requireView(), getString(R.string.error_server_review, state.code), Snackbar.LENGTH_SHORT).show() }
-                        is State.Error -> { Snackbar.make(requireView(), getString(R.string.error_review, state.exception.message), Snackbar.LENGTH_SHORT).show() }
                     }
+                }else{
+                    viewModel.setQA(requireContext(), postId).collect{ state->
+                        when(state){
+                            is State.Loading -> {}
+                            is State.Success -> {
+                                Snackbar.make(requireView(), getString(R.string.confirm_add_qa), Snackbar.LENGTH_SHORT).show()
+                                qaCallBack()
+                                popFragment(requireActivity())
+                            }
+                            is State.ServerError -> { Snackbar.make(requireView(), getString(R.string.error_server_qa, state.code), Snackbar.LENGTH_SHORT).show() }
+                            is State.Error -> { Snackbar.make(requireView(), getString(R.string.error_review, state.exception.message), Snackbar.LENGTH_SHORT).show() }
+                        }
+                    }
+
                 }
             }
 

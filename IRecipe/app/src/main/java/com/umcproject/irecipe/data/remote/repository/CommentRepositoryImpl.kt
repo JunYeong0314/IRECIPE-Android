@@ -3,8 +3,10 @@ package com.umcproject.irecipe.data.remote.repository
 import com.umcproject.irecipe.data.remote.service.comment.GetQAService
 import com.umcproject.irecipe.data.remote.service.comment.GetReviewService
 import com.umcproject.irecipe.domain.State
+import com.umcproject.irecipe.domain.model.OtherUser
 import com.umcproject.irecipe.domain.model.QA
 import com.umcproject.irecipe.domain.model.Review
+import com.umcproject.irecipe.domain.model.Writer
 import com.umcproject.irecipe.domain.repository.CommentRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -49,8 +51,20 @@ class CommentRepositoryImpl(
 
         if(statusCode == 200){
             val qaList = response.body()?.result?.map {
+                QA(
+                    qnaId = it?.qnaId,
+                    writer = Writer(it?.memberNickName, it?.imageUrl, it?.createdAt, it?.content),
+                    otherUser = it?.children?.mapNotNull { other->
+                        OtherUser(other?.memberNickName, other?.createdAt, other?.content)
+                    }
+                )
+            } ?: emptyList()
 
-            }
+            emit(State.Success(qaList))
+        }else{
+            emit(State.ServerError(statusCode))
         }
+    }.catch { e->
+        emit(State.Error(e))
     }
 }

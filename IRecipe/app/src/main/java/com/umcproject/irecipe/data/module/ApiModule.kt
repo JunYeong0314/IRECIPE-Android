@@ -22,6 +22,7 @@ import com.umcproject.irecipe.data.remote.service.comment.SetReviewService
 import com.umcproject.irecipe.data.remote.service.community.PostDeleteService
 import com.umcproject.irecipe.data.remote.service.community.PostSearchService
 import com.umcproject.irecipe.data.remote.service.community.PostUpdateService
+import com.umcproject.irecipe.data.remote.service.home.GetExpirationIngredientService
 import com.umcproject.irecipe.data.remote.service.home.GetPostRankingCategoryService
 import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.data.remote.service.login.DeleteMemberService
@@ -290,5 +291,11 @@ class ApiModule {
     @Singleton
     fun providePostUpdateService(retrofit: Retrofit):PostUpdateService{
         return retrofit.create(PostUpdateService::class.java)
+    }
+    
+    @Provides
+    @Singleton
+    fun provideExpirationIngredientService(retrofit: Retrofit): GetExpirationIngredientService{
+        return retrofit.create(GetExpirationIngredientService::class.java)
     }
 }
