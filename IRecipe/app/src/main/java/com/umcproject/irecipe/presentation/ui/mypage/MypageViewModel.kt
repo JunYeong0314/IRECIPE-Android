@@ -190,6 +190,7 @@ class MypageViewModel @Inject constructor(
             it.copy(allergy = mapperToAllergy(allergy))
         }
         Log.d(MypagePersonalFragment.TAG, _userInfo.value.allergy.toString() + " setAllergy")
+        Log.d(MypagePersonalFragment.TAG, _userInfo.value.allergy?.map { it.toString().toInt() }.toString() + " setAllergy2")
 
     }
     fun setNickComplete(check: Boolean){
