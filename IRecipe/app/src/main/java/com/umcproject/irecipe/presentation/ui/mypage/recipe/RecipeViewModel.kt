@@ -1,18 +1,14 @@
 package com.umcproject.irecipe.presentation.ui.mypage.recipe
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.umcproject.irecipe.data.remote.service.login.CheckMemberService
 import com.umcproject.irecipe.domain.State
-import com.umcproject.irecipe.domain.model.Ingredient
 import com.umcproject.irecipe.domain.model.MyPost
 import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.repository.MemberLikeRepository
 import com.umcproject.irecipe.domain.repository.MemberWriteRepository
-import com.umcproject.irecipe.presentation.ui.chat.ChatBotActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +27,7 @@ class RecipeViewModel @Inject constructor(
     private val _myWriteError = MutableLiveData<String>()
     val myWriteError: LiveData<String> get() = _myWriteError
 
-    private var myLikeList = emptyList<MyPost>()
+    private var myLikeList = emptyList<Post>()
 
     private val _myLikeState = MutableLiveData<Int>()
     val myLikeState: LiveData<Int> get() = _myLikeState
@@ -55,6 +51,8 @@ class RecipeViewModel @Inject constructor(
                     is State.Error -> {
                         _myWriteError.value = state.exception.message
                     }
+
+                    else -> {}
                 }
             }
         }
@@ -79,12 +77,14 @@ class RecipeViewModel @Inject constructor(
                     is State.Error -> {
                         _myLikeError.value = state.exception.message
                     }
+
+                    else -> {}
                 }
             }
         }
     }
 
-    fun getMyLikeList(): List<MyPost>{
+    fun getMyLikeList(): List<Post>{
         return myLikeList
     }
 

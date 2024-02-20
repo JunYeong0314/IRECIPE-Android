@@ -3,6 +3,7 @@ package com.umcproject.irecipe.data.remote.repository
 import com.umcproject.irecipe.data.remote.service.mypage.MemberLikeService
 import com.umcproject.irecipe.domain.State
 import com.umcproject.irecipe.domain.model.MyPost
+import com.umcproject.irecipe.domain.model.Post
 import com.umcproject.irecipe.domain.repository.MemberLikeRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -12,7 +13,7 @@ class MemberLikeRepositoryImpl(
     private val memberLikeService: MemberLikeService
 ): MemberLikeRepository {
 
-    override fun fetchLike(page: Int): Flow<State<List<MyPost>>> = flow {
+    override fun fetchLike(page: Int): Flow<State<List<Post>>> = flow {
         emit(State.Loading)
 
         val response = memberLikeService.memberLikeService(page = page)
@@ -20,16 +21,18 @@ class MemberLikeRepositoryImpl(
 
         if (statusCode == 200) {
             val postList = response.body()?.result?.map { it ->
-                MyPost(
+                Post(
+                    postId = it?.postId,
                     title = it?.title ?: "",
                     subTitle = it?.subhead ?: "",
-                    content = it?.content ?: "",
+                    postImageUrl = it?.imageUrl ?: "",
+                    writerNick = it?.writerNickName ?:"",
+                    writerProfileUrl = it?.writerImage ?: "",
                     likes = it?.likes,
-                    imageUrl = it?.imageUrl ?: "",
-                    fileName = it?.fileName ?: "",
-                    category = it?.category ?: "",
-                    level = it?.level ?: "",
-                    score = it?.score,
+                    score = it?.score ,
+                    reviewCount = it?.reviewsCount,
+                    createdAt = it?.createdAt ?: "",
+                    isLike = it?.likeOrNot,
                 )
             } ?: emptyList()
 

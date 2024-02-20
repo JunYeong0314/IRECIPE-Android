@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.umcproject.irecipe.R
 import com.umcproject.irecipe.databinding.FragmentMypageRecipeBinding
-import com.umcproject.irecipe.presentation.ui.community.comment.review.ReviewFragment
 import com.umcproject.irecipe.presentation.ui.mypage.recipe.RecipeLikeFragment
 import com.umcproject.irecipe.presentation.ui.mypage.recipe.RecipeWriteFragment
 import com.umcproject.irecipe.presentation.util.BaseFragment
@@ -44,7 +43,7 @@ class MypageRecipeFragment(
             Util.showNoStackFragment(
                 R.id.fv_recipe,
                 requireActivity(),
-                RecipeLikeFragment(),
+                RecipeLikeFragment(onClickDetail, onClickBackBtn, onHideBottomBar, onShowBottomBar),
                 RecipeLikeFragment.TAG
             )
         }
@@ -65,7 +64,7 @@ class MypageRecipeFragment(
         Util.showNoStackFragment(
             R.id.fv_recipe,
             requireActivity(),
-            RecipeLikeFragment(),
+            RecipeLikeFragment(onClickDetail, onClickBackBtn, onHideBottomBar, onShowBottomBar),
             RecipeLikeFragment.TAG
         )
     }
