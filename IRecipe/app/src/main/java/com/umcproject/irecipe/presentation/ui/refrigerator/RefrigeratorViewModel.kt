@@ -73,9 +73,18 @@ class RefrigeratorViewModel @Inject constructor(
 
                         if(state.data.ingredient.isNotEmpty()){
                             when(type){
-                                "AMBIENT" -> normalIngredientList.addAll(state.data.ingredient)
-                                "REFRIGERATED" -> coldIngredientList.addAll(state.data.ingredient)
-                                "FROZEN" -> frozenIngredientList.addAll(state.data.ingredient)
+                                "AMBIENT" -> {
+                                    if(page == 0) normalIngredientList.clear()
+                                    normalIngredientList.addAll(state.data.ingredient)
+                                }
+                                "REFRIGERATED" -> {
+                                    if(page == 0) coldIngredientList.clear()
+                                    coldIngredientList.addAll(state.data.ingredient)
+                                }
+                                "FROZEN" -> {
+                                    if(page == 0) frozenIngredientList.clear()
+                                    frozenIngredientList.addAll(state.data.ingredient)
+                                }
                             }
                             _detailState.value = 200
                         }
