@@ -1,5 +1,6 @@
 <div align="center">
-# 🍽️ AI 맞춤형 레시피, 아이레시피
+      
+## 🍽️ AI 맞춤형 레시피, 아이레시피
 
 <p align="center">
 <img width = "200px" src='https://ifh.cc/g/m3BlnF.jpg' border='0'>
