@@ -3,9 +3,9 @@
 ## 🍽️ AI 맞춤형 레시피, 아이레시피
 
 <p align="center">
-<img width = "200px" src='https://ifh.cc/g/m3BlnF.jpg' border='0'>
-<img width = "200px" src='https://ifh.cc/g/mPx4Kd.jpg' border='0'>
-<img width = "200px" src='https://ifh.cc/g/PNPn7D.jpg' border='0'>
+<img width = "200px" src='https://github.com/user-attachments/assets/95570229-f413-4c7d-b599-80bb412c2bac' border='0'>
+<img width = "200px" src='https://github.com/user-attachments/assets/35d2f768-2558-4d96-8ab1-a3d4c4a0cc6f' border='0'>
+<img width = "200px" src='https://github.com/user-attachments/assets/4b3e1cbc-2eda-4b01-8f35-9f0984ac97e8' border='0'>
 </p>
 
 ## 2023.12 ~ 2024. 2
@@ -14,18 +14,8 @@
 
 <div align="center">
 
-# ***Play Store***
-📎 https://play.google.com/store/apps/details?id=com.umcproject.eyerecipe
-
-<br>
-
-# ***Service IA***
-<img src='https://ifh.cc/g/fRxvt5.png' border='0'>
-
-<br>
-
 # ***Flow Chart***
-<img width = "80%" height = "80%" src='https://ifh.cc/g/WnpFZn.png' border='0'>
+<img width = "80%" height = "80%" src='https://github.com/user-attachments/assets/44815974-9258-4ff0-9e62-1dcd9ed6fadc' border='0'>
 
 <br>
 
@@ -86,15 +76,15 @@
 
 |로그인|온보딩 스플래시|홈|이달의 레시피 랭킹|
 |------|-----|-----|-----|
-|<img src='https://ifh.cc/g/wH6GWt.png'>|<img src='https://ifh.cc/g/xQ6Zpy.png'>|<img src='https://ifh.cc/g/OPthLA.png'>|<img src='https://ifh.cc/g/FRQWhv.png'>|
+|<img src='https://github.com/user-attachments/assets/389ddf8c-bfe5-4a8b-b6ee-3c646c7af03d'>|<img src='https://github.com/user-attachments/assets/f15f5334-01c4-4c04-bf9f-b932f223a9b9'>|<img src='https://github.com/user-attachments/assets/f8bb44a9-2a81-4a55-9760-a798ec4ad750'>|<img src='https://github.com/user-attachments/assets/6e35a3fa-1e03-40db-a6e2-b9fbc3aefcfe'>|
 
 |챗봇|나의 냉장고|나의 냉장고 2|냉장고 재료 추가|
 |------|-----|-----|-----|
-|<img src='https://ifh.cc/g/84BH5T.png'>|<img src='https://ifh.cc/g/S67O1V.png'>|<img src='https://ifh.cc/g/W9fAhv.png'>|<img src='https://ifh.cc/g/SdGaG0.png'>|
+|<img src='https://github.com/user-attachments/assets/8a795bf2-5202-4ed8-a4aa-a680d2dc7afb'>|<img src='https://github.com/user-attachments/assets/5917fddd-cbb5-4283-8011-0cbb0154f4b4'>|<img src='https://github.com/user-attachments/assets/3615464a-cafc-4318-86c3-6467322e8520'>|<img src='https://github.com/user-attachments/assets/c518c77e-c2e9-4610-865b-cfca3ec52371'>|
 
 |커뮤니티|레시피 후기|레시피 Q&A|마이페이지|
 |------|-----|-----|-----|
-|<img src='https://ifh.cc/g/01la5J.png'>|<img src='https://ifh.cc/g/xF0FR3.png'>|<img src='https://ifh.cc/g/bbXG5B.png'>|<img src='https://ifh.cc/g/wwoPv4.png'>|
+|<img src='https://github.com/user-attachments/assets/ad7050bc-0476-4da1-91fb-3136f200c6ad'>|<img src='https://github.com/user-attachments/assets/da876b4e-df57-4ee9-9ffc-ef364d59e173'>|<img src='https://github.com/user-attachments/assets/1ce84678-b90b-4b01-b8bd-9d1e73bb04c7'>|<img src='https://github.com/user-attachments/assets/a778b303-2698-4516-ad5e-05707db170e4'>|
 
 </br>
 
